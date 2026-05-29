@@ -1,0 +1,20 @@
+{
+  "fecha": "30 de mayo",
+  "precio_menu": "13.50€",
+  "primero": [
+    "Ensalada mixta con vinagreta de miel y mostaza",
+    "Crema de verduras de temporada",
+    "Croquetas caseras de jamón ibérico"
+  ],
+  "segundo": [
+    "Chuletón de ternera a la brasa con patatas",
+    "Merluza al horno con salsa verde",
+    "Pollo asado con verduras de temporada"
+  ],
+  "postre": [
+    "Crema catalana",
+    "Tarta de queso artesana",
+    "Fruta de temporada"
+  ],
+  "incluye": "Pan, agua o refresco incluidos"
+}
