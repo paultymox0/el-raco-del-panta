@@ -4,13 +4,14 @@ export type Allergen =
   | 'huevo'
   | 'pescado'
   | 'crustaceos'
-  | 'frutos_secos'
+  | 'frutos_casca'
   | 'apio'
   | 'mostaza'
   | 'sesamo'
   | 'soja'
   | 'sulfitos'
   | 'moluscos'
+  | 'altramuces'
 
 export type MenuItem = {
   id: string
@@ -36,7 +37,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/entrantes/braves.jpg',
     calorias: 320,
     macros: { proteina: 4, carbos: 38, grasa: 16 },
-    alergenos: [],
+    alergenos: ['huevo'],
   },
   {
     id: 'patates_fregides',
@@ -86,7 +87,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/entrantes/fingers-pollastre.jpg',
     calorias: 340,
     macros: { proteina: 24, carbos: 28, grasa: 14 },
-    alergenos: ['gluten'],
+    alergenos: ['gluten', 'huevo'],
   },
   {
     id: 'nachos_raco',
@@ -97,7 +98,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/entrantes/nachos-raco.jpg',
     calorias: 680,
     macros: { proteina: 22, carbos: 58, grasa: 38 },
-    alergenos: ['gluten', 'lacteos', 'huevo'],
+    alergenos: ['gluten', 'huevo', 'lacteos', 'sesamo', 'altramuces'],
   },
   {
     id: 'torreznos',
@@ -117,7 +118,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/entrantes/sevillanas.jpg',
     calorias: 380,
     macros: { proteina: 16, carbos: 32, grasa: 20 },
-    alergenos: ['gluten', 'huevo'],
+    alergenos: ['gluten', 'moluscos'],
   },
   {
     id: 'puntillitas',
@@ -127,7 +128,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/entrantes/puntillitas.jpg',
     calorias: 360,
     macros: { proteina: 18, carbos: 30, grasa: 18 },
-    alergenos: ['gluten', 'huevo'],
+    alergenos: ['gluten', 'moluscos'],
   },
   {
     id: 'calamars_andalusa',
@@ -137,7 +138,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/entrantes/calamars-andalusa.jpg',
     calorias: 380,
     macros: { proteina: 20, carbos: 32, grasa: 18 },
-    alergenos: ['gluten', 'huevo'],
+    alergenos: ['gluten', 'moluscos'],
   },
   {
     id: 'pebrots_padro',
@@ -187,7 +188,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/entrantes/pa-tomaquet.jpg',
     calorias: 200,
     macros: { proteina: 6, carbos: 32, grasa: 6 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
 
   // ── AMANIDES / ENSALADAS ─────────────────────────────────────────────────
@@ -211,7 +212,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/ensalades/amanida-burrata.jpg',
     calorias: 380,
     macros: { proteina: 14, carbos: 12, grasa: 30 },
-    alergenos: ['lacteos', 'frutos_secos'],
+    alergenos: ['lacteos', 'frutos_casca'],
   },
   {
     id: 'amanida_ventresca',
@@ -233,11 +234,10 @@ export const carta: MenuItem[] = [
     imagen: '/menu/ensalades/amanida-cabra.jpg',
     calorias: 340,
     macros: { proteina: 12, carbos: 20, grasa: 24 },
-    alergenos: ['lacteos', 'frutos_secos', 'sulfitos'],
+    alergenos: ['lacteos', 'frutos_casca'],
   },
 
   // ── OUS DEL RACÓ / HUEVOS DEL RACÓ ──────────────────────────────────────
-  // Base: patates fregides i ous ferrats / patatas fritas y huevos fritos
   {
     id: 'ous_pernil',
     nombre: 'Amb Pernil ibèric / Con Jamón Ibérico',
@@ -266,11 +266,10 @@ export const carta: MenuItem[] = [
     imagen: '/menu/ous/ous-girella.jpg',
     calorias: 660,
     macros: { proteina: 34, carbos: 50, grasa: 36 },
-    alergenos: ['huevo', 'gluten'],
+    alergenos: ['huevo'],
   },
 
-  // ── ENTREPANS I TORRADES / BOCADILLOS Y TOSTADAS ─────────────────────────
-  // Entrepans Freds / Bocadillos Fríos (1/2)
+  // ── ENTREPANS FREDS / BOCADILLOS FRÍOS ───────────────────────────────────
   {
     id: 'boc_pernil',
     nombre: 'Pernil Ibèric / Jamón Ibérico',
@@ -280,7 +279,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans.jpg',
     calorias: 380,
     macros: { proteina: 22, carbos: 42, grasa: 14 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'boc_formatge',
@@ -291,7 +290,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans.jpg',
     calorias: 400,
     macros: { proteina: 16, carbos: 42, grasa: 20 },
-    alergenos: ['gluten', 'lacteos'],
+    alergenos: ['lacteos'],
   },
   {
     id: 'boc_secallona',
@@ -302,7 +301,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans.jpg',
     calorias: 340,
     macros: { proteina: 16, carbos: 40, grasa: 14 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'boc_tonyina',
@@ -313,7 +312,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans.jpg',
     calorias: 340,
     macros: { proteina: 20, carbos: 42, grasa: 10 },
-    alergenos: ['gluten', 'pescado'],
+    alergenos: ['pescado'],
   },
   {
     id: 'boc_vegetal_tonyina',
@@ -339,7 +338,8 @@ export const carta: MenuItem[] = [
     macros: { proteina: 24, carbos: 44, grasa: 14 },
     alergenos: ['gluten', 'huevo'],
   },
-  // Entrepans Calents / Bocadillos Calientes
+
+  // ── ENTREPANS CALENTS / BOCADILLOS CALIENTES ─────────────────────────────
   {
     id: 'boc_truita',
     nombre: 'Truita Francesa / Tortilla Francesa',
@@ -349,7 +349,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans-calents.jpg',
     calorias: 380,
     macros: { proteina: 18, carbos: 42, grasa: 16 },
-    alergenos: ['gluten', 'huevo'],
+    alergenos: ['huevo'],
   },
   {
     id: 'boc_llom',
@@ -360,7 +360,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans-calents.jpg',
     calorias: 380,
     macros: { proteina: 22, carbos: 42, grasa: 14 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'boc_baco',
@@ -371,7 +371,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans-calents.jpg',
     calorias: 420,
     macros: { proteina: 20, carbos: 42, grasa: 20 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'boc_llonganissa',
@@ -382,7 +382,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans-calents.jpg',
     calorias: 440,
     macros: { proteina: 22, carbos: 42, grasa: 22 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'frankfurt_raco',
@@ -394,7 +394,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/frankfurt-raco.jpg',
     calorias: 520,
     macros: { proteina: 18, carbos: 46, grasa: 28 },
-    alergenos: ['gluten', 'lacteos', 'huevo', 'mostaza'],
+    alergenos: ['gluten', 'lacteos', 'huevo', 'mostaza', 'sesamo'],
   },
   {
     id: 'frankfurt_classic',
@@ -405,7 +405,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans-calents.jpg',
     calorias: 380,
     macros: { proteina: 14, carbos: 44, grasa: 16 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'bikini',
@@ -416,9 +416,10 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/entrepans-calents.jpg',
     calorias: 320,
     macros: { proteina: 12, carbos: 36, grasa: 14 },
-    alergenos: ['gluten', 'lacteos'],
+    alergenos: ['lacteos'],
   },
-  // Torrades / Tostadas
+
+  // ── TORRADES / TOSTADAS ───────────────────────────────────────────────────
   {
     id: 'tostada_pernil',
     nombre: 'Pernil Ibèric / Jamón Ibérico',
@@ -428,7 +429,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/torrades.jpg',
     calorias: 340,
     macros: { proteina: 22, carbos: 32, grasa: 14 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'tostada_formatge',
@@ -439,7 +440,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/torrades.jpg',
     calorias: 340,
     macros: { proteina: 16, carbos: 32, grasa: 18 },
-    alergenos: ['gluten', 'lacteos'],
+    alergenos: ['lacteos'],
   },
   {
     id: 'tostada_escalivada',
@@ -450,7 +451,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/torrades.jpg',
     calorias: 280,
     macros: { proteina: 12, carbos: 26, grasa: 14 },
-    alergenos: ['gluten', 'pescado'],
+    alergenos: ['pescado'],
   },
   {
     id: 'tostada_tonyina',
@@ -461,7 +462,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/torrades.jpg',
     calorias: 300,
     macros: { proteina: 18, carbos: 28, grasa: 12 },
-    alergenos: ['gluten', 'pescado'],
+    alergenos: ['pescado'],
   },
   {
     id: 'tostada_salmo',
@@ -473,7 +474,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/tostada-salmo.jpg',
     calorias: 380,
     macros: { proteina: 20, carbos: 28, grasa: 20 },
-    alergenos: ['gluten', 'lacteos', 'pescado', 'mostaza'],
+    alergenos: ['pescado', 'lacteos', 'huevo'],
   },
   {
     id: 'tostada_llom_formatge',
@@ -484,7 +485,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/torrades.jpg',
     calorias: 360,
     macros: { proteina: 20, carbos: 30, grasa: 18 },
-    alergenos: ['gluten', 'lacteos'],
+    alergenos: ['lacteos'],
   },
   {
     id: 'tostada_sobrassada',
@@ -495,9 +496,10 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/torrades.jpg',
     calorias: 380,
     macros: { proteina: 14, carbos: 30, grasa: 24 },
-    alergenos: ['gluten', 'lacteos'],
+    alergenos: ['lacteos'],
   },
-  // Hamburgueses / Hamburguesas
+
+  // ── HAMBURGUESES / HAMBURGUESAS ───────────────────────────────────────────
   {
     id: 'hamburguesa_classica',
     nombre: 'Hamburguesa Clàssica / Hamburguesa Clásica',
@@ -508,7 +510,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/hamburguesa-classica.jpg',
     calorias: 680,
     macros: { proteina: 34, carbos: 52, grasa: 36 },
-    alergenos: ['gluten', 'lacteos', 'huevo'],
+    alergenos: ['lacteos', 'huevo'],
   },
   {
     id: 'hamburguesa_raco',
@@ -520,7 +522,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/especiales/hamburguesa-raco.jpg',
     calorias: 780,
     macros: { proteina: 38, carbos: 54, grasa: 42 },
-    alergenos: ['gluten', 'lacteos', 'huevo'],
+    alergenos: ['lacteos', 'huevo'],
   },
 
   // ── LA NOSTRA BRASA / NUESTRA BRASA ─────────────────────────────────────
@@ -552,7 +554,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/platos/llonganissa.jpg',
     calorias: 420,
     macros: { proteina: 24, carbos: 2, grasa: 36 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'secret',
@@ -572,7 +574,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/platos/girella.jpg',
     calorias: 360,
     macros: { proteina: 22, carbos: 12, grasa: 24 },
-    alergenos: ['gluten'],
+    alergenos: [],
   },
   {
     id: 'xai',
@@ -695,7 +697,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/postres/crep-nutella.jpg',
     calorias: 360,
     macros: { proteina: 6, carbos: 52, grasa: 16 },
-    alergenos: ['gluten', 'lacteos', 'huevo', 'frutos_secos'],
+    alergenos: ['gluten', 'lacteos', 'huevo'],
   },
   {
     id: 'terrina_gelats',
@@ -705,11 +707,10 @@ export const carta: MenuItem[] = [
     imagen: '/menu/postres/terrina-gelats.jpg',
     calorias: 320,
     macros: { proteina: 6, carbos: 38, grasa: 16 },
-    alergenos: ['lacteos', 'huevo', 'frutos_secos'],
+    alergenos: ['lacteos', 'frutos_casca', 'moluscos'],
   },
 
   // ── BEGUDES SENSE ALCOHOL / BEBIDAS SIN ALCOHOL ───────────────────────────
-  // Refrescos
   {
     id: 'aigua_33',
     nombre: 'Aigua 33ml / Agua 33ml',
@@ -820,7 +821,6 @@ export const carta: MenuItem[] = [
     macros: { proteina: 0, carbos: 14, grasa: 0 },
     alergenos: ['sulfitos'],
   },
-  // Cerveses 0,0%
   {
     id: 'cervesa_00',
     nombre: 'Cervesa 0,0% / Cerveza 0,0%',
@@ -854,7 +854,6 @@ export const carta: MenuItem[] = [
     macros: { proteina: 1, carbos: 19, grasa: 0 },
     alergenos: ['gluten'],
   },
-  // Cafès
   {
     id: 'cafe',
     nombre: 'Cafè / Café',
@@ -956,7 +955,6 @@ export const carta: MenuItem[] = [
   },
 
   // ── BEGUDES AMB ALCOHOL / BEBIDAS CON ALCOHOL ─────────────────────────────
-  // Cerveses
   {
     id: 'estrella_damm',
     nombre: 'Estrella Damm (Canya/Copa/Gerra)',
@@ -1045,7 +1043,6 @@ export const carta: MenuItem[] = [
     macros: { proteina: 1, carbos: 12, grasa: 0 },
     alergenos: [],
   },
-  // Vins Blancs
   {
     id: 'bardos_verdejo',
     nombre: 'Bardos Verdejo Rueda',
@@ -1081,7 +1078,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'agaliu_copa',
-    nombre: 'Agaliú L\'Olivera (copa)',
+    nombre: "Agaliú L'Olivera (copa)",
     precio: 2.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_blancos',
@@ -1090,7 +1087,6 @@ export const carta: MenuItem[] = [
     macros: { proteina: 0, carbos: 3, grasa: 0 },
     alergenos: ['sulfitos'],
   },
-  // Vins Negres
   {
     id: 'ro7',
     nombre: 'RO7 Pobla de Segur',
@@ -1135,7 +1131,6 @@ export const carta: MenuItem[] = [
     macros: { proteina: 0, carbos: 4, grasa: 0 },
     alergenos: ['sulfitos'],
   },
-  // Combinats
   {
     id: 'ron_santa_teresa',
     nombre: 'Ron Santa Teresa',
@@ -1290,7 +1285,6 @@ export const carta: MenuItem[] = [
     macros: { proteina: 0, carbos: 0, grasa: 0 },
     alergenos: [],
   },
-  // Copes
   {
     id: 'jb_copa',
     nombre: 'JB (copa)',
@@ -1366,7 +1360,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/bebidas/licor.jpg',
     calorias: 90,
     macros: { proteina: 0, carbos: 12, grasa: 0 },
-    alergenos: [],
+    alergenos: ['sulfitos'],
   },
   {
     id: 'orujo_herbes',

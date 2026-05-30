@@ -31,13 +31,14 @@ const ALLERGEN_INFO: Record<Allergen, { emoji: string; label: string }> = {
   huevo:        { emoji: '🥚', label: 'Ous'           },
   pescado:      { emoji: '🐟', label: 'Peix'          },
   crustaceos:   { emoji: '🦐', label: 'Crustacis'     },
-  frutos_secos: { emoji: '🥜', label: 'F. Closca'     },
+  frutos_casca: { emoji: '🥜', label: 'F. Closca'     },
   apio:         { emoji: '🌿', label: 'Api'           },
   mostaza:      { emoji: '🟡', label: 'Mostassa'      },
   sesamo:       { emoji: '🫘', label: 'Sèsam'         },
   soja:         { emoji: '🫱', label: 'Soia'          },
   sulfitos:     { emoji: '🍾', label: 'Sulfits'       },
   moluscos:     { emoji: '🦑', label: "Mol·luscos"    },
+  altramuces:   { emoji: '🌱', label: 'Tramussos'     },
 }
 
 // Full EU 14 allergen legend (hardcoded for completeness)
