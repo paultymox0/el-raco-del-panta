@@ -39,6 +39,7 @@ const ALLERGEN_INFO: Record<Allergen, { emoji: string; label: string }> = {
   sulfitos:     { emoji: '🍾', label: 'Sulfits'       },
   moluscos:     { emoji: '🦑', label: "Mol·luscos"    },
   altramuces:   { emoji: '🌱', label: 'Tramussos'     },
+  cacahuetes:   { emoji: '🥜', label: 'Cacauets'      },
 }
 
 // Full EU 14 allergen legend (hardcoded for completeness)

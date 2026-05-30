@@ -12,6 +12,7 @@ export type Allergen =
   | 'sulfitos'
   | 'moluscos'
   | 'altramuces'
+  | 'cacahuetes'
 
 export type MenuItem = {
   id: string
@@ -707,7 +708,7 @@ export const carta: MenuItem[] = [
     imagen: '/menu/postres/terrina-gelats.jpg',
     calorias: 320,
     macros: { proteina: 6, carbos: 38, grasa: 16 },
-    alergenos: ['lacteos', 'frutos_casca', 'moluscos'],
+    alergenos: ['lacteos', 'frutos_casca', 'cacahuetes'],
   },
 
   // ── BEGUDES SENSE ALCOHOL / BEBIDAS SIN ALCOHOL ───────────────────────────
