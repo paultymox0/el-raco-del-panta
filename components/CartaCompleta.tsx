@@ -144,7 +144,7 @@ function FlipCard({
   onAdd: (item: MenuItem) => void
   lang: Lang
 }) {
-  const desc = item.descripcio?.[lang]
+  const desc = item[lang].descripcio
   const tapLines = t('card_tap', lang).split('\n')
 
   const handleAdd = (e: React.MouseEvent) => {
@@ -163,18 +163,18 @@ function FlipCard({
         {/* ── FRONT ─────────────────────────────────────────────── */}
         <div className="card-face absolute inset-0 rounded-2xl overflow-hidden bg-parchment shadow-md border border-wood/20 flex flex-col">
           <div className="flex-shrink-0 overflow-hidden h-[58%]">
-            <LocalImage src={item.imagen} alt={item.nombre} className="w-full h-full object-cover" icon="🍽️" />
+            <LocalImage src={item.imatge} alt={item[lang].nom} className="w-full h-full object-cover" icon="🍽️" />
           </div>
           <div className="flex flex-col justify-between flex-1 p-4">
             <h3 className="font-heading font-bold text-brown text-sm leading-snug line-clamp-2">
-              {item.nombre}
+              {item[lang].nom}
             </h3>
             <div className="flex items-end justify-between gap-2 mt-2">
               <span className="text-[10px] text-brown/40 italic leading-tight">
                 {tapLines[0]}<br />{tapLines[1]}
               </span>
               <span className="font-heading font-bold text-green-dark text-base whitespace-nowrap">
-                {item.precio.toFixed(2).replace('.', ',')}€
+                {item.preu.toFixed(2).replace('.', ',')}€
               </span>
             </div>
           </div>
@@ -188,7 +188,7 @@ function FlipCard({
           {/* Header row */}
           <div className="flex justify-between items-start gap-2 mb-2">
             <h3 className="font-heading font-bold text-cream text-sm leading-snug flex-1 line-clamp-2">
-              {item.nombre}
+              {item[lang].nom}
             </h3>
             <button
               onClick={onClose}
@@ -201,7 +201,7 @@ function FlipCard({
 
           {/* Price */}
           <p className="font-heading font-bold text-cream/80 text-sm mb-2">
-            {item.precio.toFixed(2).replace('.', ',')}€
+            {item.preu.toFixed(2).replace('.', ',')}€
           </p>
 
           {/* Description */}
@@ -274,11 +274,11 @@ function FoodGrid({
   )
 }
 
-function DrinkRow({ item }: { item: MenuItem }) {
+function DrinkRow({ item, lang }: { item: MenuItem; lang: Lang }) {
   return (
     <div className="flex items-center justify-between py-2.5 border-b border-wood/15 last:border-0">
       <div className="flex-1 min-w-0 pr-3">
-        <span className="font-body text-sm text-brown leading-snug">{item.nombre}</span>
+        <span className="font-body text-sm text-brown leading-snug">{item[lang].nom}</span>
         {item.alergenos.length > 0 && (
           <span className="text-[10px] text-brown/35 block mt-0.5">
             {item.alergenos.map(a => ALLERGEN_INFO[a].emoji).join(' ')}
@@ -286,7 +286,7 @@ function DrinkRow({ item }: { item: MenuItem }) {
         )}
       </div>
       <span className="font-heading font-bold text-green-dark text-sm whitespace-nowrap flex-shrink-0">
-        {item.precio.toFixed(2).replace('.', ',')}€
+        {item.preu.toFixed(2).replace('.', ',')}€
       </span>
     </div>
   )
@@ -297,7 +297,7 @@ function DrinkSubsection({ subcat, items, lang }: { subcat: string; items: MenuI
   return (
     <div className="mb-6">
       <SubHead title={getSubcatLabel(subcat, lang)} />
-      {items.map((item) => <DrinkRow key={item.id} item={item} />)}
+      {items.map((item) => <DrinkRow key={item.id} item={item} lang={lang} />)}
     </div>
   )
 }
@@ -315,7 +315,7 @@ function OrderTray({
   onRemove: (id: string) => void
   onClear: () => void
 }) {
-  const total = order.reduce((s, o) => s + o.item.precio * o.qty, 0)
+  const total = order.reduce((s, o) => s + o.item.preu * o.qty, 0)
 
   // Group by category
   const cats = Array.from(new Set(order.map(o => o.item.categoria)))
@@ -374,9 +374,9 @@ function OrderTray({
                 {catItems.map(({ item, qty }) => (
                   <div key={item.id} className="flex items-center gap-3 py-2 border-b border-wood/10 last:border-0">
                     <div className="flex-1 min-w-0">
-                      <p className="font-body text-sm text-brown leading-snug line-clamp-1">{item.nombre}</p>
+                      <p className="font-body text-sm text-brown leading-snug line-clamp-1">{item[lang].nom}</p>
                       <p className="font-heading font-bold text-green-dark text-xs mt-0.5">
-                        {(item.precio * qty).toFixed(2).replace('.', ',')}€
+                        {item.preu.toFixed(2).replace('.', ',')}€ × {qty} = {(item.preu * qty).toFixed(2).replace('.', ',')}€
                       </p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
