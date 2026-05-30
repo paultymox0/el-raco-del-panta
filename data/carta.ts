@@ -14,10 +14,12 @@ export type Allergen =
   | 'altramuces'
   | 'cacahuetes'
 
+export type Descripcio = { ca: string; es: string; en: string }
+
 export type MenuItem = {
   id: string
   nombre: string
-  descripcion?: string
+  descripcio?: Descripcio
   precio: number
   categoria: 'entrantes' | 'ensalades' | 'ous' | 'especiales' | 'platos' | 'postres' | 'bebidas_soda' | 'bebidas_alcohol'
   subcategoria?: string
@@ -33,6 +35,11 @@ export const carta: MenuItem[] = [
   {
     id: 'braves',
     nombre: 'Braves / Bravas',
+    descripcio: {
+      ca: 'Patates fregides amb salsa brava casolana i alioli de la casa',
+      es: 'Patatas fritas con salsa brava casera y alioli de la casa',
+      en: 'Fried potatoes with homemade brava sauce and house aioli',
+    },
     precio: 5.90,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/braves.jpg',
@@ -43,6 +50,11 @@ export const carta: MenuItem[] = [
   {
     id: 'patates_fregides',
     nombre: 'Patates fregides / Patatas fritas',
+    descripcio: {
+      ca: 'Patates fregides crispetes, servides amb alioli casolà',
+      es: 'Patatas fritas crujientes, servidas con alioli casero',
+      en: 'Crispy fries, served with homemade aioli',
+    },
     precio: 4.90,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/patates-fregides.jpg',
@@ -53,6 +65,11 @@ export const carta: MenuItem[] = [
   {
     id: 'croquetes_pollastre',
     nombre: 'Croquetes de Pollastre (6u) / Croquetas de Pollo',
+    descripcio: {
+      ca: 'Croquetes casolanes de pollastre rostit amb beixamel cremosa',
+      es: 'Croquetas caseras de pollo asado con bechamel cremosa',
+      en: 'Homemade roast chicken croquettes with creamy béchamel',
+    },
     precio: 8.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/croquetes-pollastre.jpg',
@@ -63,6 +80,11 @@ export const carta: MenuItem[] = [
   {
     id: 'croquetes_pernil',
     nombre: 'Croquetes de Pernil (6u) / Croquetas de Jamón',
+    descripcio: {
+      ca: 'Croquetes casolanes de pernil ibèric amb beixamel suau',
+      es: 'Croquetas caseras de jamón ibérico con bechamel suave',
+      en: 'Homemade Iberian ham croquettes with smooth béchamel',
+    },
     precio: 8.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/croquetes-pernil.jpg',
@@ -73,6 +95,11 @@ export const carta: MenuItem[] = [
   {
     id: 'croquetes_pop',
     nombre: 'Croquetes de Pop (6u) / Croquetas de Pulpo',
+    descripcio: {
+      ca: 'Croquetes casolanes de pop gallec amb alioli de llimona',
+      es: 'Croquetas caseras de pulpo gallego con alioli de limón',
+      en: 'Homemade Galician octopus croquettes with lemon aioli',
+    },
     precio: 8.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/croquetes-pop.jpg',
@@ -83,6 +110,11 @@ export const carta: MenuItem[] = [
   {
     id: 'fingers_pollastre',
     nombre: 'Fingers de Pollastre / Fingers de Pollo',
+    descripcio: {
+      ca: 'Filets de pollastre arrebossats, cruixents per fora i tendres per dins',
+      es: 'Filetes de pollo empanados, crujientes por fuera y tiernos por dentro',
+      en: 'Breaded chicken strips, crispy outside and tender inside',
+    },
     precio: 8.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/fingers-pollastre.jpg',
@@ -93,7 +125,11 @@ export const carta: MenuItem[] = [
   {
     id: 'nachos_raco',
     nombre: 'Nachos El Racó',
-    descripcion: 'Cheddar, frijoles, pico de gallo, guacamole, jalapeños, butifarra i salsa agra / salsa agria',
+    descripcio: {
+      ca: 'Cheddar, frijoles, pico de gallo, guacamole, jalapeños, butifarra i salsa agra',
+      es: 'Cheddar, frijoles, pico de gallo, guacamole, jalapeños, butifarra y salsa agria',
+      en: 'Cheddar, beans, pico de gallo, guacamole, jalapeños, butifarra sausage and sour cream',
+    },
     precio: 16.90,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/nachos-raco.jpg',
@@ -104,6 +140,11 @@ export const carta: MenuItem[] = [
   {
     id: 'torreznos',
     nombre: 'Torreznos de Soria',
+    descripcio: {
+      ca: 'Torreznos de Soria cruixents, elaborats artesanalment al moment',
+      es: 'Torreznos de Soria crujientes, elaborados artesanalmente al momento',
+      en: 'Crispy Soria-style pork rinds, freshly and artisanally prepared',
+    },
     precio: 6.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/torreznos.jpg',
@@ -114,6 +155,11 @@ export const carta: MenuItem[] = [
   {
     id: 'sevillanas',
     nombre: 'Sevillanas',
+    descripcio: {
+      ca: 'Anelles de calamar a la romana, daurades i cruixents, amb llimona fresca',
+      es: 'Anillos de calamar a la romana, dorados y crujientes, con limón fresco',
+      en: 'Golden crispy battered squid rings, with fresh lemon',
+    },
     precio: 8.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/sevillanas.jpg',
@@ -124,6 +170,11 @@ export const carta: MenuItem[] = [
   {
     id: 'puntillitas',
     nombre: 'Puntillitas',
+    descripcio: {
+      ca: 'Puntillitas fregides, fines i saboroses, amb llimona i alioli casolà',
+      es: 'Puntillitas fritas, finas y sabrosas, con limón y alioli casero',
+      en: 'Fried baby squid, light and flavourful, with lemon and homemade aioli',
+    },
     precio: 8.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/puntillitas.jpg',
@@ -134,6 +185,11 @@ export const carta: MenuItem[] = [
   {
     id: 'calamars_andalusa',
     nombre: 'Calamars a l\'Andalusa / Calamares a la Andaluza',
+    descripcio: {
+      ca: 'Calamars en anelles, rebossats a l\'andalusa, daurats al moment',
+      es: 'Calamares en anillos, rebozados a la andaluza, dorados al momento',
+      en: 'Calamari rings lightly battered Andalusian-style, freshly fried',
+    },
     precio: 8.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/calamars-andalusa.jpg',
@@ -144,6 +200,11 @@ export const carta: MenuItem[] = [
   {
     id: 'pebrots_padro',
     nombre: 'Pebrots de Padró / Pimientos de Padrón',
+    descripcio: {
+      ca: 'Pebrots de Padró saltejats a la planxa, amb flor de sal',
+      es: 'Pimientos de Padrón salteados a la plancha, con flor de sal',
+      en: 'Padron peppers sautéed on the griddle, with fleur de sel',
+    },
     precio: 7.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/pebrots-padro.jpg',
@@ -154,6 +215,11 @@ export const carta: MenuItem[] = [
   {
     id: 'flors_carxofes',
     nombre: 'Flors de carxofes amb pernil i parmesà / Flores de alcachofas con jamón y parmesano',
+    descripcio: {
+      ca: 'Carxofes fregides obertes en flor, amb pernil ibèric i parmesà cruixent',
+      es: 'Alcachofas fritas abiertas en flor, con jamón ibérico y parmesano crujiente',
+      en: 'Deep-fried artichoke flowers, with Iberian ham and crispy parmesan',
+    },
     precio: 12.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/flors-carxofes.jpg',
@@ -164,6 +230,11 @@ export const carta: MenuItem[] = [
   {
     id: 'pernil_iberic',
     nombre: 'Pernil Ibèric / Jamón Ibérico',
+    descripcio: {
+      ca: 'Llesca de pernil ibèric de bellota, servit amb pa amb tomàquet',
+      es: 'Loncha de jamón ibérico de bellota, servida con pan con tomate',
+      en: 'Acorn-fed Iberian ham, served with tomato bread',
+    },
     precio: 12.00,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/pernil-iberic.jpg',
@@ -174,6 +245,11 @@ export const carta: MenuItem[] = [
   {
     id: 'assortit_formatges',
     nombre: 'Assortit de formatges del Pallars / Surtido de quesos del Pallars',
+    descripcio: {
+      ca: 'Selecció de formatges artesans del Pallars, amb mel i nous',
+      es: 'Selección de quesos artesanos del Pallars, con miel y nueces',
+      en: 'Selection of artisan cheeses from El Pallars, with honey and walnuts',
+    },
     precio: 14.50,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/assortit-formatges.jpg',
@@ -184,6 +260,11 @@ export const carta: MenuItem[] = [
   {
     id: 'pa_tomaquet',
     nombre: 'Pa amb tomàquet / Pan con tomate',
+    descripcio: {
+      ca: 'Pa rústic fregat amb tomàquet madur i oli d\'oliva verge extra',
+      es: 'Pan rústico frotado con tomate maduro y aceite de oliva virgen extra',
+      en: 'Rustic bread rubbed with ripe tomato and extra virgin olive oil',
+    },
     precio: 3.00,
     categoria: 'entrantes',
     imagen: '/menu/entrantes/pa-tomaquet.jpg',
@@ -196,7 +277,11 @@ export const carta: MenuItem[] = [
   {
     id: 'amanida_cesar',
     nombre: 'Amanida César / Ensalada César',
-    descripcion: 'Enciam, pollastre, croutons i parmesà / Lechuga, pollo, crutones y parmesano',
+    descripcio: {
+      ca: 'Enciam romà, pollastre a la planxa, croutons i parmesà, amb salsa César casolana',
+      es: 'Lechuga romana, pollo a la plancha, croutones y parmesano, con salsa César casera',
+      en: 'Romaine lettuce, grilled chicken, croutons and parmesan, with homemade Caesar dressing',
+    },
     precio: 9.50,
     categoria: 'ensalades',
     imagen: '/menu/ensalades/amanida-cesar.jpg',
@@ -207,7 +292,11 @@ export const carta: MenuItem[] = [
   {
     id: 'amanida_burrata',
     nombre: 'Amanida de Burrata / Ensalada de Burrata',
-    descripcion: 'Tomàquet, rúcula i pesto / Tomate, rúcula y pesto',
+    descripcio: {
+      ca: 'Burrata fresca, tomàquet de temporada, rúcula i pesto genovès',
+      es: 'Burrata fresca, tomate de temporada, rúcula y pesto genovés',
+      en: 'Fresh burrata, seasonal tomato, rocket and Genoese pesto',
+    },
     precio: 10.50,
     categoria: 'ensalades',
     imagen: '/menu/ensalades/amanida-burrata.jpg',
@@ -218,7 +307,11 @@ export const carta: MenuItem[] = [
   {
     id: 'amanida_ventresca',
     nombre: 'Amanida de Ventresca / Ensalada de Ventresca',
-    descripcion: 'Tomàquet, ceba i tàperes / Tomate, cebolla y alcaparras',
+    descripcio: {
+      ca: 'Ventresca de tonyina del Cantàbric, tomàquet, ceba morada i tàperes',
+      es: 'Ventresca de atún del Cantábrico, tomate, cebolla morada y alcaparras',
+      en: 'Cantabrian tuna ventresca, tomato, red onion and capers',
+    },
     precio: 12.50,
     categoria: 'ensalades',
     imagen: '/menu/ensalades/amanida-ventresca.jpg',
@@ -229,7 +322,11 @@ export const carta: MenuItem[] = [
   {
     id: 'amanida_cabra',
     nombre: 'Amanida de Formatge de Cabra / Ensalada de Queso de Cabra',
-    descripcion: 'Enciam, tomàquet cherry, fruits secs i reducció de Pedro Ximénez / Lechuga, tomate cherry, frutos secos y reducción de Pedro Ximénez',
+    descripcio: {
+      ca: 'Enciam, tomàquet cherry, formatge de cabra gratinat, fruits de closca i reducció de Pedro Ximénez',
+      es: 'Lechuga, tomate cherry, queso de cabra gratinado, frutos de cáscara y reducción de Pedro Ximénez',
+      en: "Lettuce, cherry tomato, grilled goat's cheese, tree nuts and Pedro Ximénez reduction",
+    },
     precio: 10.50,
     categoria: 'ensalades',
     imagen: '/menu/ensalades/amanida-cabra.jpg',
@@ -242,6 +339,11 @@ export const carta: MenuItem[] = [
   {
     id: 'ous_pernil',
     nombre: 'Amb Pernil ibèric / Con Jamón Ibérico',
+    descripcio: {
+      ca: 'Ous ferrats sobre patates casolanes, coronats amb pernil ibèric de bellota',
+      es: 'Huevos fritos sobre patatas caseras, coronados con jamón ibérico de bellota',
+      en: 'Fried eggs over homemade fries, topped with acorn-fed Iberian ham',
+    },
     precio: 14.50,
     categoria: 'ous',
     imagen: '/menu/ous/ous-pernil.jpg',
@@ -252,6 +354,11 @@ export const carta: MenuItem[] = [
   {
     id: 'ous_foie',
     nombre: 'Amb Foie / Con Foie',
+    descripcio: {
+      ca: 'Ous ferrats sobre patates casolanes, amb foie mi-cuit i reducció de Moscatell',
+      es: 'Huevos fritos sobre patatas caseras, con foie mi-cuit y reducción de Moscatel',
+      en: 'Fried eggs over homemade fries, with mi-cuit foie and Muscat reduction',
+    },
     precio: 14.50,
     categoria: 'ous',
     imagen: '/menu/ous/ous-foie.jpg',
@@ -262,6 +369,11 @@ export const carta: MenuItem[] = [
   {
     id: 'ous_girella',
     nombre: 'Amb Girella del Pallars / Con Girella del Pallars',
+    descripcio: {
+      ca: 'Ous ferrats sobre patates casolanes, amb girella del Pallars feta a la planxa',
+      es: 'Huevos fritos sobre patatas caseras, con girella del Pallars hecha a la plancha',
+      en: 'Fried eggs over homemade fries, with griddled Pallars girella sausage',
+    },
     precio: 14.90,
     categoria: 'ous',
     imagen: '/menu/ous/ous-girella.jpg',
@@ -274,6 +386,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_pernil',
     nombre: 'Pernil Ibèric / Jamón Ibérico',
+    descripcio: {
+      ca: 'Pa rústic de ½ barra, amb pernil ibèric de bellota tallat al moment',
+      es: 'Pan rústico de ½ barra, con jamón ibérico de bellota cortado al momento',
+      en: '½ rustic baguette with freshly cut acorn-fed Iberian ham',
+    },
     precio: 6.50,
     categoria: 'especiales',
     subcategoria: 'freds',
@@ -285,6 +402,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_formatge',
     nombre: 'Formatge Manxec / Queso Manchego',
+    descripcio: {
+      ca: 'Pa rústic de ½ barra amb formatge manxec artesà',
+      es: 'Pan rústico de ½ barra con queso manchego artesano',
+      en: '½ rustic baguette with artisan Manchego cheese',
+    },
     precio: 6.25,
     categoria: 'especiales',
     subcategoria: 'freds',
@@ -296,6 +418,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_secallona',
     nombre: 'Secallona / Fuet',
+    descripcio: {
+      ca: 'Pa rústic de ½ barra amb secallona de pagès feta a la comarca',
+      es: 'Pan rústico de ½ barra con fuet de payés de la comarca',
+      en: '½ rustic baguette with traditional local cured pork sausage',
+    },
     precio: 4.60,
     categoria: 'especiales',
     subcategoria: 'freds',
@@ -307,6 +434,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_tonyina',
     nombre: 'Tonyina / Atún',
+    descripcio: {
+      ca: 'Pa rústic de ½ barra amb tonyina del Cantàbric i tomàquet de temporada',
+      es: 'Pan rústico de ½ barra con atún del Cantábrico y tomate de temporada',
+      en: '½ rustic baguette with Cantabrian tuna and seasonal tomato',
+    },
     precio: 4.65,
     categoria: 'especiales',
     subcategoria: 'freds',
@@ -318,7 +450,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_vegetal_tonyina',
     nombre: 'Vegetal de Tonyina / Vegetal de Atún',
-    descripcion: 'Enciam, tomàquet, ou dur i maionesa / Lechuga, tomate, huevo duro y mayonesa',
+    descripcio: {
+      ca: 'Pa rústic amb enciam, tomàquet, ou dur, tonyina i maionesa casolana',
+      es: 'Pan rústico con lechuga, tomate, huevo duro, atún y mayonesa casera',
+      en: 'Rustic bread with lettuce, tomato, hard-boiled egg, tuna and homemade mayo',
+    },
     precio: 5.50,
     categoria: 'especiales',
     subcategoria: 'freds',
@@ -330,7 +466,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_vegetal_pollastre',
     nombre: 'Vegetal de Pollastre / Vegetal de Pollo',
-    descripcion: 'Enciam, tomàquet i maionesa / Lechuga, tomate y mayonesa',
+    descripcio: {
+      ca: 'Pa rústic amb enciam, tomàquet, pollastre i maionesa casolana',
+      es: 'Pan rústico con lechuga, tomate, pollo y mayonesa casera',
+      en: 'Rustic bread with lettuce, tomato, chicken and homemade mayo',
+    },
     precio: 6.25,
     categoria: 'especiales',
     subcategoria: 'freds',
@@ -344,6 +484,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_truita',
     nombre: 'Truita Francesa / Tortilla Francesa',
+    descripcio: {
+      ca: 'Pa calent amb truita francesa de 2 ous, acabada al moment',
+      es: 'Pan caliente con tortilla francesa de 2 huevos, hecha al momento',
+      en: 'Warm bread with fresh two-egg French omelette',
+    },
     precio: 5.50,
     categoria: 'especiales',
     subcategoria: 'calents',
@@ -355,6 +500,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_llom',
     nombre: 'Llom / Lomo',
+    descripcio: {
+      ca: 'Pa calent amb llom de porc a la planxa, amb tomàquet i oli',
+      es: 'Pan caliente con lomo de cerdo a la plancha, con tomate y aceite',
+      en: 'Warm bread with griddled pork loin, with tomato and olive oil',
+    },
     precio: 5.80,
     categoria: 'especiales',
     subcategoria: 'calents',
@@ -366,6 +516,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_baco',
     nombre: 'Bacó / Bacon',
+    descripcio: {
+      ca: 'Pa calent amb bacó fumat a la planxa, dauret i cruixent',
+      es: 'Pan caliente con bacon ahumado a la plancha, dorado y crujiente',
+      en: 'Warm bread with grilled smoked bacon, golden and crispy',
+    },
     precio: 5.80,
     categoria: 'especiales',
     subcategoria: 'calents',
@@ -377,6 +532,11 @@ export const carta: MenuItem[] = [
   {
     id: 'boc_llonganissa',
     nombre: 'Llonganissa / Butifarra',
+    descripcio: {
+      ca: 'Pa calent amb llonganissa fresca de pagès a la planxa',
+      es: 'Pan caliente con butifarra fresca de payés a la plancha',
+      en: 'Warm bread with griddled fresh pork butifarra sausage',
+    },
     precio: 6.50,
     categoria: 'especiales',
     subcategoria: 'calents',
@@ -388,7 +548,11 @@ export const carta: MenuItem[] = [
   {
     id: 'frankfurt_raco',
     nombre: 'Frankfurt El Racó',
-    descripcion: 'Ceba crispy, cogombret agredolç, mostassa, ketchup i cheddar / Cebolla crispy, pepinillo agridulce, mostaza, ketchup y cheddar',
+    descripcio: {
+      ca: 'Frankfurt amb ceba crispy, cogombret agredolç, mostassa, ketchup i cheddar',
+      es: 'Frankfurt con cebolla crispy, pepinillo agridulce, mostaza, ketchup y cheddar',
+      en: 'Frankfurt sausage with crispy onion, pickles, mustard, ketchup and cheddar',
+    },
     precio: 6.20,
     categoria: 'especiales',
     subcategoria: 'calents',
@@ -400,6 +564,11 @@ export const carta: MenuItem[] = [
   {
     id: 'frankfurt_classic',
     nombre: 'Frankfurt Clàssic / Frankfurt Clásico',
+    descripcio: {
+      ca: 'Pa de frankfurt clàssic amb ketchup i mostassa',
+      es: 'Pan de frankfurt clásico con ketchup y mostaza',
+      en: 'Classic Frankfurt sausage in a bun with ketchup and mustard',
+    },
     precio: 4.60,
     categoria: 'especiales',
     subcategoria: 'calents',
@@ -411,6 +580,11 @@ export const carta: MenuItem[] = [
   {
     id: 'bikini',
     nombre: 'Bikini',
+    descripcio: {
+      ca: 'Pa de motllo torrat amb pernil de cuina i formatge, presat i fos',
+      es: 'Pan de molde tostado con jamón de cocina y queso, prensado y fundido',
+      en: 'Toasted sliced bread with ham and melted cheese, pressed',
+    },
     precio: 3.75,
     categoria: 'especiales',
     subcategoria: 'calents',
@@ -424,6 +598,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tostada_pernil',
     nombre: 'Pernil Ibèric / Jamón Ibérico',
+    descripcio: {
+      ca: 'Llesques de pa artesà torrades amb pernil ibèric de bellota',
+      es: 'Rebanadas de pan artesano tostadas con jamón ibérico de bellota',
+      en: 'Toasted artisan bread slices with acorn-fed Iberian ham',
+    },
     precio: 12.50,
     categoria: 'especiales',
     subcategoria: 'torrades',
@@ -435,6 +614,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tostada_formatge',
     nombre: 'Formatge Manxec / Queso Manchego',
+    descripcio: {
+      ca: 'Llesques de pa artesà torrades amb formatge manxec fos',
+      es: 'Rebanadas de pan artesano tostadas con queso manchego fundido',
+      en: 'Toasted artisan bread slices with melted Manchego cheese',
+    },
     precio: 10.50,
     categoria: 'especiales',
     subcategoria: 'torrades',
@@ -446,6 +630,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tostada_escalivada',
     nombre: 'Escalivada i Anxoves / Escalivada y Anchoas',
+    descripcio: {
+      ca: 'Torrada amb escalivada de temporada i anxoves del Cantàbric',
+      es: 'Tostada con escalivada de temporada y anchoas del Cantábrico',
+      en: 'Toast with seasonal roasted peppers and Cantabrian anchovies',
+    },
     precio: 12.20,
     categoria: 'especiales',
     subcategoria: 'torrades',
@@ -457,6 +646,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tostada_tonyina',
     nombre: 'Tonyina amb Pebrots Escalivats / Atún con Pimientos Escalivados',
+    descripcio: {
+      ca: 'Torrada amb tonyina del Cantàbric i pebrots escalivats de temporada',
+      es: 'Tostada con atún del Cantábrico y pimientos escalivados de temporada',
+      en: 'Toast with Cantabrian tuna and seasonal roasted peppers',
+    },
     precio: 10.50,
     categoria: 'especiales',
     subcategoria: 'torrades',
@@ -468,7 +662,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tostada_salmo',
     nombre: 'Salmó Fumat / Salmón Ahumado',
-    descripcion: 'Formatge cremós, alvocat, rúcula i vinagreta de mel i mostassa / Queso cremoso, aguacate, rúcula y vinagreta de miel y mostaza',
+    descripcio: {
+      ca: 'Torrada amb salmó fumat, formatge cremós, alvocat i rúcula',
+      es: 'Tostada con salmón ahumado, queso cremoso, aguacate y rúcula',
+      en: 'Toast with smoked salmon, cream cheese, avocado and rocket',
+    },
     precio: 13.90,
     categoria: 'especiales',
     subcategoria: 'torrades',
@@ -480,6 +678,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tostada_llom_formatge',
     nombre: 'Llom amb formatge / Lomo con queso',
+    descripcio: {
+      ca: 'Torrada amb llom de porc a la planxa i formatge manxec fos',
+      es: 'Tostada con lomo de cerdo a la plancha y queso manchego fundido',
+      en: 'Toast with griddled pork loin and melted Manchego cheese',
+    },
     precio: 11.50,
     categoria: 'especiales',
     subcategoria: 'torrades',
@@ -491,6 +694,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tostada_sobrassada',
     nombre: 'Sobrassada amb Formatge de Cabra i Mel / Sobrasada con Queso de Cabra y Miel',
+    descripcio: {
+      ca: 'Torrada amb sobrassada mallorquina, formatge de cabra i mel artesana',
+      es: 'Tostada con sobrasada mallorquina, queso de cabra y miel artesana',
+      en: 'Toast with Mallorcan sobrasada, goat\'s cheese and artisan honey',
+    },
     precio: 12.20,
     categoria: 'especiales',
     subcategoria: 'torrades',
@@ -504,7 +712,11 @@ export const carta: MenuItem[] = [
   {
     id: 'hamburguesa_classica',
     nombre: 'Hamburguesa Clàssica / Hamburguesa Clásica',
-    descripcion: 'Enciam, tomàquet i queso cheddar / Lechuga, tomate y queso cheddar',
+    descripcio: {
+      ca: 'Vedella de brasa amb enciam, tomàquet i formatge cheddar',
+      es: 'Ternera a la brasa con lechuga, tomate y queso cheddar',
+      en: 'Grilled beef with lettuce, tomato and cheddar cheese',
+    },
     precio: 10.50,
     categoria: 'especiales',
     subcategoria: 'hamburgueses',
@@ -516,7 +728,11 @@ export const carta: MenuItem[] = [
   {
     id: 'hamburguesa_raco',
     nombre: 'Hamburguesa El Racó',
-    descripcion: 'Ou, bacó, ceba caramel·litzada, enciam, tomàquet, cogombret i queso cheddar / Huevo, bacon, cebolla caramelizada, lechuga, tomate, pepinillo y queso cheddar',
+    descripcio: {
+      ca: 'Vedella de brasa, ou ferrat, bacó, ceba caramel·litzada, enciam, tomàquet, cogombret i cheddar',
+      es: 'Ternera a la brasa, huevo frito, bacon, cebolla caramelizada, lechuga, tomate, pepinillo y cheddar',
+      en: 'Grilled beef, fried egg, bacon, caramelised onion, lettuce, tomato, pickle and cheddar',
+    },
     precio: 12.50,
     categoria: 'especiales',
     subcategoria: 'hamburgueses',
@@ -530,6 +746,11 @@ export const carta: MenuItem[] = [
   {
     id: 'pop_brasa',
     nombre: 'Pop a la brasa amb base de patata / Pulpo a la brasa con base de patata',
+    descripcio: {
+      ca: 'Pop gallec a la brasa, servit sobre base de patata i pimentó de la Vera',
+      es: 'Pulpo gallego a la brasa, servido sobre base de patata y pimentón de la Vera',
+      en: 'Galician octopus on the grill, served on a potato base with smoked paprika',
+    },
     precio: 16.50,
     categoria: 'platos',
     imagen: '/menu/platos/pop-brasa.jpg',
@@ -540,6 +761,11 @@ export const carta: MenuItem[] = [
   {
     id: 'pinxo_pollastre',
     nombre: 'Pinxo de Pollastre / Pincho de Pollo',
+    descripcio: {
+      ca: 'Pinxos de pit de pollastre a la brasa, adobats amb herbes aromàtiques de la zona',
+      es: 'Pinchos de pechuga de pollo a la brasa, adobados con hierbas aromáticas de la zona',
+      en: 'Grilled chicken breast skewers, marinated with local aromatic herbs',
+    },
     precio: 10.50,
     categoria: 'platos',
     imagen: '/menu/platos/pinxo-pollastre.jpg',
@@ -550,6 +776,11 @@ export const carta: MenuItem[] = [
   {
     id: 'llonganissa_brasa',
     nombre: 'Llonganissa / Butifarra',
+    descripcio: {
+      ca: 'Llonganissa de pagès a la brasa, sucosa i aromàtica, de producte local',
+      es: 'Butifarra de payés a la brasa, jugosa y aromática, de producto local',
+      en: 'Grilled traditional pork sausage, juicy and aromatic, local product',
+    },
     precio: 12.50,
     categoria: 'platos',
     imagen: '/menu/platos/llonganissa.jpg',
@@ -560,6 +791,11 @@ export const carta: MenuItem[] = [
   {
     id: 'secret',
     nombre: 'Secret / Secreto',
+    descripcio: {
+      ca: 'Secret ibèric a la brasa, tall tendre i molt saborós, peça exclusiva del porc',
+      es: 'Secreto ibérico a la brasa, corte tierno y muy sabroso, pieza exclusiva del cerdo',
+      en: 'Iberian pork secreto on the grill, a tender and deeply flavourful cut',
+    },
     precio: 11.50,
     categoria: 'platos',
     imagen: '/menu/platos/secret.jpg',
@@ -570,6 +806,11 @@ export const carta: MenuItem[] = [
   {
     id: 'girella_pallars',
     nombre: 'Girella del Pallars',
+    descripcio: {
+      ca: 'Girella del Pallars a la brasa, embotit tradicional de la comarca amb sabor intens',
+      es: 'Girella del Pallars a la brasa, embutido tradicional de la comarca con sabor intenso',
+      en: 'Grilled Pallars girella, a traditional regional sausage with intense flavour',
+    },
     precio: 14.50,
     categoria: 'platos',
     imagen: '/menu/platos/girella.jpg',
@@ -580,6 +821,11 @@ export const carta: MenuItem[] = [
   {
     id: 'xai',
     nombre: 'Xai / Cordero',
+    descripcio: {
+      ca: 'Carré de xai a la brasa, carn delicada i tendra, amb herbes de Provença',
+      es: 'Carré de cordero a la brasa, carne delicada y tierna, con hierbas de Provenza',
+      en: 'Grilled rack of lamb, delicate and tender, with Provençal herbs',
+    },
     precio: 18.50,
     categoria: 'platos',
     imagen: '/menu/platos/xai.jpg',
@@ -590,6 +836,11 @@ export const carta: MenuItem[] = [
   {
     id: 'entrecot',
     nombre: 'Entrecot',
+    descripcio: {
+      ca: 'Entrecot de vedella madurada a la brasa, punt rosada, ple de sabor',
+      es: 'Entrecot de ternera madurada a la brasa, al punto rosado, lleno de sabor',
+      en: 'Aged beef entrecôte on the grill, rosy and full of flavour',
+    },
     precio: 40.00,
     categoria: 'platos',
     imagen: '/menu/platos/entrecot.jpg',
@@ -600,6 +851,11 @@ export const carta: MenuItem[] = [
   {
     id: 'filet',
     nombre: 'Filet / Solomillo',
+    descripcio: {
+      ca: 'Filet de vedella a la brasa, la peça més noble, tendra i suculenta',
+      es: 'Solomillo de ternera a la brasa, la pieza más noble, tierna y suculenta',
+      en: 'Beef sirloin on the grill, the noblest cut, tender and succulent',
+    },
     precio: 40.00,
     categoria: 'platos',
     imagen: '/menu/platos/filet.jpg',
@@ -610,6 +866,11 @@ export const carta: MenuItem[] = [
   {
     id: 'xuleto',
     nombre: 'Xuletó / Chuletón',
+    descripcio: {
+      ca: 'Xuletó de vedella a la brasa, peça gran per compartir, amb patates al caliu',
+      es: 'Chuletón de ternera a la brasa, pieza grande para compartir, con patatas al caliu',
+      en: 'Beef côte de boeuf on the grill, a large piece to share, with ember-roasted potatoes',
+    },
     precio: 50.00,
     categoria: 'platos',
     imagen: '/menu/platos/xuleto.jpg',
@@ -620,7 +881,11 @@ export const carta: MenuItem[] = [
   {
     id: 'graella_verdures',
     nombre: 'Graella de verdures / Parrillada de verduras',
-    descripcion: 'Espàrrecs, xampinyons, carbassó, pebrots de padrón, panotxa de blat de moro i patata al forn / Espárragos, champiñones, calabacín, pimientos de Padrón, mazorca de maíz y patata asada',
+    descripcio: {
+      ca: 'Espàrrecs, xampinyons, carbassó, pebrots de padrón, panotxa de blat de moro i patata al forn',
+      es: 'Espárragos, champiñones, calabacín, pimientos de Padrón, mazorca de maíz y patata asada',
+      en: 'Asparagus, mushrooms, courgette, Padron peppers, sweetcorn and roasted potato',
+    },
     precio: 12.50,
     categoria: 'platos',
     imagen: '/menu/platos/graella-verdures.jpg',
@@ -633,6 +898,11 @@ export const carta: MenuItem[] = [
   {
     id: 'crema_catalana',
     nombre: 'Crema catalana',
+    descripcio: {
+      ca: 'Crema catalana tradicional, amb sucre cremat i canyella',
+      es: 'Crema catalana tradicional, con azúcar quemado y canela',
+      en: 'Traditional Catalan cream with caramelised sugar and cinnamon',
+    },
     precio: 3.50,
     categoria: 'postres',
     imagen: '/menu/postres/crema-catalana.jpg',
@@ -643,6 +913,11 @@ export const carta: MenuItem[] = [
   {
     id: 'tiramisu',
     nombre: 'Tiramisú clàssic / Tiramisú clásico',
+    descripcio: {
+      ca: 'Tiramisú casolà amb mascarpone, cafè i bescuit de savoiardo',
+      es: 'Tiramisú casero con mascarpone, café y bizcocho de soletilla',
+      en: 'Homemade tiramisù with mascarpone, coffee and ladyfinger biscuits',
+    },
     precio: 4.20,
     categoria: 'postres',
     imagen: '/menu/postres/tiramisu.jpg',
@@ -653,6 +928,11 @@ export const carta: MenuItem[] = [
   {
     id: 'coulant',
     nombre: 'Coulant de xocolata amb gelat de vainilla / Coulant de chocolate con helado de vainilla',
+    descripcio: {
+      ca: 'Coulant de xocolata negra, amb cor líquid, servit amb gelat de vainilla artesà',
+      es: 'Coulant de chocolate negro, con corazón líquido, servido con helado de vainilla artesano',
+      en: 'Dark chocolate fondant with liquid centre, served with artisan vanilla ice cream',
+    },
     precio: 4.20,
     categoria: 'postres',
     imagen: '/menu/postres/coulant.jpg',
@@ -663,6 +943,11 @@ export const carta: MenuItem[] = [
   {
     id: 'carpaccio_pinya',
     nombre: 'Carpaccio de pinya amb crema cremada / Carpaccio de piña con crema quemada',
+    descripcio: {
+      ca: 'Làmines de pinya fresca amb crema cremada i menta fresca',
+      es: 'Láminas de piña fresca con crema quemada y menta fresca',
+      en: 'Fresh pineapple carpaccio with crème brûlée cream and fresh mint',
+    },
     precio: 4.20,
     categoria: 'postres',
     imagen: '/menu/postres/carpaccio-pinya.jpg',
@@ -673,6 +958,11 @@ export const carta: MenuItem[] = [
   {
     id: 'torrijas',
     nombre: 'Torrijas',
+    descripcio: {
+      ca: 'Torrijas de pa brioche empapades amb llet i mel, amb gelat de vainilla',
+      es: 'Torrijas de pan brioche empapadas en leche y miel, con helado de vainilla',
+      en: 'Brioche French toast soaked in milk and honey, with vanilla ice cream',
+    },
     precio: 4.80,
     categoria: 'postres',
     imagen: '/menu/postres/torrijas.jpg',
@@ -683,6 +973,11 @@ export const carta: MenuItem[] = [
   {
     id: 'pastis_formatge',
     nombre: 'Pastís de formatge manxec / Tarta de queso manchego',
+    descripcio: {
+      ca: 'Pastís cremós de formatge manxec, cuit al forn, amb melmelada de maduixa',
+      es: 'Tarta cremosa de queso manchego, horneada, con mermelada de fresa',
+      en: 'Creamy baked Manchego cheesecake, with strawberry jam',
+    },
     precio: 4.80,
     categoria: 'postres',
     imagen: '/menu/postres/pastis-formatge.jpg',
@@ -693,6 +988,11 @@ export const carta: MenuItem[] = [
   {
     id: 'crep_nutella',
     nombre: 'Crep de Nutella',
+    descripcio: {
+      ca: 'Crep casolà de Nutella amb fruits de closca i sucre pols',
+      es: 'Crep casero de Nutella con frutos de cáscara y azúcar en polvo',
+      en: 'Homemade Nutella crêpe with chopped nuts and icing sugar',
+    },
     precio: 3.50,
     categoria: 'postres',
     imagen: '/menu/postres/crep-nutella.jpg',
@@ -703,6 +1003,11 @@ export const carta: MenuItem[] = [
   {
     id: 'terrina_gelats',
     nombre: 'Terrina de gelats / Tarrina de helado',
+    descripcio: {
+      ca: 'Terrina de gelats artesans de tres sabors, servida amb galeta i fruits secs',
+      es: 'Tarrina de helados artesanos de tres sabores, servida con galleta y frutos secos',
+      en: 'Artisan ice cream trio, served with biscuit and mixed nuts',
+    },
     precio: 4.30,
     categoria: 'postres',
     imagen: '/menu/postres/terrina-gelats.jpg',

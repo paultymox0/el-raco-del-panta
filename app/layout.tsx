@@ -1,8 +1,12 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { LanguageProvider } from '@/contexts/LanguageContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import WhatsAppButton from '@/components/WhatsAppButton'
+import LanguageSplash from '@/components/LanguageSplash'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
+import MobileReserveButton from '@/components/MobileReserveButton'
 
 export const metadata: Metadata = {
   title: 'El Racó del Pantà – Restaurante',
@@ -15,19 +19,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es">
+    <html lang="ca">
       <body className="min-h-screen bg-parchment text-brown font-body">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
-        {/* Mobile reserve button */}
-        <a
-          href="/reservar"
-          className="fixed bottom-4 left-4 z-40 md:hidden bg-green-dark text-cream px-4 py-3 rounded-full font-semibold shadow-lg flex items-center gap-2 text-sm"
-        >
-          🍽️ Reservar
-        </a>
+        <LanguageProvider>
+          <LanguageSplash />
+          <Navbar />
+          <LanguageSwitcher />
+          <main>{children}</main>
+          <Footer />
+          <WhatsAppButton />
+          <MobileReserveButton />
+        </LanguageProvider>
       </body>
     </html>
   )

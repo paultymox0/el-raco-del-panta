@@ -1,20 +1,21 @@
 {
-  "fecha": "30 de mayo",
-  "precio_menu": "13.50€",
-  "primero": [
-    "Ensalada mixta con vinagreta de miel y mostaza",
-    "Crema de verduras de temporada",
-    "Croquetas caseras de jamón ibérico"
+  "fecha": "30 de maig",
+  "especials": [
+    {
+      "nom": "Croquetes de Pop",
+      "descripcio": "Croquetes casolanes de pop amb alioli de llimona",
+      "preu": "8.50€"
+    },
+    {
+      "nom": "Xuletó de vedella",
+      "descripcio": "Xuletó a la brasa amb patates al caliu",
+      "preu": "50€"
+    },
+    {
+      "nom": "Carpaccio de pinya",
+      "descripcio": "Amb crema cremada i menta fresca",
+      "preu": "4.20€"
+    }
   ],
-  "segundo": [
-    "Chuletón de ternera a la brasa con patatas",
-    "Merluza al horno con salsa verde",
-    "Pollo asado con verduras de temporada"
-  ],
-  "postre": [
-    "Crema catalana",
-    "Tarta de queso artesana",
-    "Fruta de temporada"
-  ],
-  "incluye": "Pan, agua o refresco incluidos"
+  "nota": "Disponibilitat limitada · Disponibilidad limitada · Limited availability"
 }

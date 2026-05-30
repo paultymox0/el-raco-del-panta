@@ -3,21 +3,24 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-
-const navLinks = [
-  { href: '/', label: 'Inicio' },
-  { href: '/menu', label: 'Menú' },
-  { href: '/fotos', label: 'Fotos' },
-  { href: '/reservar', label: 'Reservar' },
-  { href: '/entorno', label: 'El Entorno' },
-  { href: '/eventos', label: 'Eventos' },
-  { href: '/informacion', label: 'Información' },
-]
+import { useLanguage } from '@/contexts/LanguageContext'
+import { t } from '@/lib/i18n'
 
 export default function Navbar() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { lang } = useLanguage()
+
+  const navLinks = [
+    { href: '/',           labelKey: 'nav_home'   as const },
+    { href: '/menu',       labelKey: 'nav_menu'   as const },
+    { href: '/fotos',      labelKey: 'nav_photos' as const },
+    { href: '/reservar',   labelKey: 'nav_book'   as const },
+    { href: '/entorno',    labelKey: 'nav_entorn' as const },
+    { href: '/eventos',    labelKey: 'nav_events' as const },
+    { href: '/informacion',labelKey: 'nav_info'   as const },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -47,7 +50,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-6 pr-20">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -58,7 +61,7 @@ export default function Navbar() {
                   : 'text-brown'
               }`}
             >
-              {link.label}
+              {t(link.labelKey, lang)}
             </Link>
           ))}
         </div>
@@ -89,7 +92,7 @@ export default function Navbar() {
                   : 'text-brown pl-3'
               }`}
             >
-              {link.label}
+              {t(link.labelKey, lang)}
             </Link>
           ))}
         </div>
