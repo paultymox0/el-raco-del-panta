@@ -1,12 +1,23 @@
 'use client'
 
 import { useState } from 'react'
+import type React from 'react'
 import Image from 'next/image'
 import { useLanguage, type Lang } from '@/contexts/LanguageContext'
 
-const LANGS: { code: Lang; flag: string; label: string }[] = [
+const CatalanFlag = () => (
+  <svg width="28" height="20" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg" className="rounded-sm">
+    <rect width="20" height="14" fill="#FCDD09"/>
+    <rect y="1.55" width="20" height="1.56" fill="#DA121A"/>
+    <rect y="4.66" width="20" height="1.56" fill="#DA121A"/>
+    <rect y="7.77" width="20" height="1.56" fill="#DA121A"/>
+    <rect y="10.88" width="20" height="1.56" fill="#DA121A"/>
+  </svg>
+)
+
+const LANGS: { code: Lang; flag: React.ReactNode; label: string }[] = [
   { code: 'es', flag: '🇪🇸', label: 'Español'  },
-  { code: 'ca', flag: '🏴', label: 'Català'   },
+  { code: 'ca', flag: <CatalanFlag />, label: 'Català'   },
   { code: 'en', flag: '🇬🇧', label: 'English'  },
 ]
 

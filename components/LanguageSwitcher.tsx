@@ -1,10 +1,21 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import type React from 'react'
 import { useLanguage, type Lang } from '@/contexts/LanguageContext'
 
-const LANGS: { code: Lang; flag: string; short: string }[] = [
-  { code: 'ca', flag: '🏴', short: 'CA' },
+const CatalanFlag = () => (
+  <svg width="20" height="14" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg" className="rounded-sm inline-block">
+    <rect width="20" height="14" fill="#FCDD09"/>
+    <rect y="1.55" width="20" height="1.56" fill="#DA121A"/>
+    <rect y="4.66" width="20" height="1.56" fill="#DA121A"/>
+    <rect y="7.77" width="20" height="1.56" fill="#DA121A"/>
+    <rect y="10.88" width="20" height="1.56" fill="#DA121A"/>
+  </svg>
+)
+
+const LANGS: { code: Lang; flag: React.ReactNode; short: string }[] = [
+  { code: 'ca', flag: <CatalanFlag />, short: 'CA' },
   { code: 'es', flag: '🇪🇸', short: 'ES' },
   { code: 'en', flag: '🇬🇧', short: 'EN' },
 ]
