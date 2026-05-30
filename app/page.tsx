@@ -1,7 +1,9 @@
+// 📸 Ver /public/INSTRUCCIONES-FOTOS.txt para guía de imágenes
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import BotanicalLeaf from '@/components/BotanicalLeaf'
+import LocalImage from '@/components/LocalImage'
 
 export const metadata: Metadata = {
   title: 'El Racó del Pantà – Restaurante tapas y brasa con vistas al pantano',
@@ -18,17 +20,17 @@ const dishes = [
   {
     name: 'Chuletón a la brasa',
     description: 'Carne de primera calidad cocinada a fuego lento sobre brasa de leña',
-    img: 'https://picsum.photos/seed/chuleton/400/300',
+    img: '/especialidades/especialidad-1.jpg',
   },
   {
     name: 'Tabla de ibéricos',
     description: 'Selección artesanal de embutidos ibéricos de la comarca',
-    img: 'https://picsum.photos/seed/ibericos/400/300',
+    img: '/especialidades/especialidad-2.jpg',
   },
   {
     name: 'Pulpo a la gallega',
     description: 'Pulpo tierno con pimentón ahumado y aceite de oliva virgen extra',
-    img: 'https://picsum.photos/seed/pulpo/400/300',
+    img: '/especialidades/especialidad-3.jpg',
   },
 ]
 
@@ -101,6 +103,12 @@ export default function HomePage() {
 
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center wood-bg overflow-hidden pt-20">
+        <LocalImage
+          src="/hero/hero-bg.jpg"
+          alt="El Racó del Pantà"
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          silent
+        />
         {/* Botanical leaves */}
         <BotanicalLeaf className="absolute top-20 left-0 w-16 h-20 opacity-25" />
         <BotanicalLeaf className="absolute top-20 right-0 w-16 h-20 opacity-25 scale-x-[-1]" />
@@ -162,11 +170,11 @@ export default function HomePage() {
                 className="rounded-2xl overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300 bg-cream"
               >
                 <div className="relative h-52 overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <LocalImage
                     src={dish.img}
                     alt={dish.name}
                     className="w-full h-full object-cover"
+                    icon="🍽️"
                   />
                 </div>
                 <div className="p-6 wood-bg">

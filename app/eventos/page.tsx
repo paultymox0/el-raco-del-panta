@@ -1,6 +1,8 @@
+// 📸 Ver /public/INSTRUCCIONES-FOTOS.txt para guía de imágenes
 import type { Metadata } from 'next'
 import EventoForm from '@/components/EventoForm'
 import BotanicalLeaf from '@/components/BotanicalLeaf'
+import LocalImage from '@/components/LocalImage'
 
 export const metadata: Metadata = {
   title: 'Eventos – El Racó del Pantà',
@@ -12,21 +14,25 @@ const eventTypes = [
     emoji: '🎂',
     title: 'Cumpleaños y celebraciones',
     description: 'Haz de tu día especial un recuerdo imborrable. Decoración personalizada y menú a tu medida.',
+    img: '/eventos/cumpleanos.jpg',
   },
   {
     emoji: '💼',
     title: 'Eventos de empresa',
     description: 'El espacio perfecto para reuniones, team buildings y celebraciones corporativas.',
+    img: '/eventos/empresa.jpg',
   },
   {
     emoji: '👨‍👩‍👧‍👦',
     title: 'Grupos y familias',
     description: 'Reuniones familiares y de amigos con menús especiales para grupos a partir de 15 personas.',
+    img: '/eventos/grupos.jpg',
   },
   {
     emoji: '💍',
     title: 'Bodas y celebraciones especiales',
     description: 'Un entorno mágico junto al pantano para el día más importante de tu vida.',
+    img: '/eventos/bodas.jpg',
   },
 ]
 
@@ -49,17 +55,27 @@ export default function EventosPage() {
           {eventTypes.map((ev) => (
             <div
               key={ev.title}
-              className="bg-parchment border-2 border-transparent hover:border-green-dark rounded-2xl p-6 text-center shadow-md hover:-translate-y-1 transition-all duration-300"
+              className="bg-parchment border-2 border-transparent hover:border-green-dark rounded-2xl overflow-hidden shadow-md hover:-translate-y-1 transition-all duration-300"
             >
-              <div className="text-4xl mb-4">{ev.emoji}</div>
-              <h3 className="font-heading text-lg font-bold text-green-dark mb-2">{ev.title}</h3>
-              <p className="text-brown/70 font-body text-sm mb-4">{ev.description}</p>
-              <a
-                href="#contacto-evento"
-                className="inline-block border border-green-dark text-green-dark px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-dark hover:text-cream transition-colors"
-              >
-                Consultar disponibilidad
-              </a>
+              <div className="h-44 overflow-hidden">
+                <LocalImage
+                  src={ev.img}
+                  alt={ev.title}
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  icon={ev.emoji}
+                />
+              </div>
+              <div className="p-6 text-center">
+                <div className="text-3xl mb-3">{ev.emoji}</div>
+                <h3 className="font-heading text-lg font-bold text-green-dark mb-2">{ev.title}</h3>
+                <p className="text-brown/70 font-body text-sm mb-4">{ev.description}</p>
+                <a
+                  href="#contacto-evento"
+                  className="inline-block border border-green-dark text-green-dark px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-dark hover:text-cream transition-colors"
+                >
+                  Consultar disponibilidad
+                </a>
+              </div>
             </div>
           ))}
         </div>

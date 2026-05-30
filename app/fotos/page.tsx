@@ -1,4 +1,6 @@
+// 📸 Ver /public/INSTRUCCIONES-FOTOS.txt para guía de imágenes
 import type { Metadata } from 'next'
+import LocalImage from '@/components/LocalImage'
 
 export const metadata: Metadata = {
   title: 'Fotos – El Racó del Pantà',
@@ -10,28 +12,28 @@ type PhotoCategory = 'local' | 'platos' | 'entorno'
 
 const photos: Record<PhotoCategory, Photo[]> = {
   local: [
-    { src: 'https://picsum.photos/seed/local1/600/400', caption: 'Salón principal' },
-    { src: 'https://picsum.photos/seed/local2/400/600', caption: 'Terraza con vistas' },
-    { src: 'https://picsum.photos/seed/local3/600/400', caption: 'Barra de madera' },
-    { src: 'https://picsum.photos/seed/local4/400/500', caption: 'Ambiente acogedor' },
-    { src: 'https://picsum.photos/seed/local5/600/500', caption: 'Detalle decoración' },
-    { src: 'https://picsum.photos/seed/local6/400/600', caption: 'Entrada del restaurante' },
+    { src: '/fotos/local/foto-1.jpg', caption: 'Salón principal' },
+    { src: '/fotos/local/foto-2.jpg', caption: 'Terraza con vistas' },
+    { src: '/fotos/local/foto-3.jpg', caption: 'Barra de madera' },
+    { src: '/fotos/local/foto-4.jpg', caption: 'Ambiente acogedor' },
+    { src: '/fotos/local/foto-5.jpg', caption: 'Detalle decoración' },
+    { src: '/fotos/local/foto-6.jpg', caption: 'Entrada del restaurante' },
   ],
   platos: [
-    { src: 'https://picsum.photos/seed/plato1/600/400', caption: 'Chuletón a la brasa' },
-    { src: 'https://picsum.photos/seed/plato2/400/600', caption: 'Tabla de ibéricos' },
-    { src: 'https://picsum.photos/seed/plato3/600/400', caption: 'Pulpo a la gallega' },
-    { src: 'https://picsum.photos/seed/plato4/400/500', caption: 'Crema catalana' },
-    { src: 'https://picsum.photos/seed/plato5/600/500', caption: 'Gambas al ajillo' },
-    { src: 'https://picsum.photos/seed/plato6/400/600', caption: 'Patatas bravas' },
+    { src: '/fotos/platos/foto-1.jpg', caption: 'Chuletón a la brasa' },
+    { src: '/fotos/platos/foto-2.jpg', caption: 'Tabla de ibéricos' },
+    { src: '/fotos/platos/foto-3.jpg', caption: 'Pulpo a la gallega' },
+    { src: '/fotos/platos/foto-4.jpg', caption: 'Crema catalana' },
+    { src: '/fotos/platos/foto-5.jpg', caption: 'Gambas al ajillo' },
+    { src: '/fotos/platos/foto-6.jpg', caption: 'Patatas bravas' },
   ],
   entorno: [
-    { src: 'https://picsum.photos/seed/nature1/600/400', caption: 'El pantano' },
-    { src: 'https://picsum.photos/seed/nature2/400/600', caption: 'Las montañas' },
-    { src: 'https://picsum.photos/seed/nature3/600/400', caption: 'Atardecer' },
-    { src: 'https://picsum.photos/seed/nature4/400/500', caption: 'Vistas desde la terraza' },
-    { src: 'https://picsum.photos/seed/nature5/600/500', caption: 'Paisaje otoñal' },
-    { src: 'https://picsum.photos/seed/nature6/400/600', caption: 'Amanecer en el pantano' },
+    { src: '/fotos/entorno/foto-1.jpg', caption: 'El pantano' },
+    { src: '/fotos/entorno/foto-2.jpg', caption: 'Las montañas' },
+    { src: '/fotos/entorno/foto-3.jpg', caption: 'Atardecer' },
+    { src: '/fotos/entorno/foto-4.jpg', caption: 'Vistas desde la terraza' },
+    { src: '/fotos/entorno/foto-5.jpg', caption: 'Paisaje otoñal' },
+    { src: '/fotos/entorno/foto-6.jpg', caption: 'Amanecer en el pantano' },
   ],
 }
 
@@ -40,6 +42,11 @@ const filterLabels: Record<PhotoCategory, string> = {
   local: 'El local',
   platos: 'Los platos',
   entorno: 'El entorno',
+}
+const filterIcons: Record<PhotoCategory, string> = {
+  local: '🏠',
+  platos: '🍽️',
+  entorno: '🏔️',
 }
 
 export default function FotosPage() {
@@ -60,11 +67,11 @@ export default function FotosPage() {
             <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
               {photos[key].map((photo) => (
                 <div key={photo.src} className="break-inside-avoid relative group overflow-hidden rounded-xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <LocalImage
                     src={photo.src}
                     alt={photo.caption}
-                    className="w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full min-h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                    icon={filterIcons[key]}
                   />
                   <div className="absolute inset-0 bg-green-dark/0 group-hover:bg-green-dark/60 transition-all duration-300 flex items-end">
                     <p className="text-cream font-body font-semibold px-4 py-3 translate-y-8 group-hover:translate-y-0 transition-transform duration-300 opacity-0 group-hover:opacity-100">

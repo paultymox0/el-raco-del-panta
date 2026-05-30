@@ -1,5 +1,7 @@
+// 📸 Ver /public/INSTRUCCIONES-FOTOS.txt para guía de imágenes
 import type { Metadata } from 'next'
 import BotanicalLeaf from '@/components/BotanicalLeaf'
+import LocalImage from '@/components/LocalImage'
 
 export const metadata: Metadata = {
   title: 'El Entorno – El Racó del Pantà',
@@ -25,22 +27,22 @@ const features = [
 ]
 
 const naturePhotos = [
-  { src: 'https://picsum.photos/seed/entorno1/800/500', alt: 'El pantano' },
-  { src: 'https://picsum.photos/seed/entorno2/800/500', alt: 'Las montañas' },
-  { src: 'https://picsum.photos/seed/entorno3/800/500', alt: 'El entorno natural' },
-  { src: 'https://picsum.photos/seed/entorno4/800/500', alt: 'Paisaje de la zona' },
+  { src: '/entorno/entorno-1.jpg', alt: 'El pantano' },
+  { src: '/entorno/entorno-2.jpg', alt: 'Las montañas' },
+  { src: '/entorno/entorno-3.jpg', alt: 'El entorno natural' },
+  { src: '/entorno/entorno-4.jpg', alt: 'Paisaje de la zona' },
 ]
 
 export default function EntornoPage() {
   return (
     <div className="pt-20 min-h-screen bg-parchment">
       {/* Hero */}
-      <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://picsum.photos/seed/entornohero/1600/900"
+      <div className="relative h-[60vh] min-h-[400px] overflow-hidden bg-green-dark">
+        <LocalImage
+          src="/entorno/hero-entorno.jpg"
           alt="Entorno natural"
           className="w-full h-full object-cover"
+          icon="🏔️"
         />
         <div className="absolute inset-0 bg-green-dark/50 flex items-center justify-center">
           <div className="text-center px-4">
@@ -137,11 +139,11 @@ export default function EntornoPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {naturePhotos.map((photo) => (
               <div key={photo.src} className="relative overflow-hidden rounded-2xl group">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <LocalImage
                   src={photo.src}
                   alt={photo.alt}
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                  icon="🏔️"
                 />
                 <div className="absolute inset-0 bg-green-dark/0 group-hover:bg-green-dark/30 transition-colors duration-300" />
               </div>
