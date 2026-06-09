@@ -71,28 +71,44 @@ export default function HomeContent() {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-screen flex items-center justify-center wood-bg overflow-hidden pt-20">
-        <LocalImage src="/hero/hero-bg.jpg" alt="El Racó del Pantà" className="absolute inset-0 w-full h-full object-cover opacity-60" silent />
-        <BotanicalLeaf className="absolute top-20 left-0 w-16 h-20 opacity-25" />
-        <BotanicalLeaf className="absolute top-20 right-0 w-16 h-20 opacity-25 scale-x-[-1]" />
-        <BotanicalLeaf className="absolute bottom-6 left-0 w-12 h-16 opacity-20" />
-        <BotanicalLeaf className="absolute bottom-6 right-0 w-12 h-16 opacity-20 scale-x-[-1]" />
-        <div className="relative text-center px-4 max-w-4xl mx-auto">
+      <section className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden pt-20">
+        {/* Background photo */}
+        <Image
+          src="/hero/hero-bg.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          aria-hidden="true"
+        />
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/65" />
+
+        {/* Botanical corner leaves */}
+        <BotanicalLeaf className="absolute top-20 left-0 w-16 h-20 opacity-20" />
+        <BotanicalLeaf className="absolute top-20 right-0 w-16 h-20 opacity-20 scale-x-[-1]" />
+        <BotanicalLeaf className="absolute bottom-6 left-0 w-12 h-16 opacity-15" />
+        <BotanicalLeaf className="absolute bottom-6 right-0 w-12 h-16 opacity-15 scale-x-[-1]" />
+
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <div className="flex justify-center mb-8">
-            <Image src="/logo.png" alt="El Racó del Pantà" width={480} height={120} className="h-[120px] w-auto" priority />
+            <Image src="/logo.png" alt="El Racó del Pantà" width={480} height={120} className="h-[110px] w-auto brightness-0 invert opacity-95" priority />
           </div>
-          <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-black text-green-dark mb-4 leading-tight"
-            style={{ textShadow: '2px 2px 0 rgba(26,61,31,0.15), 4px 4px 0 rgba(26,61,31,0.08)' }}>
+          <h1
+            className="font-heading text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-tight"
+            style={{ textShadow: '0 2px 24px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8)' }}
+          >
             EL RACÓ<br />DEL PANTÀ
           </h1>
-          <p className="font-body text-xl md:text-2xl text-brown/80 mb-10 max-w-xl mx-auto">
+          <p className="font-body text-xl md:text-2xl text-white/85 mb-10 max-w-xl mx-auto"
+            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>
             {t('hero_tagline', lang)}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/menu" className="bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-all hover:scale-105 shadow-lg">
+            <Link href="/menu" className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-all hover:scale-105 shadow-lg">
               {t('hero_btn_menu', lang)}
             </Link>
-            <Link href="/reservar" className="bg-cream text-green-dark border-2 border-green-dark px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-dark hover:text-cream transition-all hover:scale-105 shadow-lg">
+            <Link href="/reservar" className="bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-all hover:scale-105 shadow-lg">
               {t('hero_btn_book', lang)}
             </Link>
           </div>
