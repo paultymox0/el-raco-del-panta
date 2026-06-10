@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
+import { COMING_SOON } from '@/lib/config'
+import ComingSoon from './coming-soon'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -9,10 +11,15 @@ import LanguageSplash from '@/components/LanguageSplash'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import MobileReserveButton from '@/components/MobileReserveButton'
 
-export const metadata: Metadata = {
-  title: 'El Racó del Pantà – Restaurante',
-  description: 'Restaurante El Racó del Pantà. Tapas, brasa y cocina española con vistas increíbles al pantano.',
-}
+export const metadata: Metadata = COMING_SOON
+  ? {
+      title: 'Próximamente – El Racó del Pantà',
+      description: 'El Racó del Pantà – Algo especial está en camino.',
+    }
+  : {
+      title: 'El Racó del Pantà – Restaurante',
+      description: 'Restaurante El Racó del Pantà. Tapas, brasa y cocina española con vistas increíbles al pantano.',
+    }
 
 export default function RootLayout({
   children,
@@ -22,15 +29,19 @@ export default function RootLayout({
   return (
     <html lang="ca">
       <body className="min-h-screen bg-parchment text-brown font-body">
-        <LanguageProvider>
-          <LanguageSplash />
-          <Navbar />
-          <LanguageSwitcher />
-          <main>{children}</main>
-          <Footer />
-          <WhatsAppButton />
-          <MobileReserveButton />
-        </LanguageProvider>
+        {COMING_SOON ? (
+          <ComingSoon />
+        ) : (
+          <LanguageProvider>
+            <LanguageSplash />
+            <Navbar />
+            <LanguageSwitcher />
+            <main>{children}</main>
+            <Footer />
+            <WhatsAppButton />
+            <MobileReserveButton />
+          </LanguageProvider>
+        )}
         <Analytics />
       </body>
     </html>
