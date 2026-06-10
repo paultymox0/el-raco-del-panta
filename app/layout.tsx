@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -30,6 +31,7 @@ export default function RootLayout({
           <WhatsAppButton />
           <MobileReserveButton />
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   )

@@ -1,29 +1,33 @@
 'use client'
 
+import { useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import BotanicalLeaf from '@/components/BotanicalLeaf'
 import LocalImage from '@/components/LocalImage'
+import { ScrollReveal, StaggerGroup, StaggerItem } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
 
-const dishKeys = [
+const MotionLink = motion(Link)
+
+const dishes = [
   {
-    nameKey: 'specialties_title' as const,
     img: '/especialidades/especialidad-1.jpg',
-    ca: { name: 'Xuletó a la brasa', desc: "Carn de primera qualitat cuinada a foc lent sobre brasa de llenya" },
+    ca: { name: 'Xuletó a la brasa', desc: 'Carn de primera qualitat cuinada a foc lent sobre brasa de llenya' },
     es: { name: 'Chuletón a la brasa', desc: 'Carne de primera calidad cocinada a fuego lento sobre brasa de leña' },
     en: { name: 'T-bone on the grill', desc: 'Prime quality meat slow-cooked over wood embers' },
   },
   {
     img: '/especialidades/especialidad-2.jpg',
-    ca: { name: 'Taula d\'ibèrics', desc: "Selecció artesanal d'embotits ibèrics de la comarca" },
+    ca: { name: "Taula d'ibèrics", desc: "Selecció artesanal d'embotits ibèrics de la comarca" },
     es: { name: 'Tabla de ibéricos', desc: 'Selección artesanal de embutidos ibéricos de la comarca' },
     en: { name: 'Ibérico board', desc: 'Artisan selection of Ibérico charcuterie from the region' },
   },
   {
     img: '/especialidades/especialidad-3.jpg',
-    ca: { name: 'Pop a la gallega', desc: 'Pop tendre amb pebre vermell fumat i oli d\'oliva verge extra' },
+    ca: { name: 'Pop a la gallega', desc: "Pop tendre amb pebre vermell fumat i oli d'oliva verge extra" },
     es: { name: 'Pulpo a la gallega', desc: 'Pulpo tierno con pimentón ahumado y aceite de oliva virgen extra' },
     en: { name: 'Galician-style octopus', desc: 'Tender octopus with smoked paprika and extra virgin olive oil' },
   },
@@ -65,22 +69,30 @@ const socialLinks = [
   },
 ]
 
+const heroChildVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.18, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  }),
+}
+
 export default function HomeContent() {
   const { lang } = useLanguage()
+  const heroRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
 
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden pt-20">
-        {/* Background photo */}
-        <Image
-          src="/hero/hero-bg.jpg"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center"
-          aria-hidden="true"
-        />
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden pt-20">
+        {/* Parallax background */}
+        <motion.div className="absolute inset-x-0 top-0 -bottom-20" style={{ y: bgY }} aria-hidden="true">
+          <div className="absolute inset-0">
+            <Image src="/hero/hero-bg.jpg" alt="" fill priority className="object-cover object-center" />
+          </div>
+        </motion.div>
         {/* Dark gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/65" />
 
@@ -91,27 +103,47 @@ export default function HomeContent() {
         <BotanicalLeaf className="absolute bottom-6 right-0 w-12 h-16 opacity-15 scale-x-[-1]" />
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <div className="flex justify-center mb-8">
+          <motion.div custom={0} variants={heroChildVariants} initial="hidden" animate="visible" className="flex justify-center mb-8">
             <Image src="/logo.png" alt="El Racó del Pantà" width={480} height={120} className="h-[110px] w-auto brightness-0 invert opacity-95" priority />
-          </div>
-          <h1
+          </motion.div>
+          <motion.h1
+            custom={1}
+            variants={heroChildVariants}
+            initial="hidden"
+            animate="visible"
             className="font-heading text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-tight"
             style={{ textShadow: '0 2px 24px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8)' }}
           >
             EL RACÓ<br />DEL PANTÀ
-          </h1>
-          <p className="font-body text-xl md:text-2xl text-white/85 mb-10 max-w-xl mx-auto"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>
+          </motion.h1>
+          <motion.p
+            custom={2}
+            variants={heroChildVariants}
+            initial="hidden"
+            animate="visible"
+            className="font-body text-xl md:text-2xl text-white/85 mb-10 max-w-xl mx-auto"
+            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}
+          >
             {t('hero_tagline', lang)}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/menu" className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-all hover:scale-105 shadow-lg">
+          </motion.p>
+          <motion.div custom={3} variants={heroChildVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 justify-center">
+            <MotionLink
+              href="/menu"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg"
+            >
               {t('hero_btn_menu', lang)}
-            </Link>
-            <Link href="/reservar" className="bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-all hover:scale-105 shadow-lg">
+            </MotionLink>
+            <MotionLink
+              href="/reservar"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-colors shadow-lg"
+            >
               {t('hero_btn_book', lang)}
-            </Link>
-          </div>
+            </MotionLink>
+          </motion.div>
         </div>
       </section>
 
@@ -123,57 +155,82 @@ export default function HomeContent() {
       {/* ESPECIALIDADES */}
       <section className="py-20 px-4 bg-parchment">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-heading text-4xl text-green-dark text-center mb-4">
-            {t('specialties_title', lang)}
-          </h2>
-          <div className="w-20 h-1 bg-wood mx-auto mb-12 rounded-full" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {dishKeys.map((dish, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden shadow-md hover:-translate-y-2 transition-transform duration-300 bg-cream">
-                <div className="relative h-52 overflow-hidden">
-                  <LocalImage src={dish.img} alt={dish[lang].name} className="w-full h-full object-cover" icon="🍽️" />
-                </div>
-                <div className="p-6 wood-bg">
-                  <h3 className="font-heading text-xl font-bold text-green-dark mb-2">{dish[lang].name}</h3>
-                  <p className="text-brown/70 text-sm font-body">{dish[lang].desc}</p>
-                </div>
-              </div>
+          <ScrollReveal>
+            <h2 className="font-heading text-4xl text-green-dark text-center mb-4">
+              {t('specialties_title', lang)}
+            </h2>
+            <div className="w-20 h-1 bg-wood mx-auto mb-12 rounded-full" />
+          </ScrollReveal>
+          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {dishes.map((dish, i) => (
+              <StaggerItem key={i}>
+                <motion.div
+                  whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.12)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                  className="rounded-2xl overflow-hidden shadow-md bg-cream h-full"
+                >
+                  <div className="relative h-52 overflow-hidden">
+                    <LocalImage src={dish.img} alt={dish[lang].name} className="w-full h-full object-cover" icon="🍽️" />
+                  </div>
+                  <div className="p-6 wood-bg">
+                    <h3 className="font-heading text-xl font-bold text-green-dark mb-2">{dish[lang].name}</h3>
+                    <p className="text-brown/70 text-sm font-body">{dish[lang].desc}</p>
+                  </div>
+                </motion.div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* GOOGLE REVIEWS */}
       <section className="py-20 px-4 bg-green-light/30">
-        <div className="max-w-lg mx-auto">
+        <ScrollReveal className="max-w-lg mx-auto">
           <div className="bg-parchment rounded-3xl shadow-lg p-10 text-center border border-wood/30">
             <div className="text-5xl font-heading font-black text-yellow-500 mb-2">⭐ 5.0</div>
             <h2 className="font-heading text-2xl text-green-dark mb-3">{t('reviews_title', lang)}</h2>
             <p className="text-brown/70 mb-6 font-body">{t('reviews_note', lang)}</p>
-            <a href="https://search.google.com/local/writereview?placeid=PLACE_ID_HERE" target="_blank" rel="noopener noreferrer"
-              className="inline-block bg-green-dark text-cream px-8 py-3 rounded-full font-heading font-bold hover:bg-green-mid transition-colors shadow-md">
+            <motion.a
+              href="https://search.google.com/local/writereview?placeid=PLACE_ID_HERE"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="inline-block bg-green-dark text-cream px-8 py-3 rounded-full font-heading font-bold hover:bg-green-mid transition-colors shadow-md"
+            >
               {t('reviews_btn', lang)}
-            </a>
+            </motion.a>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* SOCIAL ROW */}
       <section className="py-20 px-4 bg-parchment">
         <div className="max-w-4xl mx-auto">
-          <h2 className="font-heading text-3xl text-green-dark text-center mb-10">{t('social_title', lang)}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <ScrollReveal>
+            <h2 className="font-heading text-3xl text-green-dark text-center mb-10">{t('social_title', lang)}</h2>
+          </ScrollReveal>
+          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {socialLinks.map((s) => (
-              <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer"
-                className={`${s.color} rounded-2xl p-8 flex flex-col items-center gap-4 hover:-translate-y-2 hover:shadow-xl transition-all duration-300`}>
-                <div>{s.icon}</div>
-                <div className="text-center">
-                  <div className="font-heading font-bold text-lg">{s.name}</div>
-                  <div className="text-sm opacity-70">{s.label ?? t('social_wa_label', lang)}</div>
-                </div>
-              </a>
+              <StaggerItem key={s.name}>
+                <motion.a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.12)' }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                  className={`${s.color} rounded-2xl p-8 flex flex-col items-center gap-4`}
+                >
+                  <div>{s.icon}</div>
+                  <div className="text-center">
+                    <div className="font-heading font-bold text-lg">{s.name}</div>
+                    <div className="text-sm opacity-70">{s.label ?? t('social_wa_label', lang)}</div>
+                  </div>
+                </motion.a>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
     </>

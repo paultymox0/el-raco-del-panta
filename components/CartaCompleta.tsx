@@ -154,8 +154,10 @@ function FlipCard({
   }
 
   return (
-    <div
+    <motion.div
       className="card-container cursor-pointer w-full select-none h-80"
+      whileHover={!isFlipped ? { y: -6 } : {}}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       onClick={isFlipped ? undefined : onFlip}
     >
       <div className={`card-inner${isFlipped ? ' flipped' : ''}`}>
@@ -242,7 +244,7 @@ function FlipCard({
         </div>
 
       </div>
-    </div>
+    </motion.div>
   )
 }
 
