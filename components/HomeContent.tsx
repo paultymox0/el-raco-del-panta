@@ -10,8 +10,6 @@ import { ScrollReveal, StaggerGroup, StaggerItem } from '@/components/ScrollReve
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
 
-const MotionLink = motion(Link)
-
 const dishes = [
   {
     img: '/especialidades/especialidad-1.jpg',
@@ -127,22 +125,16 @@ export default function HomeContent() {
             {t('hero_tagline', lang)}
           </motion.p>
           <motion.div custom={3} variants={heroChildVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 justify-center">
-            <MotionLink
-              href="/menu"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg"
-            >
-              {t('hero_btn_menu', lang)}
-            </MotionLink>
-            <MotionLink
-              href="/reservar"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-colors shadow-lg"
-            >
-              {t('hero_btn_book', lang)}
-            </MotionLink>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+              <Link href="/menu" className="block bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg text-center">
+                {t('hero_btn_menu', lang)}
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+              <Link href="/reservar" className="block bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-colors shadow-lg text-center">
+                {t('hero_btn_book', lang)}
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>
