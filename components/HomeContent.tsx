@@ -9,35 +9,7 @@ import { ScrollReveal, StaggerGroup, StaggerItem } from '@/components/ScrollReve
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
 
-// ── Pre-computed deterministic data ──────────────────────────────────────────
-
-const STARS = [
-  { left: '5%',  top: '6%',  delay: '0s',    dur: '2.8s' },
-  { left: '18%', top: '3%',  delay: '1.2s',  dur: '3.1s' },
-  { left: '32%', top: '8%',  delay: '0.5s',  dur: '2.5s' },
-  { left: '48%', top: '4%',  delay: '2.0s',  dur: '3.4s' },
-  { left: '61%', top: '7%',  delay: '0.9s',  dur: '2.7s' },
-  { left: '75%', top: '2%',  delay: '1.6s',  dur: '3.0s' },
-  { left: '88%', top: '5%',  delay: '0.3s',  dur: '2.9s' },
-  { left: '23%', top: '14%', delay: '1.8s',  dur: '3.2s' },
-  { left: '54%', top: '11%', delay: '0.7s',  dur: '2.6s' },
-  { left: '82%', top: '13%', delay: '2.3s',  dur: '3.3s' },
-  { left: '12%', top: '18%', delay: '1.1s',  dur: '2.4s' },
-  { left: '67%', top: '16%', delay: '1.9s',  dur: '3.5s' },
-]
-
-const FIREFLIES = [
-  { left: '12%', top: '30%', delay: '0s',   dur: '3.2s' },
-  { left: '26%', top: '47%', delay: '0.8s', dur: '2.8s' },
-  { left: '38%', top: '24%', delay: '1.5s', dur: '3.5s' },
-  { left: '55%', top: '40%', delay: '0.3s', dur: '2.6s' },
-  { left: '68%', top: '28%', delay: '2.0s', dur: '3.1s' },
-  { left: '80%', top: '52%', delay: '1.1s', dur: '2.9s' },
-  { left: '7%',  top: '54%', delay: '2.5s', dur: '3.3s' },
-  { left: '44%', top: '56%', delay: '1.7s', dur: '2.7s' },
-  { left: '72%', top: '18%', delay: '0.6s', dur: '3.0s' },
-  { left: '91%', top: '44%', delay: '1.9s', dur: '3.4s' },
-]
+// ── Data ──────────────────────────────────────────────────────────────────────
 
 const heroChildVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -77,144 +49,49 @@ export default function HomeContent() {
   const socialInView = useInView(socialRef, { once: true, margin: '-80px' })
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const mtn1Y = useTransform(scrollYProgress, [0, 1], ['0px', '-55px'])
-  const mtn2Y = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
-  const mtn3Y = useTransform(scrollYProgress, [0, 1], ['0px', '-110px'])
-  const textY  = useTransform(scrollYProgress, [0, 1], ['0px', '60px'])
+  const bgY  = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+  const textY = useTransform(scrollYProgress, [0, 1], ['0px', '55px'])
 
   return (
     <>
       {/* ── HERO ── */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-
-        {/* Animated sky */}
-        <div className="hero-sky absolute inset-0" style={{ zIndex: 0 }} />
-
-        {/* Stars */}
-        {STARS.map((s, i) => (
+      <section
+        ref={heroRef}
+        className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      >
+        {/* ── Video / poster background ── */}
+        <motion.div
+          className="absolute inset-0 overflow-hidden"
+          style={{ y: bgY }}
+          aria-hidden="true"
+        >
+          {/* Poster: always visible immediately (mobile + while video loads) */}
           <div
-            key={i}
-            className="absolute rounded-full bg-white"
-            style={{
-              left: s.left, top: s.top,
-              width: i % 3 === 0 ? '3px' : '2px',
-              height: i % 3 === 0 ? '3px' : '2px',
-              zIndex: 1,
-              animation: `starTwinkle ${s.dur} ${s.delay} ease-in-out infinite`,
-            }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: 'url(/hero/hero-poster.jpg)' }}
           />
-        ))}
 
-        {/* Fireflies */}
-        {FIREFLIES.map((f, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full"
-            style={{
-              left: f.left, top: f.top,
-              width: '4px', height: '4px',
-              background: 'radial-gradient(circle, #ffe066 0%, #ffaa00 60%, transparent 100%)',
-              boxShadow: '0 0 6px 2px rgba(255,210,50,0.5)',
-              zIndex: 2,
-              animation: `fireflyPulse ${f.dur} ${f.delay} ease-in-out infinite`,
-            }}
-          />
-        ))}
-
-        {/* Far mountains – slow parallax */}
-        <motion.div
-          className="absolute bottom-0 left-0 w-full"
-          style={{ height: '42%', zIndex: 3, y: mtn1Y }}
-        >
-          <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="w-full h-full">
-            <path
-              d="M0 320 L0 95 C240 58 480 100 720 78 C960 56 1200 90 1440 72 L1440 320 Z"
-              fill="#1e2e48"
-            />
-          </svg>
+          {/* Video: only rendered on md+ to save mobile data */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster="/hero/hero-poster.jpg"
+            className="absolute inset-0 w-full h-full object-cover hidden md:block"
+          >
+            <source src="/hero/hero-video.mp4" type="video/mp4" />
+          </video>
         </motion.div>
 
-        {/* Mid mountains – medium parallax */}
-        <motion.div
-          className="absolute bottom-0 left-0 w-full"
-          style={{ height: '32%', zIndex: 4, y: mtn2Y }}
-        >
-          <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="w-full h-full">
-            <path
-              d="M0 260 L0 115 C180 88 360 118 540 102 C720 86 900 112 1080 96 C1260 80 1380 98 1440 90 L1440 260 Z"
-              fill="#163224"
-            />
-          </svg>
-        </motion.div>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/30 to-black/65 pointer-events-none" />
 
-        {/* Near forest – fastest parallax */}
-        <motion.div
-          className="absolute bottom-0 left-0 w-full"
-          style={{ height: '24%', zIndex: 6, y: mtn3Y }}
-        >
-          <svg viewBox="0 0 1440 200" preserveAspectRatio="none" className="w-full h-full">
-            <path
-              d="M0 200 L0 88 C90 76 130 90 180 80 C240 68 280 84 340 73 C400 62 450 78 510 66 C570 54 620 72 680 60 C740 48 790 67 850 55 C910 43 960 64 1020 52 C1080 40 1130 60 1190 48 C1250 36 1300 56 1360 44 C1400 36 1430 44 1440 40 L1440 200 Z"
-              fill="#0b1a0e"
-            />
-          </svg>
-        </motion.div>
-
-        {/* Fog strip */}
-        <div
-          className="absolute left-0 w-full pointer-events-none"
-          style={{
-            bottom: '23%', height: '80px', zIndex: 5,
-            background: 'linear-gradient(to bottom, transparent, rgba(180,200,220,0.18), transparent)',
-            animation: 'fogDrift 18s ease-in-out infinite alternate',
-          }}
-        />
-
-        {/* Boats */}
-        <div
-          className="absolute"
-          style={{ bottom: '24%', left: '18%', zIndex: 5, animation: 'bob 5s ease-in-out infinite' }}
-        >
-          <svg viewBox="0 0 56 28" width="56" height="28">
-            <path d="M4 20 L52 20 L47 26 L9 26 Z" fill="rgba(10,28,18,0.85)"/>
-            <line x1="28" y1="20" x2="28" y2="4" stroke="rgba(10,28,18,0.7)" strokeWidth="2"/>
-            <path d="M28 6 L44 19 L28 19 Z" fill="rgba(180,150,100,0.55)"/>
-          </svg>
-        </div>
-        <div
-          className="absolute"
-          style={{ bottom: '24%', right: '22%', zIndex: 5, animation: 'bob 6.5s ease-in-out 1.8s infinite' }}
-        >
-          <svg viewBox="0 0 38 20" width="38" height="20">
-            <path d="M3 14 L35 14 L31 18 L7 18 Z" fill="rgba(10,28,18,0.75)"/>
-            <line x1="19" y1="14" x2="19" y2="3" stroke="rgba(10,28,18,0.65)" strokeWidth="1.5"/>
-            <path d="M19 4 L30 13 L19 13 Z" fill="rgba(160,130,90,0.5)"/>
-          </svg>
-        </div>
-
-        {/* Wave animation at bottom */}
-        <div
-          className="absolute bottom-0 left-0 w-full overflow-hidden"
-          style={{ height: '64px', zIndex: 7 }}
-        >
-          <div style={{ width: '200%', animation: 'waveMove 9s linear infinite' }}>
-            <svg viewBox="0 0 2880 64" preserveAspectRatio="none" style={{ width: '100%', height: '64px' }}>
-              <path
-                d="M0,32 C240,8 480,56 720,32 C960,8 1200,56 1440,32 C1680,8 1920,56 2160,32 C2400,8 2640,56 2880,32 L2880,64 L0,64 Z"
-                fill="rgba(22,50,80,0.55)"
-              />
-              <path
-                d="M0,42 C240,24 480,52 720,42 C960,32 1200,52 1440,42 C1680,32 1920,52 2160,42 C2400,32 2640,52 2880,42 L2880,64 L0,64 Z"
-                fill="rgba(14,35,60,0.40)"
-              />
-            </svg>
-          </div>
-        </div>
-
-        {/* Hero text content */}
+        {/* Hero text */}
         <motion.div
           style={{ y: textY, zIndex: 10 }}
-          className="relative text-center px-4 max-w-4xl mx-auto pb-[28vh]"
+          className="relative text-center px-4 max-w-4xl mx-auto"
         >
           <motion.div custom={0} variants={heroChildVariants} initial="hidden" animate="visible" className="flex justify-center mb-8">
             <Image
@@ -230,7 +107,7 @@ export default function HomeContent() {
           <motion.h1
             custom={1} variants={heroChildVariants} initial="hidden" animate="visible"
             className="font-heading text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-tight"
-            style={{ textShadow: '0 2px 30px rgba(0,0,0,0.7), 0 1px 6px rgba(0,0,0,0.9)' }}
+            style={{ textShadow: '0 2px 32px rgba(0,0,0,0.75), 0 1px 6px rgba(0,0,0,0.9)' }}
           >
             EL RACÓ<br />DEL PANTÀ
           </motion.h1>
@@ -238,7 +115,7 @@ export default function HomeContent() {
           <motion.p
             custom={2} variants={heroChildVariants} initial="hidden" animate="visible"
             className="font-body text-xl md:text-2xl text-white/85 mb-10 max-w-xl mx-auto"
-            style={{ textShadow: '0 1px 10px rgba(0,0,0,0.8)' }}
+            style={{ textShadow: '0 1px 12px rgba(0,0,0,0.8)' }}
           >
             {t('hero_tagline', lang)}
           </motion.p>
@@ -339,7 +216,6 @@ export default function HomeContent() {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Instagram card */}
             <motion.a
               href="https://www.instagram.com/elracodelpanta"
               target="_blank"
@@ -347,7 +223,7 @@ export default function HomeContent() {
               initial={{ opacity: 0, x: -48 }}
               animate={socialInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-              whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.3)' }}
+              whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.35)' }}
               className="rounded-2xl overflow-hidden p-8 flex items-center gap-6 cursor-pointer"
               style={{ background: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 45%, #fcb045 100%)' }}
             >
@@ -365,7 +241,6 @@ export default function HomeContent() {
               </div>
             </motion.a>
 
-            {/* TikTok card */}
             <motion.a
               href="https://www.tiktok.com/@elracodelpanta"
               target="_blank"
@@ -373,7 +248,7 @@ export default function HomeContent() {
               initial={{ opacity: 0, x: 48 }}
               animate={socialInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-              whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.3)' }}
+              whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.35)' }}
               className="rounded-2xl overflow-hidden p-8 flex items-center gap-6 cursor-pointer"
               style={{ background: 'linear-gradient(135deg, #010101 0%, #1a0a22 50%, #0d1a1a 100%)' }}
             >
