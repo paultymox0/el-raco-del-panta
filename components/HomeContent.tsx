@@ -3,12 +3,49 @@
 import { useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import BotanicalLeaf from '@/components/BotanicalLeaf'
+import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import LocalImage from '@/components/LocalImage'
 import { ScrollReveal, StaggerGroup, StaggerItem } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
+
+// ── Pre-computed deterministic data ──────────────────────────────────────────
+
+const STARS = [
+  { left: '5%',  top: '6%',  delay: '0s',    dur: '2.8s' },
+  { left: '18%', top: '3%',  delay: '1.2s',  dur: '3.1s' },
+  { left: '32%', top: '8%',  delay: '0.5s',  dur: '2.5s' },
+  { left: '48%', top: '4%',  delay: '2.0s',  dur: '3.4s' },
+  { left: '61%', top: '7%',  delay: '0.9s',  dur: '2.7s' },
+  { left: '75%', top: '2%',  delay: '1.6s',  dur: '3.0s' },
+  { left: '88%', top: '5%',  delay: '0.3s',  dur: '2.9s' },
+  { left: '23%', top: '14%', delay: '1.8s',  dur: '3.2s' },
+  { left: '54%', top: '11%', delay: '0.7s',  dur: '2.6s' },
+  { left: '82%', top: '13%', delay: '2.3s',  dur: '3.3s' },
+  { left: '12%', top: '18%', delay: '1.1s',  dur: '2.4s' },
+  { left: '67%', top: '16%', delay: '1.9s',  dur: '3.5s' },
+]
+
+const FIREFLIES = [
+  { left: '12%', top: '30%', delay: '0s',   dur: '3.2s' },
+  { left: '26%', top: '47%', delay: '0.8s', dur: '2.8s' },
+  { left: '38%', top: '24%', delay: '1.5s', dur: '3.5s' },
+  { left: '55%', top: '40%', delay: '0.3s', dur: '2.6s' },
+  { left: '68%', top: '28%', delay: '2.0s', dur: '3.1s' },
+  { left: '80%', top: '52%', delay: '1.1s', dur: '2.9s' },
+  { left: '7%',  top: '54%', delay: '2.5s', dur: '3.3s' },
+  { left: '44%', top: '56%', delay: '1.7s', dur: '2.7s' },
+  { left: '72%', top: '18%', delay: '0.6s', dur: '3.0s' },
+  { left: '91%', top: '44%', delay: '1.9s', dur: '3.4s' },
+]
+
+const heroChildVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.18, duration: 0.75, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+  }),
+}
 
 const dishes = [
   {
@@ -31,120 +68,211 @@ const dishes = [
   },
 ]
 
-const socialLinks = [
-  {
-    name: 'Instagram',
-    href: 'https://www.instagram.com/elracodelpanta',
-    icon: (
-      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-      </svg>
-    ),
-    color: 'bg-pink-100 text-pink-600',
-    label: '@elracodelpanta',
-  },
-  {
-    name: 'TikTok',
-    href: 'https://www.tiktok.com/@elracodelpanta',
-    icon: (
-      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
-      </svg>
-    ),
-    color: 'bg-gray-100 text-gray-800',
-    label: '@elracodelpanta',
-  },
-  {
-    name: 'WhatsApp',
-    href: 'https://wa.me/34XXXXXXXXX',
-    icon: (
-      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-    ),
-    color: 'bg-green-100 text-green-700',
-    label: null,
-  },
-]
-
-const heroChildVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.18, duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-}
+// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function HomeContent() {
   const { lang } = useLanguage()
   const heroRef = useRef<HTMLElement>(null)
+  const socialRef = useRef<HTMLElement>(null)
+  const socialInView = useInView(socialRef, { once: true, margin: '-80px' })
+
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
+  const mtn1Y = useTransform(scrollYProgress, [0, 1], ['0px', '-55px'])
+  const mtn2Y = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
+  const mtn3Y = useTransform(scrollYProgress, [0, 1], ['0px', '-110px'])
+  const textY  = useTransform(scrollYProgress, [0, 1], ['0px', '60px'])
 
   return (
     <>
-      {/* HERO */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden pt-20">
-        {/* Parallax background */}
-        <motion.div className="absolute inset-x-0 top-0 -bottom-20" style={{ y: bgY }} aria-hidden="true">
-          <div className="absolute inset-0">
-            <Image src="/hero/hero-bg.jpg" alt="" fill priority className="object-cover object-center" />
-          </div>
+      {/* ── HERO ── */}
+      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
+
+        {/* Animated sky */}
+        <div className="hero-sky absolute inset-0" style={{ zIndex: 0 }} />
+
+        {/* Stars */}
+        {STARS.map((s, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: s.left, top: s.top,
+              width: i % 3 === 0 ? '3px' : '2px',
+              height: i % 3 === 0 ? '3px' : '2px',
+              zIndex: 1,
+              animation: `starTwinkle ${s.dur} ${s.delay} ease-in-out infinite`,
+            }}
+          />
+        ))}
+
+        {/* Fireflies */}
+        {FIREFLIES.map((f, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              left: f.left, top: f.top,
+              width: '4px', height: '4px',
+              background: 'radial-gradient(circle, #ffe066 0%, #ffaa00 60%, transparent 100%)',
+              boxShadow: '0 0 6px 2px rgba(255,210,50,0.5)',
+              zIndex: 2,
+              animation: `fireflyPulse ${f.dur} ${f.delay} ease-in-out infinite`,
+            }}
+          />
+        ))}
+
+        {/* Far mountains – slow parallax */}
+        <motion.div
+          className="absolute bottom-0 left-0 w-full"
+          style={{ height: '42%', zIndex: 3, y: mtn1Y }}
+        >
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="w-full h-full">
+            <path
+              d="M0 320 L0 95 C240 58 480 100 720 78 C960 56 1200 90 1440 72 L1440 320 Z"
+              fill="#1e2e48"
+            />
+          </svg>
         </motion.div>
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/65" />
 
-        {/* Botanical corner leaves */}
-        <BotanicalLeaf className="absolute top-20 left-0 w-16 h-20 opacity-20" />
-        <BotanicalLeaf className="absolute top-20 right-0 w-16 h-20 opacity-20 scale-x-[-1]" />
-        <BotanicalLeaf className="absolute bottom-6 left-0 w-12 h-16 opacity-15" />
-        <BotanicalLeaf className="absolute bottom-6 right-0 w-12 h-16 opacity-15 scale-x-[-1]" />
+        {/* Mid mountains – medium parallax */}
+        <motion.div
+          className="absolute bottom-0 left-0 w-full"
+          style={{ height: '32%', zIndex: 4, y: mtn2Y }}
+        >
+          <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="w-full h-full">
+            <path
+              d="M0 260 L0 115 C180 88 360 118 540 102 C720 86 900 112 1080 96 C1260 80 1380 98 1440 90 L1440 260 Z"
+              fill="#163224"
+            />
+          </svg>
+        </motion.div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+        {/* Near forest – fastest parallax */}
+        <motion.div
+          className="absolute bottom-0 left-0 w-full"
+          style={{ height: '24%', zIndex: 6, y: mtn3Y }}
+        >
+          <svg viewBox="0 0 1440 200" preserveAspectRatio="none" className="w-full h-full">
+            <path
+              d="M0 200 L0 88 C90 76 130 90 180 80 C240 68 280 84 340 73 C400 62 450 78 510 66 C570 54 620 72 680 60 C740 48 790 67 850 55 C910 43 960 64 1020 52 C1080 40 1130 60 1190 48 C1250 36 1300 56 1360 44 C1400 36 1430 44 1440 40 L1440 200 Z"
+              fill="#0b1a0e"
+            />
+          </svg>
+        </motion.div>
+
+        {/* Fog strip */}
+        <div
+          className="absolute left-0 w-full pointer-events-none"
+          style={{
+            bottom: '23%', height: '80px', zIndex: 5,
+            background: 'linear-gradient(to bottom, transparent, rgba(180,200,220,0.18), transparent)',
+            animation: 'fogDrift 18s ease-in-out infinite alternate',
+          }}
+        />
+
+        {/* Boats */}
+        <div
+          className="absolute"
+          style={{ bottom: '24%', left: '18%', zIndex: 5, animation: 'bob 5s ease-in-out infinite' }}
+        >
+          <svg viewBox="0 0 56 28" width="56" height="28">
+            <path d="M4 20 L52 20 L47 26 L9 26 Z" fill="rgba(10,28,18,0.85)"/>
+            <line x1="28" y1="20" x2="28" y2="4" stroke="rgba(10,28,18,0.7)" strokeWidth="2"/>
+            <path d="M28 6 L44 19 L28 19 Z" fill="rgba(180,150,100,0.55)"/>
+          </svg>
+        </div>
+        <div
+          className="absolute"
+          style={{ bottom: '24%', right: '22%', zIndex: 5, animation: 'bob 6.5s ease-in-out 1.8s infinite' }}
+        >
+          <svg viewBox="0 0 38 20" width="38" height="20">
+            <path d="M3 14 L35 14 L31 18 L7 18 Z" fill="rgba(10,28,18,0.75)"/>
+            <line x1="19" y1="14" x2="19" y2="3" stroke="rgba(10,28,18,0.65)" strokeWidth="1.5"/>
+            <path d="M19 4 L30 13 L19 13 Z" fill="rgba(160,130,90,0.5)"/>
+          </svg>
+        </div>
+
+        {/* Wave animation at bottom */}
+        <div
+          className="absolute bottom-0 left-0 w-full overflow-hidden"
+          style={{ height: '64px', zIndex: 7 }}
+        >
+          <div style={{ width: '200%', animation: 'waveMove 9s linear infinite' }}>
+            <svg viewBox="0 0 2880 64" preserveAspectRatio="none" style={{ width: '100%', height: '64px' }}>
+              <path
+                d="M0,32 C240,8 480,56 720,32 C960,8 1200,56 1440,32 C1680,8 1920,56 2160,32 C2400,8 2640,56 2880,32 L2880,64 L0,64 Z"
+                fill="rgba(22,50,80,0.55)"
+              />
+              <path
+                d="M0,42 C240,24 480,52 720,42 C960,32 1200,52 1440,42 C1680,32 1920,52 2160,42 C2400,32 2640,52 2880,42 L2880,64 L0,64 Z"
+                fill="rgba(14,35,60,0.40)"
+              />
+            </svg>
+          </div>
+        </div>
+
+        {/* Hero text content */}
+        <motion.div
+          style={{ y: textY, zIndex: 10 }}
+          className="relative text-center px-4 max-w-4xl mx-auto pb-[28vh]"
+        >
           <motion.div custom={0} variants={heroChildVariants} initial="hidden" animate="visible" className="flex justify-center mb-8">
-            <Image src="/logo.png" alt="El Racó del Pantà" width={480} height={120} className="h-[110px] w-auto brightness-0 invert opacity-95" priority />
+            <Image
+              src="/logo.png"
+              alt="El Racó del Pantà"
+              width={480}
+              height={120}
+              className="h-[104px] w-auto brightness-0 invert opacity-95"
+              priority
+            />
           </motion.div>
+
           <motion.h1
-            custom={1}
-            variants={heroChildVariants}
-            initial="hidden"
-            animate="visible"
+            custom={1} variants={heroChildVariants} initial="hidden" animate="visible"
             className="font-heading text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-tight"
-            style={{ textShadow: '0 2px 24px rgba(0,0,0,0.6), 0 1px 4px rgba(0,0,0,0.8)' }}
+            style={{ textShadow: '0 2px 30px rgba(0,0,0,0.7), 0 1px 6px rgba(0,0,0,0.9)' }}
           >
             EL RACÓ<br />DEL PANTÀ
           </motion.h1>
+
           <motion.p
-            custom={2}
-            variants={heroChildVariants}
-            initial="hidden"
-            animate="visible"
+            custom={2} variants={heroChildVariants} initial="hidden" animate="visible"
             className="font-body text-xl md:text-2xl text-white/85 mb-10 max-w-xl mx-auto"
-            style={{ textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}
+            style={{ textShadow: '0 1px 10px rgba(0,0,0,0.8)' }}
           >
             {t('hero_tagline', lang)}
           </motion.p>
-          <motion.div custom={3} variants={heroChildVariants} initial="hidden" animate="visible" className="flex flex-col sm:flex-row gap-4 justify-center">
+
+          <motion.div
+            custom={3} variants={heroChildVariants} initial="hidden" animate="visible"
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Link href="/menu" className="block bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg text-center">
+              <Link
+                href="/menu"
+                className="block bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg text-center"
+              >
                 {t('hero_btn_menu', lang)}
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Link href="/reservar" className="block bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-colors shadow-lg text-center">
+              <Link
+                href="/reservar"
+                className="block bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-colors shadow-lg text-center"
+              >
                 {t('hero_btn_book', lang)}
               </Link>
             </motion.div>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* NEWLY OPENED BANNER */}
+      {/* ── NEWLY OPENED BANNER ── */}
       <div className="bg-green-dark text-cream text-center py-4 px-4 text-base md:text-lg font-body">
         {t('banner_new_open', lang)}
       </div>
 
-      {/* ESPECIALIDADES */}
+      {/* ── SPECIALTIES ── */}
       <section className="py-20 px-4 bg-parchment">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
@@ -175,7 +303,7 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* GOOGLE REVIEWS */}
+      {/* ── GOOGLE REVIEWS ── */}
       <section className="py-20 px-4 bg-green-light/30">
         <ScrollReveal className="max-w-lg mx-auto">
           <div className="bg-parchment rounded-3xl shadow-lg p-10 text-center border border-wood/30">
@@ -196,33 +324,73 @@ export default function HomeContent() {
         </ScrollReveal>
       </section>
 
-      {/* SOCIAL ROW */}
-      <section className="py-20 px-4 bg-parchment">
+      {/* ── SOCIAL SECTION ── */}
+      <section
+        ref={socialRef}
+        className="py-20 px-4"
+        style={{ background: '#1a2e1a' }}
+      >
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <h2 className="font-heading text-3xl text-green-dark text-center mb-10">{t('social_title', lang)}</h2>
+            <h2 className="font-heading text-3xl text-cream text-center mb-2">
+              {t('social_title', lang)}
+            </h2>
+            <p className="text-cream/50 font-body text-sm text-center mb-12">@elracodelpanta</p>
           </ScrollReveal>
-          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {socialLinks.map((s) => (
-              <StaggerItem key={s.name}>
-                <motion.a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.12)' }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                  className={`${s.color} rounded-2xl p-8 flex flex-col items-center gap-4`}
-                >
-                  <div>{s.icon}</div>
-                  <div className="text-center">
-                    <div className="font-heading font-bold text-lg">{s.name}</div>
-                    <div className="text-sm opacity-70">{s.label ?? t('social_wa_label', lang)}</div>
-                  </div>
-                </motion.a>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Instagram card */}
+            <motion.a
+              href="https://www.instagram.com/elracodelpanta"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, x: -48 }}
+              animate={socialInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+              whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.3)' }}
+              className="rounded-2xl overflow-hidden p-8 flex items-center gap-6 cursor-pointer"
+              style={{ background: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 45%, #fcb045 100%)' }}
+            >
+              <div className="flex-shrink-0 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <svg className="w-9 h-9 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </div>
+              <div>
+                <div className="font-heading font-bold text-xl text-white mb-1">Instagram</div>
+                <div className="text-white/75 font-body text-sm">@elracodelpanta</div>
+                <div className="mt-3 inline-block bg-white/20 backdrop-blur-sm text-white text-xs font-heading font-bold px-4 py-1.5 rounded-full border border-white/30">
+                  Seguir →
+                </div>
+              </div>
+            </motion.a>
+
+            {/* TikTok card */}
+            <motion.a
+              href="https://www.tiktok.com/@elracodelpanta"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, x: 48 }}
+              animate={socialInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+              whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.3)' }}
+              className="rounded-2xl overflow-hidden p-8 flex items-center gap-6 cursor-pointer"
+              style={{ background: 'linear-gradient(135deg, #010101 0%, #1a0a22 50%, #0d1a1a 100%)' }}
+            >
+              <div className="flex-shrink-0 w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <svg className="w-9 h-9 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/>
+                </svg>
+              </div>
+              <div>
+                <div className="font-heading font-bold text-xl text-white mb-1">TikTok</div>
+                <div className="text-white/65 font-body text-sm">@elracodelpanta</div>
+                <div className="mt-3 inline-block bg-white/15 backdrop-blur-sm text-white text-xs font-heading font-bold px-4 py-1.5 rounded-full border border-white/20">
+                  Seguir →
+                </div>
+              </div>
+            </motion.a>
+          </div>
         </div>
       </section>
     </>

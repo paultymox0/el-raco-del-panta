@@ -2,13 +2,15 @@ export type Lang = 'ca' | 'es' | 'en'
 
 export const i18n = {
   // ── Navbar ────────────────────────────────────────────────────────────────
-  nav_home:    { ca: 'Inici',          es: 'Inicio',      en: 'Home'        },
-  nav_menu:    { ca: 'Menú',           es: 'Menú',        en: 'Menu'        },
-  nav_photos:  { ca: 'Fotos',          es: 'Fotos',       en: 'Photos'      },
-  nav_book:    { ca: 'Reservar',       es: 'Reservar',    en: 'Book'        },
-  nav_entorn:  { ca: "L'Entorn",       es: 'El Entorno',  en: 'The Setting' },
-  nav_events:  { ca: 'Esdeveniments',  es: 'Eventos',     en: 'Events'      },
-  nav_info:    { ca: 'Informació',     es: 'Información', en: 'Info'        },
+  nav_home:     { ca: 'Inici',          es: 'Inicio',      en: 'Home'        },
+  nav_menu:     { ca: 'Menú',           es: 'Menú',        en: 'Menu'        },
+  nav_photos:   { ca: 'Fotos',          es: 'Fotos',       en: 'Photos'      },
+  nav_book:     { ca: 'Reservar',       es: 'Reservar',    en: 'Book'        },
+  nav_entorn:   { ca: "L'Entorn",       es: 'El Entorno',  en: 'The Setting' },
+  nav_events:   { ca: 'Esdeveniments',  es: 'Eventos',     en: 'Events'      },
+  nav_info:     { ca: 'Informació',     es: 'Información', en: 'Info'        },
+  nav_historia: { ca: 'Història',       es: 'Historia',    en: 'Story'       },
+  nav_ressenyes:{ ca: 'Ressenyes',      es: 'Reseñas',     en: 'Reviews'     },
 
   // ── Splash ────────────────────────────────────────────────────────────────
   splash_title: {
@@ -251,6 +253,29 @@ export const i18n = {
 
   // ── Footer ────────────────────────────────────────────────────────────────
   footer_rights: { ca: 'Tots els drets reservats', es: 'Todos los derechos reservados', en: 'All rights reserved' },
+
+  // ── WhatsApp / contact ────────────────────────────────────────────────────
+  wa_tooltip:   { ca: 'Reserves aquí? 👋',     es: '¿Reservas aquí? 👋',    en: 'Book here? 👋'          },
+  wa_call:      { ca: 'Trucar',                 es: 'Llamar',                en: 'Call us'                },
+  wa_message:   { ca: 'Missatge WhatsApp',      es: 'Mensaje WhatsApp',      en: 'WhatsApp message'       },
+
+  // ── Language switcher ─────────────────────────────────────────────────────
+  lang_tooltip: { ca: 'Canviar idioma 🌐',      es: 'Cambiar idioma 🌐',     en: 'Change language 🌐'     },
+
+  // ── Historia page ─────────────────────────────────────────────────────────
+  historia_title:    { ca: 'La nostra història',      es: 'Nuestra historia',       en: 'Our story'            },
+  historia_subtitle: { ca: "D'on venim i cap on anem", es: 'De dónde venimos y hacia dónde vamos', en: 'Where we come from and where we are going' },
+  historia_soon:     { ca: 'Pròximament',             es: 'Próximamente',           en: 'Coming soon'          },
+  historia_text:     { ca: 'Estem preparant alguna cosa especial per compartir la nostra història amb tu.',
+                        es: 'Estamos preparando algo especial para compartir nuestra historia contigo.',
+                        en: 'We are preparing something special to share our story with you.'             },
+
+  // ── Ressenyes page ────────────────────────────────────────────────────────
+  ressenyes_title:    { ca: 'Ressenyes',                          es: 'Reseñas',                          en: 'Reviews'                           },
+  ressenyes_subtitle: { ca: 'El que diuen els nostres clients',   es: 'Lo que dicen nuestros clientes',   en: 'What our customers say'            },
+  ressenyes_stars:    { ca: '⭐ 5.0 a Google Maps',              es: '⭐ 5.0 en Google Maps',             en: '⭐ 5.0 on Google Maps'              },
+  ressenyes_note:     { ca: 'La teva ressenya ajuda altres a descobrir-nos 🙏', es: 'Tu reseña ayuda a otros a descubrirnos 🙏', en: 'Your review helps others discover us 🙏' },
+  ressenyes_btn:      { ca: 'Escriu la teva ressenya',            es: 'Escribe tu reseña',                en: 'Write your review'                 },
 } as const
 
 export type I18nKey = keyof typeof i18n

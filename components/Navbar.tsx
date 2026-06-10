@@ -14,53 +14,62 @@ export default function Navbar() {
   const { lang } = useLanguage()
 
   const navLinks = [
-    { href: '/',            labelKey: 'nav_home'   as const },
-    { href: '/menu',        labelKey: 'nav_menu'   as const },
-    { href: '/fotos',       labelKey: 'nav_photos' as const },
-    { href: '/reservar',    labelKey: 'nav_book'   as const },
-    { href: '/entorno',     labelKey: 'nav_entorn' as const },
-    { href: '/eventos',     labelKey: 'nav_events' as const },
-    { href: '/informacion', labelKey: 'nav_info'   as const },
+    { href: '/',         labelKey: 'nav_home'     as const },
+    { href: '/menu',     labelKey: 'nav_menu'     as const },
+    { href: '/fotos',    labelKey: 'nav_photos'   as const },
+    { href: '/reservar', labelKey: 'nav_book'     as const },
+    { href: '/historia', labelKey: 'nav_historia' as const },
   ]
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll)
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const isHome = pathname === '/'
+  const transparent = isHome && !scrolled
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-parchment shadow-md' : 'bg-parchment/90 backdrop-blur-sm'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        transparent
+          ? 'bg-transparent'
+          : 'bg-parchment/95 backdrop-blur-md shadow-sm border-b border-wood/20'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="El Racó del Pantà" width={200} height={40} className="h-10 w-auto" priority />
-          <span className="hidden sm:block font-heading font-semibold text-green-dark text-sm leading-tight">
-            El Racó<br />del Pantà
-          </span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="El Racó del Pantà"
+            width={200}
+            height={50}
+            className={`h-11 w-auto transition-all duration-500 ${transparent ? 'brightness-0 invert' : ''}`}
+            priority
+          />
         </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-6 pr-20">
+        <div className="hidden md:flex items-center gap-7 pr-24">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative text-sm font-body transition-colors hover:text-green-dark group ${
-                  isActive ? 'text-green-dark font-semibold' : 'text-brown'
+                className={`relative text-sm font-body font-medium transition-colors duration-300 group ${
+                  isActive
+                    ? transparent ? 'text-white font-semibold' : 'text-green-dark font-semibold'
+                    : transparent ? 'text-white/85 hover:text-white' : 'text-brown hover:text-green-dark'
                 }`}
               >
                 {t(link.labelKey, lang)}
-                {/* Animated underline */}
                 <span
-                  className={`absolute bottom-[-2px] left-0 h-0.5 bg-green-dark rounded-full transition-all duration-300 ${
-                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}
+                  className={`absolute -bottom-0.5 left-0 h-0.5 rounded-full transition-all duration-300 ${
+                    transparent ? 'bg-white' : 'bg-green-dark'
+                  } ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}
                 />
               </Link>
             )
@@ -69,29 +78,29 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="md:hidden flex flex-col gap-1.5 p-2 mr-10"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
           <motion.span
             animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
             transition={{ duration: 0.2 }}
-            className="block w-6 h-0.5 bg-brown origin-center"
+            className={`block w-6 h-0.5 rounded-full ${transparent ? 'bg-white' : 'bg-brown'}`}
           />
           <motion.span
             animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="block w-6 h-0.5 bg-brown"
+            className={`block w-6 h-0.5 rounded-full ${transparent ? 'bg-white' : 'bg-brown'}`}
           />
           <motion.span
             animate={menuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
             transition={{ duration: 0.2 }}
-            className="block w-6 h-0.5 bg-brown origin-center"
+            className={`block w-6 h-0.5 rounded-full ${transparent ? 'bg-white' : 'bg-brown'}`}
           />
         </button>
       </div>
 
-      {/* Mobile drawer with AnimatePresence */}
+      {/* Mobile drawer */}
       <AnimatePresence initial={false}>
         {menuOpen && (
           <motion.div
@@ -99,10 +108,10 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden bg-parchment border-t border-wood overflow-hidden"
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+            className="md:hidden bg-parchment/98 backdrop-blur-md border-t border-wood/20 overflow-hidden"
           >
-            <div className="px-4 py-4 flex flex-col gap-1 rounded-b-2xl shadow-lg">
+            <div className="px-4 py-4 flex flex-col gap-1">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
@@ -113,7 +122,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block text-base font-body py-2 px-3 rounded-lg transition-colors ${
+                    className={`block text-base font-body py-2.5 px-3 rounded-xl transition-colors ${
                       pathname === link.href
                         ? 'text-green-dark font-semibold bg-green-light/40'
                         : 'text-brown hover:text-green-dark hover:bg-green-light/20'

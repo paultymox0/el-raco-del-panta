@@ -7,27 +7,20 @@ export type Lang = 'ca' | 'es' | 'en'
 type LanguageContextType = {
   lang: Lang
   setLang: (l: Lang) => void
-  showSplash: boolean
-  dismissSplash: (l: Lang) => void
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  lang: 'ca',
+  lang: 'es',
   setLang: () => {},
-  showSplash: false,
-  dismissSplash: () => {},
 })
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('ca')
-  const [showSplash, setShowSplash] = useState(false)
+  const [lang, setLangState] = useState<Lang>('es')
 
   useEffect(() => {
     const saved = localStorage.getItem('raco-language') as Lang | null
     if (saved && ['ca', 'es', 'en'].includes(saved)) {
       setLangState(saved)
-    } else {
-      setShowSplash(true)
     }
   }, [])
 
@@ -36,13 +29,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('raco-language', l)
   }
 
-  const dismissSplash = (l: Lang) => {
-    setLang(l)
-    setShowSplash(false)
-  }
-
   return (
-    <LanguageContext.Provider value={{ lang, setLang, showSplash, dismissSplash }}>
+    <LanguageContext.Provider value={{ lang, setLang }}>
       {children}
     </LanguageContext.Provider>
   )

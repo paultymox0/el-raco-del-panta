@@ -7,7 +7,6 @@ import { LanguageProvider } from '@/contexts/LanguageContext'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import WhatsAppButton from '@/components/WhatsAppButton'
-import LanguageSplash from '@/components/LanguageSplash'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import MobileReserveButton from '@/components/MobileReserveButton'
 
@@ -33,7 +32,6 @@ export default function RootLayout({
           <ComingSoon />
         ) : (
           <LanguageProvider>
-            <LanguageSplash />
             <Navbar />
             <LanguageSwitcher />
             <main>{children}</main>
