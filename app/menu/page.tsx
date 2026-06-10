@@ -1,4 +1,3 @@
-// 📸 Ver /public/INSTRUCCIONES-FOTOS.txt para guía de imágenes
 // 🌍 Textos multilingüe en /lib/i18n.ts
 // 🍽️ Especials del Dia en /data/menu-del-dia.json
 

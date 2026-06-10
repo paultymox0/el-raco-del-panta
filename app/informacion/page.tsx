@@ -1,4 +1,3 @@
-// 📸 Ver /public/INSTRUCCIONES-FOTOS.txt para guía de imágenes
 import type { Metadata } from 'next'
 import InformacionContent from '@/components/InformacionContent'
 
