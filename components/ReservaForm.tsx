@@ -39,7 +39,11 @@ export default function ReservaForm() {
         animate={{ opacity: 1, y: 0 }}
         className="bg-green-light border border-green-mid rounded-2xl p-8 text-center"
       >
-        <div className="text-5xl mb-4">✅</div>
+        <div className="flex justify-center mb-4">
+          <svg className="w-16 h-16 text-green-dark" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
         <h3 className="font-heading text-2xl text-green-dark mb-3">
           {t('form_success_title', lang)}, {submittedName}!
         </h3>

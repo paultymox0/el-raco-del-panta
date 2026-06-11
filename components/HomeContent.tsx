@@ -93,7 +93,7 @@ export default function HomeContent() {
           style={{ y: textY, zIndex: 10 }}
           className="relative text-center px-4 max-w-4xl mx-auto"
         >
-          <motion.div custom={0} variants={heroChildVariants} initial="hidden" animate="visible" className="flex justify-center mb-8">
+          <motion.div custom={0} variants={heroChildVariants} initial="hidden" animate="visible" className="flex justify-center mb-6">
             <Image
               src="/logo.png"
               alt="El Racó del Pantà"
@@ -103,6 +103,14 @@ export default function HomeContent() {
               priority
             />
           </motion.div>
+
+          <div className="flex items-center gap-3 justify-center mb-6">
+            <div className="w-10 h-px bg-white/35" />
+            <div className="w-1 h-1 rounded-full bg-white/50" />
+            <div className="w-1.5 h-1.5 rounded-full bg-white/60" />
+            <div className="w-1 h-1 rounded-full bg-white/50" />
+            <div className="w-10 h-px bg-white/35" />
+          </div>
 
           <motion.h1
             custom={1} variants={heroChildVariants} initial="hidden" animate="visible"
@@ -145,7 +153,7 @@ export default function HomeContent() {
       </section>
 
       {/* ── NEWLY OPENED BANNER ── */}
-      <div className="bg-green-dark text-cream text-center py-4 px-4 text-base md:text-lg font-body">
+      <div className="bg-gradient-to-r from-green-dark via-green-mid to-green-dark text-cream text-center py-4 px-4 text-base md:text-lg font-body tracking-wide">
         {t('banner_new_open', lang)}
       </div>
 
@@ -184,7 +192,14 @@ export default function HomeContent() {
       <section className="py-20 px-4 bg-green-light/30">
         <ScrollReveal className="max-w-lg mx-auto">
           <div className="bg-parchment rounded-3xl shadow-lg p-10 text-center border border-wood/30">
-            <div className="text-5xl font-heading font-black text-yellow-500 mb-2">⭐ 5.0</div>
+            <div className="flex items-center gap-1 justify-center mb-2">
+              {[...Array(5)].map((_, i) => (
+                <svg key={i} className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+                  <path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                </svg>
+              ))}
+              <span className="font-heading font-black text-2xl text-yellow-500 ml-1">5.0</span>
+            </div>
             <h2 className="font-heading text-2xl text-green-dark mb-3">{t('reviews_title', lang)}</h2>
             <p className="text-brown/70 mb-6 font-body">{t('reviews_note', lang)}</p>
             <motion.a

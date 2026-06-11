@@ -14,11 +14,11 @@ export default function Navbar() {
   const { lang } = useLanguage()
 
   const navLinks = [
-    { href: '/',         labelKey: 'nav_home'     as const },
-    { href: '/menu',     labelKey: 'nav_menu'     as const },
-    { href: '/fotos',    labelKey: 'nav_photos'   as const },
-    { href: '/reservar', labelKey: 'nav_book'     as const },
-    { href: '/historia', labelKey: 'nav_historia' as const },
+    { href: '/',          labelKey: 'nav_home'      as const },
+    { href: '/menu',      labelKey: 'nav_menu'      as const },
+    { href: '/entorno',   labelKey: 'nav_entorn'    as const },
+    { href: '/historia',  labelKey: 'nav_historia'  as const },
+    { href: '/ressenyes', labelKey: 'nav_ressenyes' as const },
   ]
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/logo.png"
             alt="El Racó del Pantà"
@@ -49,10 +49,17 @@ export default function Navbar() {
             className={`h-11 w-auto transition-all duration-500 ${transparent ? 'brightness-0 invert' : ''}`}
             priority
           />
+          <span
+            className={`font-heading font-bold text-sm tracking-wide transition-all duration-500 hidden lg:block ${
+              transparent ? 'opacity-0 pointer-events-none' : 'text-green-dark opacity-100'
+            }`}
+          >
+            El Racó del Pantà
+          </span>
         </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-7 pr-24">
+        <div className="hidden lg:flex items-center gap-6 pr-0">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
@@ -78,7 +85,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2 mr-10"
+          className="lg:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -109,7 +116,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="md:hidden bg-parchment/98 backdrop-blur-md border-t border-wood/20 overflow-hidden"
+            className="lg:hidden bg-parchment/98 backdrop-blur-md border-t border-wood/20 overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-1">
               {navLinks.map((link, i) => (
