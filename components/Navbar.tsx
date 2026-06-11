@@ -49,15 +49,15 @@ export default function Navbar() {
             alt="El Racó del Pantà"
             width={120}
             height={80}
-            style={{ objectFit: 'contain' }}
-            className="h-11 w-auto brightness-0 invert"
+            style={{ objectFit: 'contain', filter: 'brightness(0) invert(1) drop-shadow(0 1px 3px rgba(0,0,0,0.5))' }}
+            className="h-11 w-auto"
             priority
           />
           {/* Name text: visible at hero top, fades on scroll */}
           <motion.span
             animate={{ opacity: transparent ? 1 : 0 }}
             transition={{ duration: 0.4 }}
-            className="font-heading font-bold text-sm tracking-wide hidden lg:block text-white pointer-events-none select-none"
+            className={`font-heading font-bold text-sm tracking-wide hidden lg:block pointer-events-none select-none ${scrolled ? 'text-[#f5ead6]' : 'text-white'}`}
           >
             El Racó del Pantà
           </motion.span>
@@ -72,12 +72,14 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`relative text-sm font-body font-medium transition-colors duration-300 group ${
-                  isActive ? 'text-[#f5ead6] font-semibold' : 'text-[#f5ead6]/75 hover:text-[#f5ead6]'
+                  scrolled
+                    ? (isActive ? 'text-[#f5ead6] font-semibold' : 'text-[#f5ead6]/75 hover:text-[#f5ead6]')
+                    : (isActive ? 'text-white font-semibold' : 'text-white/80 hover:text-white')
                 }`}
               >
                 {t(link.labelKey, lang)}
                 <span
-                  className={`absolute -bottom-0.5 left-0 h-0.5 rounded-full bg-[#f5ead6] transition-all duration-300 ${
+                  className={`absolute -bottom-0.5 left-0 h-0.5 rounded-full transition-all duration-300 ${scrolled ? 'bg-[#f5ead6]' : 'bg-white'} ${
                     isActive ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}
                 />

@@ -287,8 +287,8 @@ function FlipCard({
           {item.alergenos.length > 0 ? (
             <div className="flex flex-wrap gap-1 my-2">
               {item.alergenos.map(a => (
-                <span key={a} className="text-[10px] bg-amber-900/50 text-amber-200 px-1.5 py-0.5 rounded-full font-body" title={ALLERGEN[a].label}>
-                  {ALLERGEN[a].emoji} {ALLERGEN[a].label}
+                <span key={a} className="text-[10px] bg-amber-900/50 text-amber-200 px-1.5 py-0.5 rounded-full font-body">
+                  {ALLERGEN[a].label}
                 </span>
               ))}
             </div>
@@ -321,7 +321,7 @@ function DrinkRow({ item, onAdd }: { item: MenuItem; onAdd: () => void }) {
       <div className="flex-1 min-w-0">
         <span className="font-body text-sm text-blue-100 truncate block">{item[lang].nom}</span>
         {item.alergenos.length > 0 && (
-          <span className="text-[10px] text-blue-300/60 font-body">{item.alergenos.map(a => ALLERGEN[a].emoji).join(' ')}</span>
+          <span className="text-[10px] text-blue-300/60 font-body">{item.alergenos.map(a => ALLERGEN[a].label).join(', ')}</span>
         )}
       </div>
       <div className="flex items-center gap-3 ml-3 flex-shrink-0">
