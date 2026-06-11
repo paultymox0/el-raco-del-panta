@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { carta, MenuItem, Allergen } from '@/data/carta'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -27,35 +27,35 @@ const ALLERGEN: Record<Allergen, { emoji: string; label: string }> = {
   cacahuetes:   { emoji: '🥜', label: 'Cacahuetes' },
 }
 
-// ── SVG Icons ─────────────────────────────────────────────────────────────────
+// ── Icons ─────────────────────────────────────────────────────────────────────
 
 const StarterIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-5 h-5 flex-shrink-0" aria-hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
   </svg>
 )
 
 const SandwichIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-5 h-5 flex-shrink-0" aria-hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
     <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
   </svg>
 )
 
 const GrillIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-5 h-5 flex-shrink-0" aria-hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
     <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
   </svg>
 )
 
 const DessertIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-5 h-5 flex-shrink-0" aria-hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
     <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
   </svg>
 )
 
 const DrinksIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-5 h-5 flex-shrink-0" aria-hidden>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15M14.25 3.104c.251.023.501.05.75.082M19.8 15a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 15M19.8 15H4.5" />
   </svg>
 )
@@ -70,92 +70,131 @@ const BasketIcon = () => (
 
 type CatConfig = {
   id: CategoryId
-  headerBg: string
-  contentBg: string
-  headerText: string
-  subText: string
-  accentHex: string
-  divider: string
   icon: JSX.Element
+  tabActive: string
+  tabInactive: string
+  contentStyle: React.CSSProperties
+  dark: boolean
+  subcatActive: string
+  subcatInactive: string
 }
 
 const CATS: CatConfig[] = [
   {
     id: 'starters',
-    headerBg: 'bg-[#fdf6ec] hover:bg-[#f5ead6]',
-    contentBg: 'bg-[#fdf6ec]',
-    headerText: 'text-green-dark',
-    subText: 'text-brown/50',
-    accentHex: '#1a3d1f',
-    divider: 'border-[#d4b896]/40',
     icon: <StarterIcon />,
+    tabActive: 'bg-[#1a3d1f] text-[#f5ead6] shadow-md',
+    tabInactive: 'bg-[#f5ead6]/70 text-[#2c1a0e]/70 hover:bg-[#f5ead6] hover:text-[#2c1a0e]',
+    contentStyle: { backgroundImage: 'linear-gradient(160deg, #fdf8f0 0%, #f5ead6 55%, #ede0c4 100%)' },
+    dark: false,
+    subcatActive: 'bg-[#1a3d1f] text-[#f5ead6]',
+    subcatInactive: 'bg-[#ede0c4] text-[#4a2c0e] hover:bg-[#d4b896]',
   },
   {
     id: 'sandwiches',
-    headerBg: 'bg-[#f0e0c8] hover:bg-[#e8d4b8]',
-    contentBg: 'bg-[#faf3ea]',
-    headerText: 'text-[#5c3010]',
-    subText: 'text-[#8a5230]/60',
-    accentHex: '#a0622a',
-    divider: 'border-[#d4b896]/40',
     icon: <SandwichIcon />,
+    tabActive: 'bg-[#a0622a] text-white shadow-md',
+    tabInactive: 'bg-[#f0e0c8]/80 text-[#5c3010]/70 hover:bg-[#e8d4b8] hover:text-[#5c3010]',
+    contentStyle: { backgroundImage: 'linear-gradient(160deg, #fdf0dc 0%, #f0d9a8 50%, #e0c480 100%)' },
+    dark: false,
+    subcatActive: 'bg-[#a0622a] text-white',
+    subcatInactive: 'bg-[#e8d0b8] text-[#6b3d1a] hover:bg-[#d4b896]',
   },
   {
     id: 'grill',
-    headerBg: 'bg-[#1c1008] hover:bg-[#241408]',
-    contentBg: 'bg-[#140c05]',
-    headerText: 'text-orange-100',
-    subText: 'text-orange-300/50',
-    accentHex: '#ea580c',
-    divider: 'border-orange-900/30',
     icon: <GrillIcon />,
+    tabActive: 'bg-[#1a0e05] text-orange-200 shadow-md ring-1 ring-orange-800/50',
+    tabInactive: 'bg-[#261206]/70 text-orange-300/70 hover:bg-[#301a08] hover:text-orange-200',
+    contentStyle: {
+      backgroundImage:
+        'radial-gradient(ellipse 100% 45% at 50% 100%, rgba(234,88,12,0.45) 0%, transparent 65%), radial-gradient(ellipse 60% 30% at 30% 80%, rgba(234,88,12,0.2) 0%, transparent 60%), linear-gradient(180deg, #1a0e05 0%, #261205 55%, #1a0e05 100%)',
+    },
+    dark: true,
+    subcatActive: 'bg-orange-700 text-white',
+    subcatInactive: 'bg-orange-950/60 text-orange-300/70 hover:bg-orange-900/60',
   },
   {
     id: 'desserts',
-    headerBg: 'bg-[#fff0f5] hover:bg-[#ffe4ef]',
-    contentBg: 'bg-[#fff5f8]',
-    headerText: 'text-rose-900',
-    subText: 'text-rose-400/60',
-    accentHex: '#f43f5e',
-    divider: 'border-rose-100/60',
     icon: <DessertIcon />,
+    tabActive: 'bg-rose-700 text-white shadow-md',
+    tabInactive: 'bg-rose-50/80 text-rose-700/70 hover:bg-rose-100 hover:text-rose-700',
+    contentStyle: { backgroundImage: 'linear-gradient(160deg, #fff9fc 0%, #fce8f0 50%, #f5d0e4 100%)' },
+    dark: false,
+    subcatActive: 'bg-rose-700 text-white',
+    subcatInactive: 'bg-rose-100 text-rose-700 hover:bg-rose-200',
   },
   {
     id: 'drinks',
-    headerBg: 'bg-[#0a1628] hover:bg-[#0e1e36]',
-    contentBg: 'bg-[#0d1e35]',
-    headerText: 'text-blue-100',
-    subText: 'text-blue-300/50',
-    accentHex: '#3b82f6',
-    divider: 'border-blue-900/30',
     icon: <DrinksIcon />,
+    tabActive: 'bg-[#0a1628] text-blue-200 shadow-md ring-1 ring-blue-800/50',
+    tabInactive: 'bg-[#0d1e35]/70 text-blue-300/70 hover:bg-[#0a1628] hover:text-blue-200',
+    contentStyle: {
+      backgroundImage:
+        'radial-gradient(ellipse 55% 35% at 82% 88%, rgba(245,158,11,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 50% at 15% 60%, rgba(59,130,246,0.12) 0%, transparent 65%), linear-gradient(160deg, #0d1e35 0%, #0a1628 60%, #061020 100%)',
+    },
+    dark: true,
+    subcatActive: 'bg-blue-600 text-white',
+    subcatInactive: 'bg-blue-950/60 text-blue-300/70 hover:bg-blue-900/60',
   },
 ]
 
 const CAT_LABELS: Record<CategoryId, { ca: string; es: string; en: string }> = {
-  starters:   { ca: 'Per Comenzar', es: 'Para Empezar',         en: 'Starters'            },
-  sandwiches: { ca: 'Entrepans',    es: 'Entrepans & Torrades',  en: 'Sandwiches & Toasts' },
-  grill:      { ca: 'La Brasa',     es: 'La Nostra Brasa',       en: 'From the Grill'      },
-  desserts:   { ca: 'Postres',      es: 'Postres',               en: 'Desserts'            },
-  drinks:     { ca: 'Begudes',      es: 'Begudes',               en: 'Drinks'              },
-}
-
-function getCatCount(id: CategoryId): number {
-  switch (id) {
-    case 'starters':   return carta.filter(i => ['entrantes', 'ensalades', 'ous'].includes(i.categoria)).length
-    case 'sandwiches': return carta.filter(i => i.categoria === 'especiales').length
-    case 'grill':      return carta.filter(i => i.categoria === 'platos').length
-    case 'desserts':   return carta.filter(i => i.categoria === 'postres').length
-    case 'drinks':     return carta.filter(i => ['bebidas_soda', 'bebidas_alcohol'].includes(i.categoria)).length
-  }
+  starters:   { ca: 'Per Começar',         es: 'Para Empezar',          en: 'Starters'            },
+  sandwiches: { ca: 'Entrepans i Torrades', es: 'Bocadillos y Tostadas', en: 'Sandwiches & Toasts' },
+  grill:      { ca: 'La Nostra Brasa',      es: 'Nuestra Brasa',         en: 'Our Grill'           },
+  desserts:   { ca: 'Postres',              es: 'Postres',               en: 'Desserts'            },
+  drinks:     { ca: 'Begudes',              es: 'Bebidas',               en: 'Drinks'              },
 }
 
 const SANDWICH_SUBCATS = [
-  { id: 'freds',        label: { ca: 'Freds (½)',    es: 'Fríos (½)',    en: 'Cold (½)'    } },
-  { id: 'calents',      label: { ca: 'Calents',      es: 'Calientes',    en: 'Hot'         } },
-  { id: 'torrades',     label: { ca: 'Torrades',     es: 'Tostadas',     en: 'Toasts'      } },
-  { id: 'hamburgueses', label: { ca: 'Hamburgueses', es: 'Hamburguesas', en: 'Burgers'     } },
+  { id: 'freds',        label: { ca: 'Freds',        es: 'Fríos',       en: 'Cold'    } },
+  { id: 'calents',      label: { ca: 'Calents',      es: 'Calientes',   en: 'Hot'     } },
+  { id: 'torrades',     label: { ca: 'Torrades',     es: 'Tostadas',    en: 'Toasts'  } },
+  { id: 'hamburgueses', label: { ca: 'Hamburgueses', es: 'Hamburguesas',en: 'Burgers' } },
 ]
+
+const ALL_DRINK_SUBCATS = [
+  { id: 'cervezas',      cat: 'bebidas_alcohol', label: { ca: 'Cerveses',      es: 'Cervezas',      en: 'Beers'         } },
+  { id: 'refrescos',     cat: 'bebidas_soda',    label: { ca: 'Refrescos',     es: 'Refrescos',     en: 'Soft Drinks'   } },
+  { id: 'cafes',         cat: 'bebidas_soda',    label: { ca: 'Cafès i Zumos', es: 'Cafés y Zumos', en: 'Coffee & Juice'} },
+  { id: 'vinos_blancos', cat: 'bebidas_alcohol', label: { ca: 'Vins Blancs',   es: 'Vinos Blancos', en: 'White Wines'   } },
+  { id: 'vinos_tintos',  cat: 'bebidas_alcohol', label: { ca: 'Vins Negres',   es: 'Vinos Tintos',  en: 'Red Wines'     } },
+  { id: 'combinados',    cat: 'bebidas_alcohol', label: { ca: 'Combinats',     es: 'Combinados',    en: 'Spirits'       } },
+  { id: 'copas',         cat: 'bebidas_alcohol', label: { ca: 'Copes',         es: 'Copas',         en: 'Glasses'       } },
+]
+
+// ── Grill ember sparks ────────────────────────────────────────────────────────
+
+function EmberSparks() {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+      {[...Array(14)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width:  2 + (i % 3),
+            height: 2 + (i % 3),
+            background: i % 3 === 0 ? '#f97316' : i % 3 === 1 ? '#fbbf24' : '#ef4444',
+            left:   `${8 + (i * 6.5) % 84}%`,
+            bottom: `${4 + (i * 9) % 28}%`,
+          }}
+          animate={{
+            y:       [0, -(55 + i * 9)],
+            opacity: [0, 0.85, 0],
+            x:       [0, (i % 2 === 0 ? 1 : -1) * (4 + i * 2)],
+          }}
+          transition={{
+            duration: 2.2 + (i % 3) * 0.6,
+            repeat:   Infinity,
+            delay:    i * 0.32,
+            ease:     'easeOut',
+          }}
+        />
+      ))}
+    </div>
+  )
+}
 
 // ── Flip Card ─────────────────────────────────────────────────────────────────
 
@@ -164,23 +203,48 @@ function FlipCard({
   isFlipped,
   onFlip,
   onAdd,
+  onLongPress,
   darkFront,
 }: {
   item: MenuItem
   isFlipped: boolean
   onFlip: () => void
   onAdd: (e: React.MouseEvent) => void
+  onLongPress?: (src: string) => void
   darkFront?: boolean
 }) {
   const { lang } = useLanguage()
-  const frontBg = darkFront ? 'bg-neutral-900 border-white/10' : 'bg-white border-wood/20'
-  const frontName = darkFront ? 'text-orange-100' : 'text-green-dark'
+  const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const longPressTriggered = useRef(false)
+  const frontBg   = darkFront ? 'bg-neutral-900 border-white/10' : 'bg-white border-wood/20'
+  const frontName  = darkFront ? 'text-orange-100' : 'text-green-dark'
+
+  function handlePointerDown() {
+    if (isFlipped) return
+    longPressTriggered.current = false
+    pressTimer.current = setTimeout(() => {
+      longPressTriggered.current = true
+      onLongPress?.(item.imatge)
+    }, 400)
+  }
+
+  function handlePointerUp() {
+    if (pressTimer.current) { clearTimeout(pressTimer.current); pressTimer.current = null }
+  }
+
+  function handleCardClick() {
+    if (longPressTriggered.current) { longPressTriggered.current = false; return }
+    onFlip()
+  }
 
   return (
     <div
       className="relative cursor-pointer"
       style={{ perspective: '900px', height: '260px' }}
-      onClick={onFlip}
+      onClick={handleCardClick}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
     >
       <motion.div
         className="relative w-full h-full"
@@ -205,7 +269,7 @@ function FlipCard({
           </div>
         </div>
 
-        {/* Back — always green */}
+        {/* Back */}
         <div
           className="absolute inset-0 rounded-2xl overflow-hidden shadow-md bg-[#1a3d1f] border border-green-900/40 flex flex-col p-4"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
@@ -248,7 +312,7 @@ function FlipCard({
 function DrinkRow({ item, onAdd }: { item: MenuItem; onAdd: () => void }) {
   const { lang } = useLanguage()
   return (
-    <div className="flex items-center justify-between py-2 border-b border-white/10">
+    <div className="flex items-center justify-between py-2.5 border-b border-white/10 last:border-0">
       <div className="flex-1 min-w-0">
         <span className="font-body text-sm text-blue-100 truncate block">{item[lang].nom}</span>
         {item.alergenos.length > 0 && (
@@ -381,12 +445,14 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
 export default function MenuContent() {
   const { lang } = useLanguage()
 
-  const [activeCategory, setActiveCategory] = useState<CategoryId | null>('starters')
+  const [activeCategory, setActiveCategory]         = useState<CategoryId>('starters')
   const [activeSandwichSubcat, setActiveSandwichSubcat] = useState('freds')
-  const [activeCardId, setActiveCardId] = useState<string | null>(null)
-  const [cart, setCart] = useState<CartItem[]>([])
-  const [cartLoaded, setCartLoaded] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
+  const [activeCardId, setActiveCardId]             = useState<string | null>(null)
+  const [cart, setCart]                             = useState<CartItem[]>([])
+  const [cartLoaded, setCartLoaded]                 = useState(false)
+  const [cartOpen, setCartOpen]                     = useState(false)
+  const [openDrinkSubcats, setOpenDrinkSubcats]     = useState<Set<string>>(new Set(['cervezas']))
+  const [lightboxSrc, setLightboxSrc]               = useState<string | null>(null)
 
   useEffect(() => {
     try { const raw = sessionStorage.getItem('raco-cart'); if (raw) setCart(JSON.parse(raw)) } catch {}
@@ -398,6 +464,14 @@ export default function MenuContent() {
   }, [cart, cartLoaded])
 
   useEffect(() => { setActiveCardId(null) }, [activeCategory, activeSandwichSubcat])
+
+  function toggleDrinkSubcat(id: string) {
+    setOpenDrinkSubcats(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id); else next.add(id)
+      return next
+    })
+  }
 
   const addToCart = useCallback((item: MenuItem) => {
     setCart(prev => {
@@ -425,19 +499,6 @@ export default function MenuContent() {
   const dessertItems  = carta.filter(i => i.categoria === 'postres')
   const sandwichItems = carta.filter(i => i.categoria === 'especiales' && i.subcategoria === activeSandwichSubcat)
 
-  const DRINK_SUBCATS_NA = [
-    { id: 'refrescos',    label: { ca: 'Refrescos',         es: 'Refrescos',          en: 'Soft Drinks'  } },
-    { id: 'cervezas_sin', label: { ca: 'Cerveses 0,0%',     es: 'Cervezas 0,0%',      en: 'Non-Alc Beer' } },
-    { id: 'cafes',        label: { ca: 'Cafès i Infusions', es: 'Cafés e Infusiones',  en: 'Coffee & Tea' } },
-  ]
-  const DRINK_SUBCATS_A = [
-    { id: 'cervezas',      label: { ca: 'Cerveses',    es: 'Cervezas',      en: 'Beers'       } },
-    { id: 'vinos_blancos', label: { ca: 'Vins Blancs', es: 'Vinos Blancos', en: 'White Wines' } },
-    { id: 'vinos_tintos',  label: { ca: 'Vins Negres', es: 'Vinos Tintos',  en: 'Red Wines'   } },
-    { id: 'combinados',    label: { ca: 'Combinats',   es: 'Combinados',    en: 'Spirits'     } },
-    { id: 'copas',         label: { ca: 'Copes',       es: 'Copas',         en: 'Glasses'     } },
-  ]
-
   function renderCardGrid(items: MenuItem[], darkFront?: boolean) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -453,25 +514,13 @@ export default function MenuContent() {
               isFlipped={activeCardId === item.id}
               onFlip={() => setActiveCardId(prev => prev === item.id ? null : item.id)}
               onAdd={(e) => { e.stopPropagation(); addToCart(item); setActiveCardId(null) }}
+              onLongPress={(src) => setLightboxSrc(src)}
               darkFront={darkFront}
             />
           </motion.div>
         ))}
       </div>
     )
-  }
-
-  function renderDrinkSection(subcats: { id: string; label: { ca: string; es: string; en: string } }[], cat: string) {
-    return subcats.map(subcat => {
-      const items = carta.filter(i => i.categoria === cat && i.subcategoria === subcat.id)
-      if (!items.length) return null
-      return (
-        <div key={subcat.id} className="mb-6">
-          <h4 className="font-heading text-sm font-bold text-blue-300 uppercase tracking-widest mb-2">{subcat.label[lang]}</h4>
-          {items.map(item => <DrinkRow key={item.id} item={item} onAdd={() => addToCart(item)} />)}
-        </div>
-      )
-    })
   }
 
   function renderCategoryContent(catId: CategoryId) {
@@ -487,15 +536,16 @@ export default function MenuContent() {
             {renderCardGrid(eggsItems)}
           </>
         )
+
       case 'sandwiches':
         return (
           <>
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="flex overflow-x-auto gap-2 mb-8 pb-1 [&::-webkit-scrollbar]:hidden">
               {SANDWICH_SUBCATS.map(sub => (
                 <button
                   key={sub.id}
                   onClick={() => setActiveSandwichSubcat(sub.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-heading font-bold transition-all ${
+                  className={`px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
                     activeSandwichSubcat === sub.id
                       ? 'bg-[#a0622a] text-white shadow-md'
                       : 'bg-[#e8d0b8] text-[#6b3d1a] hover:bg-[#d4b896]'
@@ -521,6 +571,7 @@ export default function MenuContent() {
             </AnimatePresence>
           </>
         )
+
       case 'grill':
         return (
           <>
@@ -528,6 +579,7 @@ export default function MenuContent() {
             {renderCardGrid(grillItems, true)}
           </>
         )
+
       case 'desserts':
         return (
           <>
@@ -535,33 +587,67 @@ export default function MenuContent() {
             {renderCardGrid(dessertItems)}
           </>
         )
+
       case 'drinks':
         return (
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="font-heading text-lg font-black text-blue-200 mb-4 border-b border-blue-800/50 pb-2">{t('drinks_no_alcohol', lang)}</h3>
-              {renderDrinkSection(DRINK_SUBCATS_NA, 'bebidas_soda')}
-            </div>
-            <div>
-              <h3 className="font-heading text-lg font-black text-blue-200 mb-4 border-b border-blue-800/50 pb-2">{t('drinks_alcohol', lang)}</h3>
-              {renderDrinkSection(DRINK_SUBCATS_A, 'bebidas_alcohol')}
-            </div>
+          <div className="space-y-2">
+            {ALL_DRINK_SUBCATS.map(sub => {
+              const items = carta.filter(i => i.categoria === sub.cat && i.subcategoria === sub.id)
+              if (!items.length) return null
+              const isOpen = openDrinkSubcats.has(sub.id)
+              return (
+                <div key={sub.id} className="rounded-xl overflow-hidden border border-blue-800/30">
+                  <button
+                    onClick={() => toggleDrinkSubcat(sub.id)}
+                    className="w-full flex items-center justify-between px-4 py-3 bg-blue-950/60 hover:bg-blue-900/60 transition-colors"
+                  >
+                    <span className="font-heading font-bold text-blue-200 text-sm">{sub.label[lang]}</span>
+                    <motion.svg
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.25 }}
+                      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
+                      className="w-4 h-4 text-blue-400 flex-shrink-0"
+                      aria-hidden
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </motion.svg>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-4 py-2 bg-blue-950/30">
+                          {items.map(item => <DrinkRow key={item.id} item={item} onAdd={() => addToCart(item)} />)}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )
+            })}
           </div>
         )
     }
   }
+
+  const activeCat = CATS.find(c => c.id === activeCategory)!
 
   return (
     <div className="min-h-screen">
 
       {/* Page header */}
       <div className="pt-20 pb-8 text-center bg-parchment relative overflow-hidden">
-        <svg className="absolute left-0 top-4 w-24 opacity-10 hidden lg:block" viewBox="0 0 80 120" fill="none">
+        <svg className="absolute left-0 top-4 w-24 opacity-10 hidden lg:block" viewBox="0 0 80 120" fill="none" aria-hidden>
           <path d="M40 120 C40 80 5 60 10 20 Q20 0 40 10 Q60 0 70 20 C75 60 40 80 40 120Z" fill="#1a3d1f"/>
           <path d="M40 90 C30 70 10 65 15 45 Q22 30 35 40" stroke="#4a7c3f" strokeWidth="1.5" fill="none"/>
           <path d="M40 90 C50 70 70 65 65 45 Q58 30 45 40" stroke="#4a7c3f" strokeWidth="1.5" fill="none"/>
         </svg>
-        <svg className="absolute right-0 top-4 w-24 opacity-10 hidden lg:block scale-x-[-1]" viewBox="0 0 80 120" fill="none">
+        <svg className="absolute right-0 top-4 w-24 opacity-10 hidden lg:block scale-x-[-1]" viewBox="0 0 80 120" fill="none" aria-hidden>
           <path d="M40 120 C40 80 5 60 10 20 Q20 0 40 10 Q60 0 70 20 C75 60 40 80 40 120Z" fill="#1a3d1f"/>
           <path d="M40 90 C30 70 10 65 15 45 Q22 30 35 40" stroke="#4a7c3f" strokeWidth="1.5" fill="none"/>
           <path d="M40 90 C50 70 70 65 65 45 Q58 30 45 40" stroke="#4a7c3f" strokeWidth="1.5" fill="none"/>
@@ -572,74 +658,47 @@ export default function MenuContent() {
         <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="font-heading text-4xl md:text-5xl font-black text-green-dark">
           La Nostra Carta
         </motion.h1>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="font-body italic text-brown/50 text-sm mt-2">
-          Cuina de temporada · Productes locals · Elaboració artesanal
-        </motion.p>
       </div>
 
-      {/* Accordion */}
-      <div className="max-w-5xl mx-auto pb-32">
-        {CATS.map((cat, i) => {
-          const isOpen = activeCategory === cat.id
-          const count = getCatCount(cat.id)
-          const dishWord = lang === 'ca' ? 'plats' : lang === 'en' ? 'dishes' : 'platos'
-          return (
-            <div key={cat.id} className={`border-b ${cat.divider}`}>
-              <motion.button
-                initial={{ opacity: 0, x: -24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.07, duration: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                onClick={() => setActiveCategory(isOpen ? null : cat.id)}
-                style={isOpen ? { borderLeft: `4px solid ${cat.accentHex}` } : { borderLeft: '4px solid transparent' }}
-                className={`w-full flex items-center justify-between px-6 py-5 transition-colors ${cat.headerBg}`}
-              >
-                <div className={`flex items-center gap-3 ${cat.headerText}`}>
-                  {cat.icon}
-                  <span className="font-heading text-lg md:text-xl font-black">{CAT_LABELS[cat.id][lang]}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  {!isOpen && (
-                    <span className={`text-xs font-body hidden sm:block ${cat.subText}`}>{count} {dishWord}</span>
-                  )}
-                  <motion.svg
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
-                    className={`w-5 h-5 flex-shrink-0 ${cat.headerText}`}
-                    aria-hidden
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </motion.svg>
-                </div>
-              </motion.button>
-
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    key={cat.id}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                    className="overflow-hidden"
-                  >
-                    <div className={`${cat.contentBg} px-4 md:px-8 py-8`}>
-                      {renderCategoryContent(cat.id)}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )
-        })}
+      {/* Horizontal category tabs — sticky */}
+      <div className="sticky top-[68px] z-30 bg-parchment/95 backdrop-blur-sm border-b border-wood/20 shadow-sm">
+        <div className="flex overflow-x-auto gap-2 px-4 py-3 [&::-webkit-scrollbar]:hidden max-w-5xl mx-auto">
+          {CATS.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all duration-200 ${
+                activeCategory === cat.id ? cat.tabActive : cat.tabInactive
+              }`}
+            >
+              {cat.icon}
+              {CAT_LABELS[cat.id][lang]}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {/* Category content — crossfade */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeCategory}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22 }}
+          style={activeCat.contentStyle}
+          className="relative min-h-[60vh]"
+        >
+          {activeCategory === 'grill' && <EmberSparks />}
+          <div className="max-w-5xl mx-auto px-4 py-8 relative z-10">
+            {renderCategoryContent(activeCategory)}
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Allergen note */}
       <div className="border-t border-wood/30 py-10 px-4 text-center bg-cream/50">
-        <p className="text-brown/45 text-xs font-body max-w-lg mx-auto mb-6 leading-relaxed">{t('allergens_note', lang)}</p>
-        <a href="/reservar" className="inline-block bg-green-dark text-cream px-8 py-3.5 rounded-full font-heading font-bold hover:bg-green-mid transition-all hover:scale-105 shadow-md">
-          {t('book_title', lang)}
-        </a>
+        <p className="text-brown/45 text-xs font-body max-w-lg mx-auto leading-relaxed">{t('allergens_note', lang)}</p>
       </div>
 
       {/* Cart pill */}
@@ -666,6 +725,37 @@ export default function MenuContent() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/40 z-40" onClick={() => setCartOpen(false)} />
             <CartPanel cart={cart} onRemove={removeFromCart} onIncrement={incrementCart} onDecrement={decrementCart} onClear={() => setCart([])} onClose={() => setCartOpen(false)} />
           </>
+        )}
+      </AnimatePresence>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxSrc && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/92 p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxSrc(null)}
+          >
+            <button
+              onClick={() => setLightboxSrc(null)}
+              className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl font-light transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <motion.img
+              src={lightboxSrc}
+              className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              onClick={(e) => e.stopPropagation()}
+              alt="Dish photo"
+            />
+          </motion.div>
         )}
       </AnimatePresence>
 

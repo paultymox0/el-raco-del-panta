@@ -2,14 +2,10 @@
 
 import { useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import LocalImage from '@/components/LocalImage'
-import { ScrollReveal, StaggerGroup, StaggerItem } from '@/components/ScrollReveal'
+import { ScrollReveal } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
-
-// ── Data ──────────────────────────────────────────────────────────────────────
 
 const heroChildVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -19,28 +15,6 @@ const heroChildVariants = {
   }),
 }
 
-const dishes = [
-  {
-    img: '/especialidades/especialidad-1.jpg',
-    ca: { name: 'Xuletó a la brasa', desc: 'Carn de primera qualitat cuinada a foc lent sobre brasa de llenya' },
-    es: { name: 'Chuletón a la brasa', desc: 'Carne de primera calidad cocinada a fuego lento sobre brasa de leña' },
-    en: { name: 'T-bone on the grill', desc: 'Prime quality meat slow-cooked over wood embers' },
-  },
-  {
-    img: '/especialidades/especialidad-2.jpg',
-    ca: { name: "Taula d'ibèrics", desc: "Selecció artesanal d'embotits ibèrics de la comarca" },
-    es: { name: 'Tabla de ibéricos', desc: 'Selección artesanal de embutidos ibéricos de la comarca' },
-    en: { name: 'Ibérico board', desc: 'Artisan selection of Ibérico charcuterie from the region' },
-  },
-  {
-    img: '/especialidades/especialidad-3.jpg',
-    ca: { name: 'Pop a la gallega', desc: "Pop tendre amb pebre vermell fumat i oli d'oliva verge extra" },
-    es: { name: 'Pulpo a la gallega', desc: 'Pulpo tierno con pimentón ahumado y aceite de oliva virgen extra' },
-    en: { name: 'Galician-style octopus', desc: 'Tender octopus with smoked paprika and extra virgin olive oil' },
-  },
-]
-
-// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function HomeContent() {
   const { lang } = useLanguage()
@@ -93,17 +67,6 @@ export default function HomeContent() {
           style={{ y: textY, zIndex: 10 }}
           className="relative text-center px-4 max-w-4xl mx-auto"
         >
-          <motion.div custom={0} variants={heroChildVariants} initial="hidden" animate="visible" className="flex justify-center mb-6">
-            <Image
-              src="/logo.png"
-              alt="El Racó del Pantà"
-              width={480}
-              height={120}
-              className="h-[104px] w-auto brightness-0 invert opacity-95"
-              priority
-            />
-          </motion.div>
-
           <div className="flex items-center gap-3 justify-center mb-6">
             <div className="w-10 h-px bg-white/35" />
             <div className="w-1 h-1 rounded-full bg-white/50" />
@@ -140,53 +103,12 @@ export default function HomeContent() {
                 {t('hero_btn_menu', lang)}
               </Link>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href="/reservar"
-                className="block bg-green-dark text-cream px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-green-mid transition-colors shadow-lg text-center"
-              >
-                {t('hero_btn_book', lang)}
-              </Link>
-            </motion.div>
           </motion.div>
         </motion.div>
       </section>
 
-      {/* ── NEWLY OPENED BANNER ── */}
-      <div className="bg-gradient-to-r from-green-dark via-green-mid to-green-dark text-cream text-center py-4 px-4 text-base md:text-lg font-body tracking-wide">
-        {t('banner_new_open', lang)}
-      </div>
-
-      {/* ── SPECIALTIES ── */}
-      <section className="py-20 px-4 bg-parchment">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal>
-            <h2 className="font-heading text-4xl text-green-dark text-center mb-4">
-              {t('specialties_title', lang)}
-            </h2>
-            <div className="w-20 h-1 bg-wood mx-auto mb-12 rounded-full" />
-          </ScrollReveal>
-          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {dishes.map((dish, i) => (
-              <StaggerItem key={i}>
-                <motion.div
-                  whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(0,0,0,0.12)' }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                  className="rounded-2xl overflow-hidden shadow-md bg-cream h-full"
-                >
-                  <div className="relative h-52 overflow-hidden">
-                    <LocalImage src={dish.img} alt={dish[lang].name} className="w-full h-full object-cover" icon="🍽️" />
-                  </div>
-                  <div className="p-6 wood-bg">
-                    <h3 className="font-heading text-xl font-bold text-green-dark mb-2">{dish[lang].name}</h3>
-                    <p className="text-brown/70 text-sm font-body">{dish[lang].desc}</p>
-                  </div>
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
-        </div>
-      </section>
+      {/* ── GREEN DIVIDER STRIP ── */}
+      <div className="bg-gradient-to-r from-green-dark via-green-mid to-green-dark h-2.5" />
 
       {/* ── GOOGLE REVIEWS ── */}
       <section className="py-20 px-4 bg-green-light/30">

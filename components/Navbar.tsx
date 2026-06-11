@@ -12,6 +12,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { lang } = useLanguage()
+  const isHome = pathname === '/'
 
   const navLinks = [
     { href: '/',          labelKey: 'nav_home'      as const },
@@ -22,44 +23,47 @@ export default function Navbar() {
   ]
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    if (!isHome) {
+      setScrolled(true)
+      return
+    }
+    const onScroll = () => setScrolled(window.scrollY >= window.innerHeight - 80)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [isHome])
 
-  const isHome = pathname === '/'
   const transparent = isHome && !scrolled
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        transparent
-          ? 'bg-transparent'
-          : 'bg-parchment/95 backdrop-blur-md shadow-sm border-b border-wood/20'
+        transparent ? 'bg-transparent' : 'bg-[#1a3d1f]'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+        {/* Logo — always white, always visible */}
         <Link href="/" className="flex items-center gap-3">
           <Image
             src="/logo.png"
             alt="El Racó del Pantà"
             width={200}
             height={50}
-            className={`h-11 w-auto transition-all duration-500 ${transparent ? 'brightness-0 invert' : ''}`}
+            className="h-11 w-auto brightness-0 invert"
             priority
           />
-          <span
-            className={`font-heading font-bold text-sm tracking-wide transition-all duration-500 hidden lg:block ${
-              transparent ? 'opacity-0 pointer-events-none' : 'text-green-dark opacity-100'
-            }`}
+          {/* Name text: visible at hero top, fades on scroll */}
+          <motion.span
+            animate={{ opacity: transparent ? 1 : 0 }}
+            transition={{ duration: 0.4 }}
+            className="font-heading font-bold text-sm tracking-wide hidden lg:block text-white pointer-events-none select-none"
           >
             El Racó del Pantà
-          </span>
+          </motion.span>
         </Link>
 
-        {/* Desktop links */}
-        <div className="hidden lg:flex items-center gap-6 pr-0">
+        {/* Desktop nav links — always cream */}
+        <div className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
@@ -67,16 +71,14 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`relative text-sm font-body font-medium transition-colors duration-300 group ${
-                  isActive
-                    ? transparent ? 'text-white font-semibold' : 'text-green-dark font-semibold'
-                    : transparent ? 'text-white/85 hover:text-white' : 'text-brown hover:text-green-dark'
+                  isActive ? 'text-[#f5ead6] font-semibold' : 'text-[#f5ead6]/75 hover:text-[#f5ead6]'
                 }`}
               >
                 {t(link.labelKey, lang)}
                 <span
-                  className={`absolute -bottom-0.5 left-0 h-0.5 rounded-full transition-all duration-300 ${
-                    transparent ? 'bg-white' : 'bg-green-dark'
-                  } ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                  className={`absolute -bottom-0.5 left-0 h-0.5 rounded-full bg-[#f5ead6] transition-all duration-300 ${
+                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}
                 />
               </Link>
             )
@@ -89,21 +91,9 @@ export default function Navbar() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
-          <motion.span
-            animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-            transition={{ duration: 0.2 }}
-            className={`block w-6 h-0.5 rounded-full ${transparent ? 'bg-white' : 'bg-brown'}`}
-          />
-          <motion.span
-            animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className={`block w-6 h-0.5 rounded-full ${transparent ? 'bg-white' : 'bg-brown'}`}
-          />
-          <motion.span
-            animate={menuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-            transition={{ duration: 0.2 }}
-            className={`block w-6 h-0.5 rounded-full ${transparent ? 'bg-white' : 'bg-brown'}`}
-          />
+          <motion.span animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }} transition={{ duration: 0.2 }} className="block w-6 h-0.5 rounded-full bg-[#f5ead6]" />
+          <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} transition={{ duration: 0.15 }} className="block w-6 h-0.5 rounded-full bg-[#f5ead6]" />
+          <motion.span animate={menuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }} transition={{ duration: 0.2 }} className="block w-6 h-0.5 rounded-full bg-[#f5ead6]" />
         </button>
       </div>
 
@@ -116,7 +106,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="lg:hidden bg-parchment/98 backdrop-blur-md border-t border-wood/20 overflow-hidden"
+            className="lg:hidden bg-[#1a3d1f] border-t border-[#f5ead6]/10 overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-1">
               {navLinks.map((link, i) => (
@@ -131,8 +121,8 @@ export default function Navbar() {
                     onClick={() => setMenuOpen(false)}
                     className={`block text-base font-body py-2.5 px-3 rounded-xl transition-colors ${
                       pathname === link.href
-                        ? 'text-green-dark font-semibold bg-green-light/40'
-                        : 'text-brown hover:text-green-dark hover:bg-green-light/20'
+                        ? 'text-[#f5ead6] font-semibold bg-white/10'
+                        : 'text-[#f5ead6]/70 hover:text-[#f5ead6] hover:bg-white/5'
                     }`}
                   >
                     {t(link.labelKey, lang)}
