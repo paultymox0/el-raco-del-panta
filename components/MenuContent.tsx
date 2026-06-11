@@ -146,6 +146,12 @@ const CAT_LABELS: Record<CategoryId, { ca: string; es: string; en: string }> = {
   drinks:     { ca: 'Begudes',              es: 'Bebidas',               en: 'Drinks'              },
 }
 
+const STARTER_SUBCATS = [
+  { id: 'entrantes', label: { ca: 'Per Começar',  es: 'Para Empezar',    en: 'Starters'        } },
+  { id: 'ensalades', label: { ca: 'Amanides',     es: 'Ensaladas',       en: 'Salads'          } },
+  { id: 'ous',       label: { ca: 'Ous del Racó', es: 'Huevos del Racó', en: 'Eggs of El Racó' } },
+]
+
 const SANDWICH_SUBCATS = [
   { id: 'freds',        label: { ca: 'Freds',        es: 'Fríos',       en: 'Cold'    } },
   { id: 'calents',      label: { ca: 'Calents',      es: 'Calientes',   en: 'Hot'     } },
@@ -154,13 +160,13 @@ const SANDWICH_SUBCATS = [
 ]
 
 const ALL_DRINK_SUBCATS = [
-  { id: 'cervezas',      cat: 'bebidas_alcohol', label: { ca: 'Cerveses',      es: 'Cervezas',      en: 'Beers'         } },
-  { id: 'refrescos',     cat: 'bebidas_soda',    label: { ca: 'Refrescos',     es: 'Refrescos',     en: 'Soft Drinks'   } },
-  { id: 'cafes',         cat: 'bebidas_soda',    label: { ca: 'Cafès i Zumos', es: 'Cafés y Zumos', en: 'Coffee & Juice'} },
-  { id: 'vinos_blancos', cat: 'bebidas_alcohol', label: { ca: 'Vins Blancs',   es: 'Vinos Blancos', en: 'White Wines'   } },
-  { id: 'vinos_tintos',  cat: 'bebidas_alcohol', label: { ca: 'Vins Negres',   es: 'Vinos Tintos',  en: 'Red Wines'     } },
-  { id: 'combinados',    cat: 'bebidas_alcohol', label: { ca: 'Combinats',     es: 'Combinados',    en: 'Spirits'       } },
-  { id: 'copas',         cat: 'bebidas_alcohol', label: { ca: 'Copes',         es: 'Copas',         en: 'Glasses'       } },
+  { id: 'cervezas',      cat: 'bebidas_alcohol', label: { ca: 'Cerveses',     es: 'Cervezas',      en: 'Beers'           } },
+  { id: 'refrescos',     cat: 'bebidas_soda',    label: { ca: 'Refrescos',    es: 'Refrescos',     en: 'Soft Drinks'     } },
+  { id: 'cafes',         cat: 'bebidas_soda',    label: { ca: 'Cafès i Sucs', es: 'Cafés y Zumos', en: 'Coffees & Juices'} },
+  { id: 'vinos_blancos', cat: 'bebidas_alcohol', label: { ca: 'Vins Blancs',  es: 'Vinos Blancos', en: 'White Wines'     } },
+  { id: 'vinos_tintos',  cat: 'bebidas_alcohol', label: { ca: 'Vins Negres',  es: 'Vinos Negros',  en: 'Red Wines'       } },
+  { id: 'combinados',    cat: 'bebidas_alcohol', label: { ca: 'Combinats',    es: 'Combinados',    en: 'Spirits'         } },
+  { id: 'copas',         cat: 'bebidas_alcohol', label: { ca: 'Copes',        es: 'Copas',         en: 'Glasses'         } },
 ]
 
 // ── Grill ember sparks ────────────────────────────────────────────────────────
@@ -273,7 +279,6 @@ function FlipCard({
         <div
           className="absolute inset-0 rounded-2xl overflow-hidden shadow-md bg-[#1a3d1f] border border-green-900/40 flex flex-col p-4"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-          onClick={(e) => e.stopPropagation()}
         >
           <p className="font-heading font-bold text-sm mb-1 text-cream">{item[lang].nom}</p>
           <p className="font-body text-xs leading-relaxed flex-1 overflow-hidden text-cream/70">
@@ -295,7 +300,7 @@ function FlipCard({
             <motion.button
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onAdd}
+              onClick={(e) => { e.stopPropagation(); onAdd(e) }}
               className="bg-cream text-green-dark text-xs font-heading font-bold px-3 py-1.5 rounded-full hover:bg-white transition-colors"
             >
               {t('order_add', lang)}
@@ -445,14 +450,15 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
 export default function MenuContent() {
   const { lang } = useLanguage()
 
-  const [activeCategory, setActiveCategory]         = useState<CategoryId>('starters')
+  const [activeCategory, setActiveCategory]             = useState<CategoryId>('starters')
+  const [activeStarterSubcat, setActiveStarterSubcat]   = useState('entrantes')
   const [activeSandwichSubcat, setActiveSandwichSubcat] = useState('freds')
-  const [activeCardId, setActiveCardId]             = useState<string | null>(null)
-  const [cart, setCart]                             = useState<CartItem[]>([])
-  const [cartLoaded, setCartLoaded]                 = useState(false)
-  const [cartOpen, setCartOpen]                     = useState(false)
-  const [openDrinkSubcats, setOpenDrinkSubcats]     = useState<Set<string>>(new Set(['cervezas']))
-  const [lightboxSrc, setLightboxSrc]               = useState<string | null>(null)
+  const [activeDrinkSubcat, setActiveDrinkSubcat]       = useState('cervezas')
+  const [activeCardId, setActiveCardId]                 = useState<string | null>(null)
+  const [cart, setCart]                                 = useState<CartItem[]>([])
+  const [cartLoaded, setCartLoaded]                     = useState(false)
+  const [cartOpen, setCartOpen]                         = useState(false)
+  const [lightboxSrc, setLightboxSrc]                   = useState<string | null>(null)
 
   useEffect(() => {
     try { const raw = sessionStorage.getItem('raco-cart'); if (raw) setCart(JSON.parse(raw)) } catch {}
@@ -463,15 +469,7 @@ export default function MenuContent() {
     if (cartLoaded) sessionStorage.setItem('raco-cart', JSON.stringify(cart))
   }, [cart, cartLoaded])
 
-  useEffect(() => { setActiveCardId(null) }, [activeCategory, activeSandwichSubcat])
-
-  function toggleDrinkSubcat(id: string) {
-    setOpenDrinkSubcats(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id); else next.add(id)
-      return next
-    })
-  }
+  useEffect(() => { setActiveCardId(null) }, [activeCategory, activeStarterSubcat, activeSandwichSubcat])
 
   const addToCart = useCallback((item: MenuItem) => {
     setCart(prev => {
@@ -492,9 +490,6 @@ export default function MenuContent() {
 
   const totalItems = cart.reduce((s, c) => s + c.quantitat, 0)
 
-  const starterItems  = carta.filter(i => i.categoria === 'entrantes')
-  const saladItems    = carta.filter(i => i.categoria === 'ensalades')
-  const eggsItems     = carta.filter(i => i.categoria === 'ous')
   const grillItems    = carta.filter(i => i.categoria === 'platos')
   const dessertItems  = carta.filter(i => i.categoria === 'postres')
   const sandwichItems = carta.filter(i => i.categoria === 'especiales' && i.subcategoria === activeSandwichSubcat)
@@ -525,17 +520,42 @@ export default function MenuContent() {
 
   function renderCategoryContent(catId: CategoryId) {
     switch (catId) {
-      case 'starters':
+      case 'starters': {
+        const starterSubItems = carta.filter(i => i.categoria === activeStarterSubcat)
         return (
           <>
-            <SectionHeader title={t('section_starters', lang)} />
-            {renderCardGrid(starterItems)}
-            <SectionHeader title={t('section_salads', lang)} />
-            {renderCardGrid(saladItems)}
-            <SectionHeader title={t('section_eggs', lang)} note={t('ous_note', lang)} />
-            {renderCardGrid(eggsItems)}
+            <div className="flex overflow-x-auto gap-2 mb-8 pb-1 [&::-webkit-scrollbar]:hidden">
+              {STARTER_SUBCATS.map(sub => (
+                <button
+                  key={sub.id}
+                  onClick={() => setActiveStarterSubcat(sub.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
+                    activeStarterSubcat === sub.id
+                      ? 'bg-[#1a3d1f] text-[#f5ead6] shadow-md'
+                      : 'bg-[#ede0c4] text-[#4a2c0e] hover:bg-[#d4b896]'
+                  }`}
+                >
+                  {sub.label[lang]}
+                </button>
+              ))}
+            </div>
+            {activeStarterSubcat === 'ous' && (
+              <p className="text-xs font-body italic text-brown/50 mb-4">{t('ous_note', lang)}</p>
+            )}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStarterSubcat}
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.25 }}
+              >
+                {renderCardGrid(starterSubItems)}
+              </motion.div>
+            </AnimatePresence>
           </>
         )
+      }
 
       case 'sandwiches':
         return (
@@ -588,50 +608,46 @@ export default function MenuContent() {
           </>
         )
 
-      case 'drinks':
+      case 'drinks': {
+        const drinkItems = carta.filter(i => {
+          const sub = ALL_DRINK_SUBCATS.find(s => s.id === activeDrinkSubcat)
+          return sub && i.categoria === sub.cat && i.subcategoria === activeDrinkSubcat
+        })
         return (
-          <div className="space-y-2">
-            {ALL_DRINK_SUBCATS.map(sub => {
-              const items = carta.filter(i => i.categoria === sub.cat && i.subcategoria === sub.id)
-              if (!items.length) return null
-              const isOpen = openDrinkSubcats.has(sub.id)
-              return (
-                <div key={sub.id} className="rounded-xl overflow-hidden border border-blue-800/30">
+          <>
+            <div className="flex overflow-x-auto gap-2 mb-8 pb-1 [&::-webkit-scrollbar]:hidden">
+              {ALL_DRINK_SUBCATS.map(sub => {
+                const hasItems = carta.some(i => i.categoria === sub.cat && i.subcategoria === sub.id)
+                if (!hasItems) return null
+                return (
                   <button
-                    onClick={() => toggleDrinkSubcat(sub.id)}
-                    className="w-full flex items-center justify-between px-4 py-3 bg-blue-950/60 hover:bg-blue-900/60 transition-colors"
+                    key={sub.id}
+                    onClick={() => setActiveDrinkSubcat(sub.id)}
+                    className={`px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
+                      activeDrinkSubcat === sub.id
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-blue-950/60 text-blue-300/70 hover:bg-blue-900/60'
+                    }`}
                   >
-                    <span className="font-heading font-bold text-blue-200 text-sm">{sub.label[lang]}</span>
-                    <motion.svg
-                      animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: 0.25 }}
-                      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
-                      className="w-4 h-4 text-blue-400 flex-shrink-0"
-                      aria-hidden
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </motion.svg>
+                    {sub.label[lang]}
                   </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-4 py-2 bg-blue-950/30">
-                          {items.map(item => <DrinkRow key={item.id} item={item} onAdd={() => addToCart(item)} />)}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeDrinkSubcat}
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.25 }}
+              >
+                {drinkItems.map(item => <DrinkRow key={item.id} item={item} onAdd={() => addToCart(item)} />)}
+              </motion.div>
+            </AnimatePresence>
+          </>
         )
+      }
     }
   }
 

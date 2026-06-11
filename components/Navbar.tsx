@@ -47,8 +47,9 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="El Racó del Pantà"
-            width={200}
-            height={50}
+            width={120}
+            height={80}
+            style={{ objectFit: 'contain' }}
             className="h-11 w-auto brightness-0 invert"
             priority
           />
