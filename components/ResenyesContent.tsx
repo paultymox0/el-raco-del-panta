@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -15,13 +15,16 @@ const fadeUp = {
 
 export default function ResenyesContent() {
   const { lang } = useLanguage()
+  const widgetRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (!widgetRef.current) return
     if (document.querySelector('script[src*="trustindex"]')) return
     const script = document.createElement('script')
     script.src = 'https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2'
     script.async = true
-    document.head.appendChild(script)
+    script.defer = true
+    widgetRef.current.after(script)
   }, [])
 
   return (
@@ -55,7 +58,7 @@ export default function ResenyesContent() {
           {t('ressenyes_subtitle', lang)}
         </motion.h2>
 
-        <div data-widget-id="cf2dc8e74d201823cc461f139b2"></div>
+        <div ref={widgetRef} data-widget-id="cf2dc8e74d201823cc461f139b2"></div>
       </div>
 
       {/* CTA */}
