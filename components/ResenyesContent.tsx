@@ -51,7 +51,7 @@ export default function ResenyesContent() {
             {t('ressenyes_note', lang)}
           </p>
           <motion.a
-            href="https://search.google.com/local/writereview?placeid=PLACE_ID_HERE"
+            href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.04 }}

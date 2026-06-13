@@ -121,7 +121,7 @@ export default function HomeContent() {
             <h2 className="font-heading text-2xl text-green-dark mb-3">{t('reviews_title', lang)}</h2>
             <p className="text-brown/70 mb-6 font-body">{t('reviews_note', lang)}</p>
             <motion.a
-              href="https://search.google.com/local/writereview?placeid=PLACE_ID_HERE"
+              href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
