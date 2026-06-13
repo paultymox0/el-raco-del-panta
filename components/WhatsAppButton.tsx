@@ -61,8 +61,8 @@ export default function WhatsAppButton() {
 
       {/* FAB + always-visible tooltip */}
       <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2">
-        {/* Persistent tooltip bubble */}
-        <div className="relative bg-brown text-cream text-xs px-3 py-1.5 rounded-full shadow-md font-body whitespace-nowrap">
+        {/* Persistent tooltip bubble — hidden on small screens to keep the bottom bar uncluttered */}
+        <div className="relative hidden sm:block bg-brown text-cream text-xs px-3 py-1.5 rounded-full shadow-md font-body whitespace-nowrap">
           {t('wa_tooltip', lang)}
           <svg className="absolute left-1/2 top-full -translate-x-1/2 w-3 h-2 fill-brown" viewBox="0 0 12 6">
             <path d="M0 0 L6 6 L12 0 Z"/>

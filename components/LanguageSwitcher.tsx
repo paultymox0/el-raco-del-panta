@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type React from 'react'
 import { useLanguage, type Lang } from '@/contexts/LanguageContext'
-import { t } from '@/lib/i18n'
 
 const CatalanFlag = () => (
   <svg width="20" height="14" viewBox="0 0 20 14" xmlns="http://www.w3.org/2000/svg" className="rounded-sm inline-block">
@@ -60,19 +59,11 @@ export default function LanguageSwitcher() {
   return (
     <div ref={ref} className="fixed top-3 right-4 z-50">
       {/* First-load tooltip */}
-      {showTooltip && (
-        <div className="absolute right-0 bottom-full mb-2 bg-brown text-cream text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-lg pointer-events-none">
-          {t('lang_tooltip', lang)}
-          <svg className="absolute right-3 top-full w-3 h-2 fill-brown" viewBox="0 0 12 6">
-            <path d="M0 0 L6 6 L12 0 Z"/>
-          </svg>
-        </div>
-      )}
 
       {/* Pill trigger */}
       <button
         onClick={() => { setOpen(o => !o); dismissTooltip() }}
-        className="flex items-center gap-1.5 bg-parchment/90 hover:bg-parchment backdrop-blur-sm text-brown text-xs font-heading font-bold px-3 py-1.5 rounded-full shadow-md border border-wood/40 hover:border-wood/70 transition-all"
+        className="flex items-center gap-1.5 bg-parchment/90 hover:bg-parchment backdrop-blur-sm text-brown text-xs font-heading font-bold px-3 py-2 min-h-[44px] rounded-full shadow-md border border-wood/40 hover:border-wood/70 transition-all"
         aria-label="Change language"
       >
         <span>{current.flag}</span>
@@ -89,7 +80,7 @@ export default function LanguageSwitcher() {
             <button
               key={code}
               onClick={() => { setLang(code); setOpen(false) }}
-              className="flex items-center gap-2 w-full px-3 py-2.5 text-xs font-heading font-bold text-brown hover:bg-green-light/40 hover:text-green-dark transition-colors"
+              className="flex items-center gap-2 w-full px-3 py-3 min-h-[44px] text-xs font-heading font-bold text-brown hover:bg-green-light/40 hover:text-green-dark transition-colors"
             >
               <span>{flag}</span>
               <span>{short}</span>

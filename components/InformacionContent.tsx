@@ -72,11 +72,11 @@ export default function InformacionContent() {
       <div className="relative bg-green-dark py-16 px-4 text-center overflow-hidden">
         <BotanicalLeaf className="absolute top-4 left-4 w-16 h-24 opacity-20" />
         <BotanicalLeaf className="absolute top-4 right-4 w-16 h-24 opacity-20 scale-x-[-1]" />
-        <h1 className="font-heading text-5xl font-black text-cream">{t('info_title', lang)}</h1>
+        <h1 className="font-heading text-4xl md:text-5xl font-black text-cream">{t('info_title', lang)}</h1>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
           {/* Left: About */}
           <ScrollReveal>

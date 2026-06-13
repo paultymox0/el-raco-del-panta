@@ -1,19 +1,11 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import BotanicalLeaf from '@/components/BotanicalLeaf'
-import LocalImage from '@/components/LocalImage'
 import { ScrollReveal, StaggerGroup, StaggerItem } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
-
-const naturePhotos = [
-  { src: '/entorno/entorno-1.jpg' },
-  { src: '/entorno/entorno-2.jpg' },
-  { src: '/entorno/entorno-3.jpg' },
-  { src: '/entorno/entorno-4.jpg' },
-]
 
 function MountainIcon() {
   return (
@@ -41,9 +33,108 @@ function FireIcon() {
   )
 }
 
-export default function EntornoContent() {
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+
+function Lightbox({ photos, index, onClose }: {
+  photos: string[]
+  index: number
+  onClose: () => void
+}) {
+  const [current, setCurrent] = useState(index)
+  const swipeStart = useRef<number | null>(null)
+
+  const goPrev = useCallback(() => setCurrent(i => (i - 1 + photos.length) % photos.length), [photos.length])
+  const goNext = useCallback(() => setCurrent(i => (i + 1) % photos.length), [photos.length])
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'ArrowLeft')  goPrev()
+      if (e.key === 'ArrowRight') goNext()
+      if (e.key === 'Escape')     onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [goPrev, goNext, onClose])
+
+  function handlePointerDown(e: React.PointerEvent) {
+    swipeStart.current = e.clientX
+  }
+  function handlePointerUp(e: React.PointerEvent) {
+    if (swipeStart.current === null) return
+    const delta = swipeStart.current - e.clientX
+    if (Math.abs(delta) > 50) {
+      if (delta > 0) goNext()
+      else goPrev()
+    }
+    swipeStart.current = null
+  }
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center select-none"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onClick={onClose}
+    >
+      {/* Close */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center text-xl transition-colors"
+        aria-label="Cerrar"
+      >
+        ✕
+      </button>
+
+      {/* Counter */}
+      <span className="absolute top-4 left-4 text-white/50 text-sm font-body">
+        {current + 1} / {photos.length}
+      </span>
+
+      {/* Image */}
+      <motion.img
+        key={current}
+        src={photos[current]}
+        alt=""
+        className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl pointer-events-none"
+        initial={{ opacity: 0, scale: 0.94 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.94 }}
+        transition={{ duration: 0.2 }}
+        onClick={e => e.stopPropagation()}
+      />
+
+      {/* Prev */}
+      {photos.length > 1 && (
+        <>
+          <button
+            onClick={e => { e.stopPropagation(); goPrev() }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 text-white text-2xl flex items-center justify-center transition-colors"
+            aria-label="Anterior"
+          >
+            ‹
+          </button>
+          <button
+            onClick={e => { e.stopPropagation(); goNext() }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 text-white text-2xl flex items-center justify-center transition-colors"
+            aria-label="Siguiente"
+          >
+            ›
+          </button>
+        </>
+      )}
+    </motion.div>
+  )
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+
+export default function EntornoContent({ photos = [], heroSrc = null }: { photos: string[]; heroSrc?: string | null }) {
   const { lang } = useLanguage()
   const heroRef = useRef<HTMLDivElement>(null)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -59,17 +150,26 @@ export default function EntornoContent() {
 
   return (
     <div className="pt-20 min-h-screen bg-parchment">
+
       {/* Parallax Hero */}
+      {/* 📸 Hero background: add photo as /public/entorno/hero-entorno.jpg */}
+      {/* Any photo from the /public/entorno/ folder works as fallback   */}
       <div ref={heroRef} className="relative h-[60vh] min-h-[400px] overflow-hidden bg-green-dark">
-        <motion.div style={{ y: bgY }} className="absolute inset-0 h-[130%] -top-[15%]">
-          <LocalImage
-            src="/entorno/hero-entorno.jpg"
-            alt={t('entorn_hero_title', lang)}
-            className="w-full h-full object-cover"
-            icon="🏔️"
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-green-dark/50 flex items-center justify-center">
+        {heroSrc ? (
+          <motion.div style={{ y: bgY }} className="absolute inset-0 h-[130%] -top-[15%]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={heroSrc}
+              alt=""
+              aria-hidden="true"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        ) : (
+          /* No image yet — dark green gradient placeholder */
+          <div className="absolute inset-0 bg-gradient-to-b from-green-dark via-[#1a3d1f] to-[#10200f]" />
+        )}
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
           <div className="text-center px-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -82,7 +182,7 @@ export default function EntornoContent() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="font-heading text-5xl md:text-6xl font-black text-cream mb-4"
+              className="font-heading text-4xl md:text-6xl font-black text-cream mb-4"
             >
               {t('entorn_hero_title', lang)}
             </motion.h1>
@@ -90,7 +190,7 @@ export default function EntornoContent() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="font-body text-cream/90 text-xl md:text-2xl"
+              className="font-body text-cream/90 text-lg md:text-2xl"
             >
               {t('entorn_hero_subtitle', lang)}
             </motion.p>
@@ -99,7 +199,7 @@ export default function EntornoContent() {
       </div>
 
       {/* Feature cards */}
-      <section className="py-20 px-4 bg-parchment">
+      <section className="py-14 sm:py-20 px-4 bg-parchment">
         <div className="max-w-6xl mx-auto">
           <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((f) => (
@@ -164,29 +264,51 @@ export default function EntornoContent() {
         </div>
       </section>
 
-      {/* Photo grid */}
-      <section className="py-20 px-4 bg-parchment">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal>
-            <h2 className="font-heading text-3xl text-green-dark text-center mb-10">{t('entorn_photos_title', lang)}</h2>
-          </ScrollReveal>
-          <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {naturePhotos.map((photo) => (
-              <StaggerItem key={photo.src}>
-                <div className="relative overflow-hidden rounded-2xl group aspect-[4/3]">
-                  <LocalImage
-                    src={photo.src}
+      {/* Photo gallery — masonry grid */}
+      {photos.length > 0 && (
+        <section className="py-14 sm:py-20 px-4 bg-parchment">
+          <div className="max-w-6xl mx-auto">
+            <ScrollReveal>
+              <h2 className="font-heading text-3xl text-green-dark text-center mb-10">
+                {t('entorn_photos_title', lang)}
+              </h2>
+            </ScrollReveal>
+
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+              {photos.map((src, i) => (
+                <motion.div
+                  key={src}
+                  className="break-inside-avoid relative group overflow-hidden rounded-2xl cursor-zoom-in"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.45, delay: (i % 3) * 0.07 }}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => setLightboxIndex(i)}
+                >
+                  <img
+                    src={src}
                     alt=""
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    icon="🏔️"
+                    className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-green-dark/0 group-hover:bg-green-dark/30 transition-colors duration-300" />
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
-        </div>
-      </section>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 rounded-2xl" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && (
+        <Lightbox
+          photos={photos}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
+
     </div>
   )
 }

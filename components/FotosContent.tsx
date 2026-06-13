@@ -76,7 +76,7 @@ export default function FotosContent() {
   return (
     <div className="pt-20 min-h-screen bg-parchment">
       <div className="bg-green-dark py-16 px-4 text-center">
-        <h1 className="font-heading text-5xl font-black text-cream mb-3">{t('fotos_title', lang)}</h1>
+        <h1 className="font-heading text-4xl md:text-5xl font-black text-cream mb-3">{t('fotos_title', lang)}</h1>
         <p className="text-cream/70 font-body">{t('fotos_subtitle', lang)}</p>
       </div>
 

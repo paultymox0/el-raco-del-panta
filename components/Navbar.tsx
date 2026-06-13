@@ -41,30 +41,35 @@ export default function Navbar() {
         transparent ? 'bg-transparent' : 'bg-[#1a3d1f]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      {/* pr reserves space for the fixed LanguageSwitcher pill (top right) so the hamburger / links never sit underneath it */}
+      <div className="max-w-7xl mx-auto pl-4 sm:pl-6 pr-[108px] py-3 flex items-center justify-between">
         {/* Logo — always white, always visible */}
         <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/logo.png"
-            alt="El Racó del Pantà"
-            width={120}
-            height={80}
-            style={{ objectFit: 'contain', filter: 'brightness(0) invert(1) drop-shadow(0 1px 3px rgba(0,0,0,0.5))' }}
-            className="h-11 w-auto"
-            priority
-          />
-          {/* Name text: visible at hero top, fades on scroll */}
-          <motion.span
-            animate={{ opacity: transparent ? 1 : 0 }}
+          <motion.div
+            animate={{ opacity: transparent ? 0 : 1 }}
             transition={{ duration: 0.4 }}
-            className={`font-heading font-bold text-sm tracking-wide hidden lg:block pointer-events-none select-none ${scrolled ? 'text-[#f5ead6]' : 'text-white'}`}
+          >
+            <Image
+              src="/logo.png"
+              alt="El Racó del Pantà"
+              width={120}
+              height={80}
+              style={{ objectFit: 'contain' }}
+              className="h-11 w-auto"
+              priority
+            />
+          </motion.div>
+          <motion.span
+            animate={{ opacity: transparent ? 0 : 1 }}
+            transition={{ duration: 0.4 }}
+            className="font-heading font-bold text-xs sm:text-sm tracking-wide whitespace-nowrap hidden min-[360px]:block pointer-events-none select-none text-[#f5ead6]"
           >
             El Racó del Pantà
           </motion.span>
         </Link>
 
         {/* Desktop nav links — always cream */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
@@ -90,9 +95,10 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="lg:hidden flex flex-col gap-1.5 p-2"
+          className="md:hidden flex flex-col items-center justify-center gap-1.5 min-w-[44px] min-h-[44px] p-2"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
+          aria-expanded={menuOpen}
         >
           <motion.span animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }} transition={{ duration: 0.2 }} className="block w-6 h-0.5 rounded-full bg-[#f5ead6]" />
           <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} transition={{ duration: 0.15 }} className="block w-6 h-0.5 rounded-full bg-[#f5ead6]" />
@@ -109,7 +115,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="lg:hidden bg-[#1a3d1f] border-t border-[#f5ead6]/10 overflow-hidden"
+            className="md:hidden bg-[#1a3d1f] border-t border-[#f5ead6]/10 overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-1">
               {navLinks.map((link, i) => (
@@ -122,7 +128,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`block text-base font-body py-2.5 px-3 rounded-xl transition-colors ${
+                    className={`block text-base font-body py-3 px-3 min-h-[44px] rounded-xl transition-colors ${
                       pathname === link.href
                         ? 'text-[#f5ead6] font-semibold bg-white/10'
                         : 'text-[#f5ead6]/70 hover:text-[#f5ead6] hover:bg-white/5'

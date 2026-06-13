@@ -31,7 +31,7 @@ export default function HomeContent() {
       {/* ── HERO ── */}
       <section
         ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+        className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-[#16261a]"
       >
         {/* ── Video / poster background ── */}
         <motion.div
@@ -39,21 +39,17 @@ export default function HomeContent() {
           style={{ y: bgY }}
           aria-hidden="true"
         >
-          {/* Poster: always visible immediately (mobile + while video loads) */}
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: 'url(/hero/hero-poster.jpg)' }}
-          />
+          {/* Dark green fallback while the video loads (poster image no longer exists) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#16261a] via-[#1a2e1a] to-[#10200f]" />
 
-          {/* Video: only rendered on md+ to save mobile data */}
+          {/* Video: shown on all sizes — it is the only hero visual available */}
           <video
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
-            poster="/hero/hero-poster.jpg"
-            className="absolute inset-0 w-full h-full object-cover hidden md:block"
+            className="absolute inset-0 w-full h-full object-cover"
           >
             <source src="/hero/hero-video.mp4" type="video/mp4" />
           </video>
@@ -65,7 +61,7 @@ export default function HomeContent() {
         {/* Hero text */}
         <motion.div
           style={{ y: textY, zIndex: 10 }}
-          className="relative text-center px-4 max-w-4xl mx-auto"
+          className="relative text-center px-4 w-full max-w-4xl mx-auto"
         >
           <div className="flex items-center gap-3 justify-center mb-6">
             <div className="w-10 h-px bg-white/35" />
@@ -77,7 +73,7 @@ export default function HomeContent() {
 
           <motion.h1
             custom={1} variants={heroChildVariants} initial="hidden" animate="visible"
-            className="font-heading text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-tight"
+            className="font-heading text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-tight"
             style={{ textShadow: '0 2px 32px rgba(0,0,0,0.75), 0 1px 6px rgba(0,0,0,0.9)' }}
           >
             EL RACÓ<br />DEL PANTÀ
@@ -85,7 +81,7 @@ export default function HomeContent() {
 
           <motion.p
             custom={2} variants={heroChildVariants} initial="hidden" animate="visible"
-            className="font-body text-xl md:text-2xl text-white/85 mb-10 max-w-xl mx-auto"
+            className="font-body text-lg sm:text-xl md:text-2xl text-white/85 mb-8 md:mb-10 max-w-xl mx-auto"
             style={{ textShadow: '0 1px 12px rgba(0,0,0,0.8)' }}
           >
             {t('hero_tagline', lang)}
@@ -95,10 +91,10 @@ export default function HomeContent() {
             custom={3} variants={heroChildVariants} initial="hidden" animate="visible"
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
               <Link
                 href="/menu"
-                className="block bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg text-center"
+                className="block w-full sm:w-auto bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg text-center"
               >
                 {t('hero_btn_menu', lang)}
               </Link>
@@ -111,9 +107,9 @@ export default function HomeContent() {
       <div className="bg-gradient-to-r from-green-dark via-green-mid to-green-dark h-2.5" />
 
       {/* ── GOOGLE REVIEWS ── */}
-      <section className="py-20 px-4 bg-green-light/30">
+      <section className="py-14 sm:py-20 px-4 bg-green-light/30">
         <ScrollReveal className="max-w-lg mx-auto">
-          <div className="bg-parchment rounded-3xl shadow-lg p-10 text-center border border-wood/30">
+          <div className="bg-parchment rounded-3xl shadow-lg p-6 sm:p-10 text-center border border-wood/30">
             <div className="flex items-center gap-1 justify-center mb-2">
               {[...Array(5)].map((_, i) => (
                 <svg key={i} className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -141,7 +137,7 @@ export default function HomeContent() {
       {/* ── SOCIAL SECTION ── */}
       <section
         ref={socialRef}
-        className="py-20 px-4"
+        className="py-14 sm:py-20 px-4"
         style={{ background: '#1a2e1a' }}
       >
         <div className="max-w-4xl mx-auto">
@@ -161,7 +157,7 @@ export default function HomeContent() {
               animate={socialInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.35)' }}
-              className="rounded-2xl overflow-hidden p-8 flex items-center gap-6 cursor-pointer"
+              className="rounded-2xl overflow-hidden p-6 sm:p-8 flex items-center gap-4 sm:gap-6 cursor-pointer"
               style={{ background: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 45%, #fcb045 100%)' }}
             >
               <div className="flex-shrink-0 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
@@ -186,7 +182,7 @@ export default function HomeContent() {
               animate={socialInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               whileHover={{ y: -6, boxShadow: '0 24px 48px rgba(0,0,0,0.35)' }}
-              className="rounded-2xl overflow-hidden p-8 flex items-center gap-6 cursor-pointer"
+              className="rounded-2xl overflow-hidden p-6 sm:p-8 flex items-center gap-4 sm:gap-6 cursor-pointer"
               style={{ background: 'linear-gradient(135deg, #010101 0%, #1a0a22 50%, #0d1a1a 100%)' }}
             >
               <div className="flex-shrink-0 w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center">

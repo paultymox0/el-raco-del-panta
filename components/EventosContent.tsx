@@ -62,7 +62,7 @@ export default function EventosContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="font-heading text-5xl font-black text-cream mb-3"
+          className="font-heading text-4xl md:text-5xl font-black text-cream mb-3"
         >
           {t('events_title', lang)}
         </motion.h1>
@@ -119,10 +119,10 @@ export default function EventosContent() {
       <section id="contacto-evento" className="py-16 px-4 bg-cream">
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="font-heading text-4xl font-bold text-green-dark mb-3">{t('events_form_title', lang)}</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-green-dark mb-3">{t('events_form_title', lang)}</h2>
             <p className="text-brown/70 font-body">{t('events_form_subtitle', lang)}</p>
           </div>
-          <div className="bg-parchment rounded-3xl shadow-lg p-8">
+          <div className="bg-parchment rounded-3xl shadow-lg p-5 sm:p-8">
             <EventoForm />
           </div>
         </div>

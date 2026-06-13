@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next'
 import { COMING_SOON } from '@/lib/config'
@@ -8,7 +8,11 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import WhatsAppButton from '@/components/WhatsAppButton'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import MobileReserveButton from '@/components/MobileReserveButton'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = COMING_SOON
   ? {
@@ -37,7 +41,6 @@ export default function RootLayout({
             <main>{children}</main>
             <Footer />
             <WhatsAppButton />
-            <MobileReserveButton />
           </LanguageProvider>
         )}
         <Analytics />

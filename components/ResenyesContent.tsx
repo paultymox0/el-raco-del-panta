@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -20,19 +19,11 @@ export default function ResenyesContent() {
     <div className="min-h-screen bg-parchment">
       {/* Hero */}
       <div className="relative h-[40vh] flex items-center justify-center overflow-hidden bg-green-dark">
-        <Image
-          src="/hero/hero-bg.jpg"
-          alt=""
-          fill
-          priority
-          className="object-cover object-center opacity-40"
-          aria-hidden="true"
-        />
         <div className="absolute inset-0 bg-gradient-to-b from-green-dark/60 to-green-dark/80" />
-        <div className="relative z-10 text-center px-6 pt-16">
+        <div className="relative z-10 text-center px-4 sm:px-6 pt-16">
           <motion.h1
             custom={0} variants={fadeUp} initial="hidden" animate="visible"
-            className="font-heading text-5xl md:text-6xl font-black text-cream mb-3"
+            className="font-heading text-4xl md:text-6xl font-black text-cream mb-3"
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
           >
             {t('ressenyes_title', lang)}
@@ -47,10 +38,10 @@ export default function ResenyesContent() {
       </div>
 
       {/* CTA */}
-      <div className="max-w-xl mx-auto px-6 py-24 text-center">
+      <div className="max-w-xl mx-auto px-4 sm:px-6 py-16 md:py-24 text-center">
         <motion.div
           custom={0} variants={fadeUp} initial="hidden" animate="visible"
-          className="bg-white rounded-3xl shadow-xl p-10 border border-wood/20"
+          className="bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-wood/20"
         >
           <div className="text-5xl font-heading font-black text-yellow-500 mb-3">
             {t('ressenyes_stars', lang)}

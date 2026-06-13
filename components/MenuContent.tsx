@@ -301,7 +301,7 @@ function FlipCard({
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.95 }}
               onClick={(e) => { e.stopPropagation(); onAdd(e) }}
-              className="bg-cream text-green-dark text-xs font-heading font-bold px-3 py-1.5 rounded-full hover:bg-white transition-colors"
+              className="bg-cream text-green-dark text-xs font-heading font-bold px-4 py-2.5 min-h-[40px] rounded-full hover:bg-white transition-colors"
             >
               {t('order_add', lang)}
             </motion.button>
@@ -330,7 +330,7 @@ function DrinkRow({ item, onAdd }: { item: MenuItem; onAdd: () => void }) {
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.93 }}
           onClick={onAdd}
-          className="w-7 h-7 bg-blue-500/80 text-white rounded-full text-lg font-bold flex items-center justify-center hover:bg-blue-400 transition-colors"
+          className="w-10 h-10 sm:w-8 sm:h-8 bg-blue-500/80 text-white rounded-full text-lg font-bold flex items-center justify-center hover:bg-blue-400 transition-colors flex-shrink-0"
         >
           +
         </motion.button>
@@ -388,7 +388,7 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
       transition={{ type: 'spring', stiffness: 320, damping: 32 }}
-      className="fixed inset-x-0 bottom-0 z-50 bg-white border-t border-wood/30 shadow-2xl max-h-[80vh] flex flex-col"
+      className="fixed inset-x-0 bottom-0 z-50 bg-white border-t border-wood/30 shadow-2xl max-h-[80vh] flex flex-col rounded-t-2xl pb-[env(safe-area-inset-bottom)]"
     >
       <div className="flex items-center justify-between px-4 py-3 border-b border-wood/20">
         <span className="font-heading font-black text-green-dark text-lg">{t('order_title', lang)}</span>
@@ -398,7 +398,7 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
               {t('order_clear', lang)}
             </button>
           )}
-          <button onClick={onClose} className="w-7 h-7 rounded-full bg-wood/20 flex items-center justify-center text-brown hover:bg-wood/40 transition-colors text-sm font-bold">
+          <button onClick={onClose} className="w-10 h-10 rounded-full bg-wood/20 flex items-center justify-center text-brown hover:bg-wood/40 transition-colors text-sm font-bold" aria-label="Close cart">
             ✕
           </button>
         </div>
@@ -418,12 +418,12 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
                   <div key={cartItem.id} className="flex items-center gap-2 py-1.5">
                     <span className="flex-1 font-body text-sm text-brown truncate">{nom}</span>
                     <div className="flex items-center gap-1.5">
-                      <button onClick={() => onDecrement(cartItem.id)} className="w-6 h-6 rounded-full bg-wood/20 text-brown text-sm font-bold hover:bg-wood/40 transition-colors flex items-center justify-center">−</button>
+                      <button onClick={() => onDecrement(cartItem.id)} className="w-9 h-9 rounded-full bg-wood/20 text-brown text-sm font-bold hover:bg-wood/40 transition-colors flex items-center justify-center" aria-label="Decrease quantity">−</button>
                       <span className="w-5 text-center font-heading font-bold text-green-dark text-sm">{cartItem.quantitat}</span>
-                      <button onClick={() => onIncrement(cartItem.id)} className="w-6 h-6 rounded-full bg-green-dark text-cream text-sm font-bold hover:bg-green-mid transition-colors flex items-center justify-center">+</button>
+                      <button onClick={() => onIncrement(cartItem.id)} className="w-9 h-9 rounded-full bg-green-dark text-cream text-sm font-bold hover:bg-green-mid transition-colors flex items-center justify-center" aria-label="Increase quantity">+</button>
                     </div>
                     <span className="w-16 text-right font-heading font-bold text-green-dark text-sm">{(cartItem.preu * cartItem.quantitat).toFixed(2)} €</span>
-                    <button onClick={() => onRemove(cartItem.id)} className="text-red-300 hover:text-red-500 text-xs transition-colors">✕</button>
+                    <button onClick={() => onRemove(cartItem.id)} className="w-8 h-8 flex items-center justify-center text-red-300 hover:text-red-500 text-xs transition-colors" aria-label="Remove item">✕</button>
                   </div>
                 )
               })}
@@ -496,7 +496,7 @@ export default function MenuContent() {
 
   function renderCardGrid(items: MenuItem[], darkFront?: boolean) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {items.map((item, i) => (
           <motion.div
             key={item.id}
@@ -529,7 +529,7 @@ export default function MenuContent() {
                 <button
                   key={sub.id}
                   onClick={() => setActiveStarterSubcat(sub.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
+                  className={`px-4 py-2 min-h-[44px] rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
                     activeStarterSubcat === sub.id
                       ? 'bg-[#1a3d1f] text-[#f5ead6] shadow-md'
                       : 'bg-[#ede0c4] text-[#4a2c0e] hover:bg-[#d4b896]'
@@ -565,7 +565,7 @@ export default function MenuContent() {
                 <button
                   key={sub.id}
                   onClick={() => setActiveSandwichSubcat(sub.id)}
-                  className={`px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
+                  className={`px-4 py-2 min-h-[44px] rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
                     activeSandwichSubcat === sub.id
                       ? 'bg-[#a0622a] text-white shadow-md'
                       : 'bg-[#e8d0b8] text-[#6b3d1a] hover:bg-[#d4b896]'
@@ -623,7 +623,7 @@ export default function MenuContent() {
                   <button
                     key={sub.id}
                     onClick={() => setActiveDrinkSubcat(sub.id)}
-                    className={`px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
+                    className={`px-4 py-2 min-h-[44px] rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all ${
                       activeDrinkSubcat === sub.id
                         ? 'bg-blue-600 text-white shadow-md'
                         : 'bg-blue-950/60 text-blue-300/70 hover:bg-blue-900/60'
@@ -683,7 +683,7 @@ export default function MenuContent() {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all duration-200 ${
+              className={`flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-full text-sm font-heading font-bold whitespace-nowrap flex-shrink-0 transition-all duration-200 ${
                 activeCategory === cat.id ? cat.tabActive : cat.tabInactive
               }`}
             >
@@ -726,7 +726,7 @@ export default function MenuContent() {
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => setCartOpen(true)}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2.5 bg-green-dark text-cream px-5 py-3 rounded-full shadow-2xl font-heading font-bold text-sm"
+          className="fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2.5 bg-green-dark text-cream px-5 py-3 min-h-[48px] rounded-full shadow-2xl font-heading font-bold text-sm whitespace-nowrap"
         >
           <BasketIcon />
           <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center text-xs font-black">{totalItems}</span>

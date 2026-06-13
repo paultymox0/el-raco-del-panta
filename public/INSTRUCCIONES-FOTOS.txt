@@ -1,0 +1,100 @@
+═══════════════════════════════════════
+GUÍA DE FOTOS — EL RACÓ DEL PANTÀ
+═══════════════════════════════════════
+
+MENÚ:
+→ /public/menu/entrantes/     (fotos de entrantes)
+→ /public/menu/platos/        (fotos de platos principales)
+→ /public/menu/especiales/    (fotos de especiales)
+→ /public/menu/postres/       (fotos de postres)
+→ /public/menu/bebidas/       (fotos de bebidas)
+
+PÁGINA PRINCIPAL:
+→ /public/hero/hero-bg.jpg           (foto principal del hero)
+→ /public/especialidades/            (3 fotos de especialidades)
+
+GALERÍA DE FOTOS:
+→ /public/fotos/local/               (fotos del local, máx 6)
+→ /public/fotos/platos/              (fotos de platos, máx 6)
+→ /public/fotos/entorno/             (fotos del entorno, máx 6)
+
+EL ENTORNO:
+→ /public/entorno/                   (hero + 4 fotos de naturaleza)
+
+EVENTOS:
+→ /public/eventos/                   (4 fotos de tipos de eventos)
+
+INSTRUCCIONES:
+- Formatos aceptados: .jpg .jpeg .png .webp
+- El nombre del archivo debe coincidir EXACTAMENTE
+- Tamaño recomendado: mínimo 800x600px
+- Después de añadir fotos, recarga la web (Cmd+R)
+
+NOMBRES EXACTOS DE ARCHIVOS:
+───────────────────────────────────────
+HERO:
+  hero/hero-bg.jpg
+
+ESPECIALIDADES (portada):
+  especialidades/especialidad-1.jpg
+  especialidades/especialidad-2.jpg
+  especialidades/especialidad-3.jpg
+
+MENÚ — ENTRANTES:
+  menu/entrantes/croquetas-jamon.jpg
+  menu/entrantes/patatas-bravas.jpg
+  menu/entrantes/tabla-ibericos.jpg
+  menu/entrantes/pan-tomate.jpg
+  menu/entrantes/pimientos-padron.jpg
+
+MENÚ — PLATOS:
+  menu/platos/chuleton-ternera.jpg
+  menu/platos/entrecot-patatas.jpg
+  menu/platos/merluza-horno.jpg
+  menu/platos/pollo-asado.jpg
+  menu/platos/costillas-cerdo.jpg
+
+MENÚ — ESPECIALES:
+  menu/especiales/paella-marisco.jpg
+  menu/especiales/fideua.jpg
+  menu/especiales/chuletillas-cordero.jpg
+  menu/especiales/pulpo-gallega.jpg
+
+MENÚ — POSTRES:
+  menu/postres/crema-catalana.jpg
+  menu/postres/tarta-queso.jpg
+  menu/postres/coulant-chocolate.jpg
+  menu/postres/fruta-temporada.jpg
+  menu/postres/helado-artesano.jpg
+
+MENÚ — BEBIDAS:
+  menu/bebidas/agua-mineral.jpg
+  menu/bebidas/refresco.jpg
+  menu/bebidas/zumo-naranja.jpg
+  menu/bebidas/agua-gas.jpg
+  menu/bebidas/cerveza-sin-alcohol.jpg
+  menu/bebidas/cerveza-grifo.jpg
+  menu/bebidas/vino-tinto.jpg
+  menu/bebidas/vino-blanco.jpg
+  menu/bebidas/sangria.jpg
+  menu/bebidas/cava.jpg
+  menu/bebidas/gin-tonic.jpg
+
+GALERÍA:
+  fotos/local/foto-1.jpg  ...  fotos/local/foto-6.jpg
+  fotos/platos/foto-1.jpg ...  fotos/platos/foto-6.jpg
+  fotos/entorno/foto-1.jpg ... fotos/entorno/foto-6.jpg
+
+ENTORNO:
+  entorno/hero-entorno.jpg
+  entorno/entorno-1.jpg
+  entorno/entorno-2.jpg
+  entorno/entorno-3.jpg
+  entorno/entorno-4.jpg
+
+EVENTOS:
+  eventos/cumpleanos.jpg
+  eventos/empresa.jpg
+  eventos/grupos.jpg
+  eventos/bodas.jpg
+═══════════════════════════════════════

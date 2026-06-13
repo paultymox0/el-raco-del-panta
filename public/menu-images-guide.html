@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Racó del Pantà — Menu Image Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f0e8;
+      color: #2c1e0f;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+      background: #1a3d1f;
+      color: #f5f0e8;
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+    }
+    header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.4rem; }
+    header p  { font-size: 0.9rem; opacity: 0.8; line-height: 1.6; }
+
+    .instructions {
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+      background: #fff8ee;
+      border: 1px solid #d4b896;
+      border-radius: 10px;
+      padding: 1.4rem 1.8rem;
+    }
+    .instructions h2 { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; color: #6b3d1a; }
+    .instructions ol { padding-left: 1.4rem; font-size: 0.88rem; line-height: 2.1; }
+    .instructions code {
+      background: #e8d5bb;
+      padding: 0.1em 0.45em;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-family: 'Menlo', 'Consolas', monospace;
+    }
+
+    .summary {
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 600px) { .summary { grid-template-columns: repeat(2, 1fr); } }
+    .stat-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1.1rem 1.2rem;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    }
+    .stat-card .num { font-size: 2rem; font-weight: 800; color: #1a3d1f; }
+    .stat-card .lbl { font-size: 0.75rem; color: #888; margin-top: 0.2rem; }
+
+    .section {
+      max-width: 960px;
+      margin: 0 auto 2.5rem;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.9rem 1.4rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .section-header .folder-path {
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 0.78rem;
+      font-weight: 400;
+      opacity: 0.85;
+      margin-left: auto;
+    }
+
+    .theme-entrantes  { background: #2d5a35; color: #e8f5e9; }
+    .theme-ensalades  { background: #4a7c3f; color: #e8f5e9; }
+    .theme-ous        { background: #7c5c1e; color: #fff8e1; }
+    .theme-sandwiches { background: #a0622a; color: #fff8e1; }
+    .theme-grill      { background: #1c1008; color: #ffe0b2; }
+    .theme-postres    { background: #b5294c; color: #fce4ec; }
+    .theme-bebidas    { background: #0a1628; color: #bbdefb; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    thead th {
+      background: #f0e9de;
+      padding: 0.65rem 1rem;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #6b4c2a;
+      border-bottom: 1px solid #d4c0a0;
+    }
+    tbody tr { border-bottom: 1px solid #f0e6d8; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fdf6ec; }
+    td { padding: 0.7rem 1rem; vertical-align: top; }
+    td.filename {
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 0.82rem;
+      color: #a0622a;
+      white-space: nowrap;
+    }
+    .item-name { font-weight: 600; }
+    .item-sub  { color: #888; font-size: 0.8rem; display: block; margin-top: 0.15rem; }
+    .item-row  { margin-bottom: 0.2rem; }
+
+    .badge {
+      display: inline-block;
+      padding: 0.15em 0.55em;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .badge-shared { background: #e8d5bb; color: #7c4a1e; }
+    .badge-unique { background: #e0f0e3; color: #2d5a35; }
+
+    footer {
+      max-width: 960px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 0.78rem;
+      color: #aaa;
+      padding-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>El Racó del Pantà — Menu Image Guide</h1>
+  <p>Every image file the website expects, exactly where to put it, and which dish(es) each file represents. Tick off each photo as you add it.</p>
+</header>
+
+<div class="instructions">
+  <h2>How to add your photos</h2>
+  <ol>
+    <li>All images live inside the <code>public/</code> folder of the project.</li>
+    <li>Create the sub-folders shown in each section header if they don't already exist (e.g. <code>public/menu/entrantes/</code>).</li>
+    <li>Save each photo with <strong>exactly</strong> the filename shown — lowercase, hyphens, <code>.jpg</code> extension.</li>
+    <li>Recommended size: <strong>800 × 600 px</strong> minimum, landscape, under 300 KB for fast loading.</li>
+    <li>Items marked <span class="badge badge-shared">shared</span> reuse one photo for several similar items — one good shot covers them all.</li>
+  </ol>
+</div>
+
+<div class="summary">
+  <div class="stat-card"><div class="num">7</div><div class="lbl">Folders needed</div></div>
+  <div class="stat-card"><div class="num">82</div><div class="lbl">Unique image files</div></div>
+  <div class="stat-card"><div class="num">126</div><div class="lbl">Total menu items</div></div>
+  <div class="stat-card"><div class="num">12</div><div class="lbl">Shared image files</div></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     STARTERS / ENTRANTES
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header theme-entrantes">
+    <span>🫒 Starters — Para Empezar</span>
+    <span class="folder-path">public/menu/entrantes/</span>
+  </div>
+  <table>
+    <thead><tr><th style="width:230px">Filename</th><th>Item(s) covered</th><th style="width:100px">Type</th></tr></thead>
+    <tbody>
+      <tr><td class="filename">braves.jpg</td><td><span class="item-name">Braves / Bravas</span><span class="item-sub">Spicy Potatoes</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">patates-fregides.jpg</td><td><span class="item-name">Patates fregides / Patatas fritas</span><span class="item-sub">French Fries</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">croquetes-pollastre.jpg</td><td><span class="item-name">Croquetes de Pollastre Rostit (6u)</span><span class="item-sub">Roasted Chicken Croquettes</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">croquetes-pernil.jpg</td><td><span class="item-name">Croquetes de Pernil Ibèric (6u)</span><span class="item-sub">Iberian Ham Croquettes</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">croquetes-pop.jpg</td><td><span class="item-name">Croquetes de Pop (6u)</span><span class="item-sub">Octopus Croquettes</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">fingers-pollastre.jpg</td><td><span class="item-name">Fingers de Pollastre / Pollo</span><span class="item-sub">Chicken Fingers</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">nachos-raco.jpg</td><td><span class="item-name">Nachos El Racó</span><span class="item-sub">Nachos El Racó</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">torreznos.jpg</td><td><span class="item-name">Torreznos de Soria</span><span class="item-sub">Soria Pork Crackling</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">sevillanas.jpg</td><td><span class="item-name">Sevillanes / Sevillanas</span><span class="item-sub">Battered Squid Rings</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">puntillitas.jpg</td><td><span class="item-name">Puntillites / Puntillitas</span><span class="item-sub">Fried Baby Squid</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">calamars-andalusa.jpg</td><td><span class="item-name">Calamars a l'Andalusa / Calamares a la Andaluza</span><span class="item-sub">Andalusian Calamari</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">pebrots-padro.jpg</td><td><span class="item-name">Pebrots de Padró / Pimientos de Padrón</span><span class="item-sub">Padron Peppers</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">flors-carxofes.jpg</td><td><span class="item-name">Flors de carxofa amb pernil i parmesà</span><span class="item-sub">Artichoke Flowers with Ham &amp; Parmesan</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">pernil-iberic.jpg</td><td><span class="item-name">Pernil Ibèric / Jamón Ibérico</span><span class="item-sub">Iberian Ham (platter)</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">assortit-formatges.jpg</td><td><span class="item-name">Assortit de formatges del Pallars</span><span class="item-sub">Pallars Cheese Board</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">pa-tomaquet.jpg</td><td><span class="item-name">Pa amb tomàquet / Pan con tomate</span><span class="item-sub">Tomato Bread</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SALADS / ENSALADES
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header theme-ensalades">
+    <span>🥗 Salads — Ensalades</span>
+    <span class="folder-path">public/menu/ensalades/</span>
+  </div>
+  <table>
+    <thead><tr><th style="width:230px">Filename</th><th>Item(s) covered</th><th style="width:100px">Type</th></tr></thead>
+    <tbody>
+      <tr><td class="filename">amanida-cesar.jpg</td><td><span class="item-name">Amanida César / Ensalada César</span><span class="item-sub">Caesar Salad</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">amanida-burrata.jpg</td><td><span class="item-name">Amanida de Burrata / Ensalada de Burrata</span><span class="item-sub">Burrata Salad</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">amanida-ventresca.jpg</td><td><span class="item-name">Amanida de Ventresca / Ensalada de Ventresca</span><span class="item-sub">Tuna Ventresca Salad</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">amanida-cabra.jpg</td><td><span class="item-name">Amanida de Formatge de Cabra</span><span class="item-sub">Goat's Cheese Salad</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     EGGS / OUS
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header theme-ous">
+    <span>🍳 Eggs — Ous del Racó</span>
+    <span class="folder-path">public/menu/ous/</span>
+  </div>
+  <table>
+    <thead><tr><th style="width:230px">Filename</th><th>Item(s) covered</th><th style="width:100px">Type</th></tr></thead>
+    <tbody>
+      <tr><td class="filename">ous-pernil.jpg</td><td><span class="item-name">Ous amb Pernil Ibèric / Con Jamón Ibérico</span><span class="item-sub">Fried Eggs with Iberian Ham &amp; Fries</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">ous-foie.jpg</td><td><span class="item-name">Ous amb Foie / Con Foie</span><span class="item-sub">Fried Eggs with Foie Gras &amp; Fries</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">ous-girella.jpg</td><td><span class="item-name">Ous amb Girella del Pallars</span><span class="item-sub">Fried Eggs with Pallars Girella &amp; Fries</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     SANDWICHES & TOASTS / ENTREPANS
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header theme-sandwiches">
+    <span>🥪 Sandwiches &amp; Toasts — Entrepans</span>
+    <span class="folder-path">public/menu/especiales/</span>
+  </div>
+  <table>
+    <thead><tr><th style="width:230px">Filename</th><th>Item(s) covered</th><th style="width:100px">Type</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="filename">entrepans.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Pernil Ibèric (fred ½)</span></div>
+          <div class="item-row"><span class="item-name">Formatge Manxec (fred ½)</span></div>
+          <div class="item-row"><span class="item-name">Secallona / Fuet (fred ½)</span></div>
+          <div class="item-row"><span class="item-name">Tonyina / Atún (fred ½)</span></div>
+          <div class="item-row"><span class="item-name">Vegetal de Tonyina (fred ½)</span></div>
+          <div class="item-row"><span class="item-name">Vegetal de Pollastre (fred ½)</span></div>
+          <span class="item-sub">One photo covers all 6 cold half-baguettes</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">entrepans-calents.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Truita Francesa / Tortilla Francesa</span></div>
+          <div class="item-row"><span class="item-name">Llom / Lomo</span></div>
+          <div class="item-row"><span class="item-name">Bacó / Bacon</span></div>
+          <div class="item-row"><span class="item-name">Llonganissa / Butifarra</span></div>
+          <div class="item-row"><span class="item-name">Frankfurt Clàssic / Classic Hot Dog</span></div>
+          <div class="item-row"><span class="item-name">Bikini / Ham &amp; Cheese Toast</span></div>
+          <span class="item-sub">One photo covers all 6 hot sandwiches</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">frankfurt-raco.jpg</td>
+        <td>
+          <span class="item-name">Frankfurt El Racó / El Racó Hot Dog</span>
+          <span class="item-sub">Loaded signature hot dog — own photo</span>
+        </td>
+        <td><span class="badge badge-unique">unique</span></td>
+      </tr>
+      <tr>
+        <td class="filename">torrades.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Torrada Pernil Ibèric</span></div>
+          <div class="item-row"><span class="item-name">Torrada Formatge Manxec</span></div>
+          <div class="item-row"><span class="item-name">Torrada Escalivada i Anxoves</span></div>
+          <div class="item-row"><span class="item-name">Torrada Tonyina amb Pebrots Escalivats</span></div>
+          <div class="item-row"><span class="item-name">Torrada Llom amb Formatge</span></div>
+          <div class="item-row"><span class="item-name">Torrada Sobrassada, Formatge de Cabra i Mel</span></div>
+          <span class="item-sub">One photo covers all 6 standard toasts</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">tostada-salmo.jpg</td>
+        <td>
+          <span class="item-name">Torrada Salmó Fumat / Smoked Salmon Toast</span>
+          <span class="item-sub">Signature toast with avocado &amp; cream cheese — own photo</span>
+        </td>
+        <td><span class="badge badge-unique">unique</span></td>
+      </tr>
+      <tr>
+        <td class="filename">hamburguesa-classica.jpg</td>
+        <td><span class="item-name">Hamburguesa Clàssica / Classic Burger</span><span class="item-sub">Beef, lettuce, tomato, cheddar</span></td>
+        <td><span class="badge badge-unique">unique</span></td>
+      </tr>
+      <tr>
+        <td class="filename">hamburguesa-raco.jpg</td>
+        <td><span class="item-name">Hamburguesa El Racó / El Racó Burger</span><span class="item-sub">Loaded burger with egg, bacon &amp; caramelised onion</span></td>
+        <td><span class="badge badge-unique">unique</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     GRILL / LA BRASA
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header theme-grill">
+    <span>🔥 Grill — La Nostra Brasa</span>
+    <span class="folder-path">public/menu/platos/</span>
+  </div>
+  <table>
+    <thead><tr><th style="width:230px">Filename</th><th>Item(s) covered</th><th style="width:100px">Type</th></tr></thead>
+    <tbody>
+      <tr><td class="filename">pop-brasa.jpg</td><td><span class="item-name">Pop a la brasa / Pulpo a la brasa</span><span class="item-sub">Grilled Octopus on potato base</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">pinxo-pollastre.jpg</td><td><span class="item-name">Pinxo de Pollastre / Pincho de Pollo</span><span class="item-sub">Grilled Chicken Skewer</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">llonganissa.jpg</td><td><span class="item-name">Llonganissa / Butifarra</span><span class="item-sub">Grilled Butifarra Sausage</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">secret.jpg</td><td><span class="item-name">Secret Ibèric / Secreto Ibérico</span><span class="item-sub">Iberian Pork Secreto</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">girella.jpg</td><td><span class="item-name">Girella del Pallars</span><span class="item-sub">Pallars Girella (grilled)</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">xai.jpg</td><td><span class="item-name">Xai / Cordero</span><span class="item-sub">Grilled Rack of Lamb</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">entrecot.jpg</td><td><span class="item-name">Entrecot / Entrecôte</span><span class="item-sub">Aged Beef Entrecôte</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">filet.jpg</td><td><span class="item-name">Filet / Solomillo</span><span class="item-sub">Beef Sirloin</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">xuleto.jpg</td><td><span class="item-name">Xuletó / Chuletón</span><span class="item-sub">T-Bone Steak</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">graella-verdures.jpg</td><td><span class="item-name">Graella de verdures / Parrillada de verduras</span><span class="item-sub">Grilled Vegetables</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     DESSERTS / POSTRES
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header theme-postres">
+    <span>🍮 Desserts — Postres</span>
+    <span class="folder-path">public/menu/postres/</span>
+  </div>
+  <table>
+    <thead><tr><th style="width:230px">Filename</th><th>Item(s) covered</th><th style="width:100px">Type</th></tr></thead>
+    <tbody>
+      <tr><td class="filename">crema-catalana.jpg</td><td><span class="item-name">Crema catalana</span><span class="item-sub">Crème Catalane</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">tiramisu.jpg</td><td><span class="item-name">Tiramisú clàssic</span><span class="item-sub">Classic Tiramisù</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">coulant.jpg</td><td><span class="item-name">Coulant de xocolata amb gelat de vainilla</span><span class="item-sub">Chocolate Fondant with vanilla ice cream</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">carpaccio-pinya.jpg</td><td><span class="item-name">Carpaccio de pinya amb crema cremada</span><span class="item-sub">Pineapple Carpaccio</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">torrijas.jpg</td><td><span class="item-name">Torrijas</span><span class="item-sub">French Toast (brioche)</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">pastis-formatge.jpg</td><td><span class="item-name">Pastís de formatge manxec / Tarta de queso manchego</span><span class="item-sub">Manchego Cheesecake</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">crep-nutella.jpg</td><td><span class="item-name">Crep de Nutella</span><span class="item-sub">Nutella Crêpe</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">terrina-gelats.jpg</td><td><span class="item-name">Terrina de gelats / Tarrina de helado</span><span class="item-sub">Ice Cream Trio (3 flavours)</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     DRINKS / BEGUDES
+     ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header theme-bebidas">
+    <span>🍺 Drinks — Begudes</span>
+    <span class="folder-path">public/menu/bebidas/</span>
+  </div>
+  <table>
+    <thead><tr><th style="width:230px">Filename</th><th>Item(s) covered</th><th style="width:100px">Type</th></tr></thead>
+    <tbody>
+      <!-- Soft drinks -->
+      <tr><td class="filename" colspan="3" style="background:#f7f2eb;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;padding:0.4rem 1rem;">Soft Drinks — Refrescos</td></tr>
+      <tr>
+        <td class="filename">aigua.jpg</td>
+        <td><span class="item-name">Aigua 33cl &amp; Aigua 1,5l</span><span class="item-sub">Water — both sizes share one image</span></td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr><td class="filename">vichy.jpg</td><td><span class="item-name">Vichy Catalan</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">coca-cola.jpg</td><td><span class="item-name">Coca-Cola</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">fanta.jpg</td><td><span class="item-name">Fanta</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">aquarius.jpg</td><td><span class="item-name">Aquarius</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">nestea.jpg</td><td><span class="item-name">Nestea</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">kas.jpg</td><td><span class="item-name">Better Kas</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">tonica.jpg</td><td><span class="item-name">Tònica / Tonic Water</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">tinto-verano.jpg</td><td><span class="item-name">Tinto de Verano</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+
+      <!-- Non-alcoholic beer -->
+      <tr><td class="filename" colspan="3" style="background:#f7f2eb;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;padding:0.4rem 1rem;">Non-Alcoholic Beer — Cervesa 0,0%</td></tr>
+      <tr><td class="filename">cervesa-00.jpg</td><td><span class="item-name">Cervesa 0,0% / Beer 0.0%</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">damm-lemon-00.jpg</td><td><span class="item-name">Damm Lemon 0,0%</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">torrada-00.jpg</td><td><span class="item-name">Torrada 0,0%</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+
+      <!-- Coffee & tea -->
+      <tr><td class="filename" colspan="3" style="background:#f7f2eb;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;padding:0.4rem 1rem;">Coffee &amp; Hot Drinks — Cafès i Infusions</td></tr>
+      <tr>
+        <td class="filename">cafe.jpg</td>
+        <td>
+          <span class="item-name">Cafè / Americà / Tallat</span>
+          <span class="item-sub">Espresso · Americano · Cortado — one shot covers all three</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr><td class="filename">cafe-llet.jpg</td><td><span class="item-name">Cafè amb llet / Café con leche</span><span class="item-sub">White Coffee</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">cigalo.jpg</td><td><span class="item-name">Cigaló / Carajillo</span><span class="item-sub">Coffee with Spirits</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">cafe-bombo.jpg</td><td><span class="item-name">Cafè bombó / Café bombón</span><span class="item-sub">Sweetened Espresso</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">cacaolat.jpg</td><td><span class="item-name">Cacaolat</span><span class="item-sub">Chocolate Milk</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">sucs.jpg</td><td><span class="item-name">Sucs / Zumos / Juices</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">suc-taronja.jpg</td><td><span class="item-name">Suc natural de taronja / Fresh Orange Juice</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+
+      <!-- Beers -->
+      <tr><td class="filename" colspan="3" style="background:#f7f2eb;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;padding:0.4rem 1rem;">Beers — Cerveses</td></tr>
+      <tr><td class="filename">estrella-damm.jpg</td><td><span class="item-name">Estrella Damm</span><span class="item-sub">Draught / Glass / Pitcher</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">damm-lemon.jpg</td><td><span class="item-name">Damm Lemon</span><span class="item-sub">Draught / Glass / Pitcher</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">turia.jpg</td><td><span class="item-name">Turia</span><span class="item-sub">Draught / Glass / Pitcher</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">bohemia.jpg</td><td><span class="item-name">Bohemia Damm Reserva</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">alhambra.jpg</td><td><span class="item-name">Alambra Verde</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">volldamm.jpg</td><td><span class="item-name">Volldamm</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">coronita.jpg</td><td><span class="item-name">Coronita</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+      <tr><td class="filename">daura.jpg</td><td><span class="item-name">Daura (sense gluten / Gluten Free)</span></td><td><span class="badge badge-unique">unique</span></td></tr>
+
+      <!-- Wines -->
+      <tr><td class="filename" colspan="3" style="background:#f7f2eb;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;padding:0.4rem 1rem;">Wines — Vins</td></tr>
+      <tr>
+        <td class="filename">vi-blanc.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Bardos Verdejo Rueda</span></div>
+          <div class="item-row"><span class="item-name">Honey Moon El Penedès</span></div>
+          <div class="item-row"><span class="item-name">La Presumida El Pallars</span></div>
+          <div class="item-row"><span class="item-name">Agaliú L'Olivera (copa)</span></div>
+          <span class="item-sub">One white wine photo covers all 4 whites</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">vi-negre.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">RO7 Pobla de Segur</span></div>
+          <div class="item-row"><span class="item-name">Bardos Ribera del Duero</span></div>
+          <div class="item-row"><span class="item-name">El Vivanco Rioja</span></div>
+          <div class="item-row"><span class="item-name">El Presumit Pallars</span></div>
+          <span class="item-sub">One red wine photo covers all 4 reds</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+
+      <!-- Spirits -->
+      <tr><td class="filename" colspan="3" style="background:#f7f2eb;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;padding:0.4rem 1rem;">Spirits &amp; Glasses — Combinats i Copes</td></tr>
+      <tr>
+        <td class="filename">combinat.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Ron Santa Teresa</span></div>
+          <div class="item-row"><span class="item-name">Ron Bacardí Carta Blanca</span></div>
+          <div class="item-row"><span class="item-name">Ron Barceló</span></div>
+          <div class="item-row"><span class="item-name">Eristoff Vodka</span></div>
+          <div class="item-row"><span class="item-name">Absolut Vodka</span></div>
+          <span class="item-sub">One photo covers rum &amp; vodka combinados</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">gin.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Beefeater · Seagram's · Bombay Sapphire</span></div>
+          <div class="item-row"><span class="item-name">Hendrick's · Brockmans · G'Vine</span></div>
+          <span class="item-sub">One photo covers all 6 gins</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">whisky.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Ballantine's · JB · Johnnie Walker Red Label (combinat)</span></div>
+          <div class="item-row"><span class="item-name">JB · Red Label · Dewar's 12 · Aberfeldy 12 (copa)</span></div>
+          <span class="item-sub">One photo covers all 7 whisky items</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">martini.jpg</td>
+        <td>
+          <span class="item-name">Martini Negre (copa) &amp; Martini Blanc (copa)</span>
+          <span class="item-sub">One photo covers both Martini glasses</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+      <tr>
+        <td class="filename">licor.jpg</td>
+        <td>
+          <div class="item-row"><span class="item-name">Licor de Cassís · Orujo d'Herbes · Baileys</span></div>
+          <div class="item-row"><span class="item-name">Ratafia · Tequila Cazadores (xupito)</span></div>
+          <span class="item-sub">One photo covers all 5 liqueur items</span>
+        </td>
+        <td><span class="badge badge-shared">shared</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  Generated from <code>data/carta.ts</code> · El Racó del Pantà · 2026
+</footer>
+
+</body>
+</html>
