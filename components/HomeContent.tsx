@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { ScrollReveal } from '@/components/ScrollReveal'
@@ -20,6 +20,17 @@ export default function HomeContent() {
   const { lang } = useLanguage()
   const heroRef = useRef<HTMLElement>(null)
   const socialRef = useRef<HTMLElement>(null)
+  const reviewsWidgetRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!reviewsWidgetRef.current) return
+    const script = document.createElement('script')
+    script.src = 'https://cdn.trustindex.io/loader.js?27d92f474f70182d418692ea060'
+    script.defer = true
+    script.async = true
+    reviewsWidgetRef.current.after(script)
+    return () => script.remove()
+  }, [])
   const socialInView = useInView(socialRef, { once: true, margin: '-80px' })
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
@@ -106,32 +117,16 @@ export default function HomeContent() {
       {/* ── GREEN DIVIDER STRIP ── */}
       <div className="bg-gradient-to-r from-green-dark via-green-mid to-green-dark h-2.5" />
 
-      {/* ── GOOGLE REVIEWS ── */}
-      <section className="py-14 sm:py-20 px-4 bg-green-light/30">
-        <ScrollReveal className="max-w-lg mx-auto">
-          <div className="bg-parchment rounded-3xl shadow-lg p-6 sm:p-10 text-center border border-wood/30">
-            <div className="flex items-center gap-1 justify-center mb-2">
-              {[...Array(5)].map((_, i) => (
-                <svg key={i} className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
-                  <path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                </svg>
-              ))}
-              <span className="font-heading font-black text-2xl text-yellow-500 ml-1">5.0</span>
-            </div>
-            <h2 className="font-heading text-2xl text-green-dark mb-3">{t('reviews_title', lang)}</h2>
-            <p className="text-brown/70 mb-6 font-body">{t('reviews_note', lang)}</p>
-            <motion.a
-              href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-block bg-green-dark text-cream px-8 py-3 rounded-full font-heading font-bold hover:bg-green-mid transition-colors shadow-md"
-            >
-              {t('reviews_btn', lang)}
-            </motion.a>
-          </div>
-        </ScrollReveal>
+      {/* ── TRUSTINDEX REVIEWS ── */}
+      <section className="py-16 sm:py-24 px-4 bg-cream">
+        <div className="max-w-5xl mx-auto">
+          <ScrollReveal>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-green-dark text-center mb-12">
+              {t('ressenyes_subtitle', lang)}
+            </h2>
+          </ScrollReveal>
+          <div ref={reviewsWidgetRef} data-widget-id="27d92f474f70182d418692ea060"></div>
+        </div>
       </section>
 
       {/* ── SOCIAL SECTION ── */}
