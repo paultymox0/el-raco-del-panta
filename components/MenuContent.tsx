@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Salad, Sandwich, Flame, IceCreamCone, Wine } from 'lucide-react'
 import { carta, MenuItem, Allergen } from '@/data/carta'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -29,36 +30,7 @@ const ALLERGEN: Record<Allergen, { emoji: string; label: string }> = {
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
-const StarterIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-  </svg>
-)
-
-const SandwichIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
-  </svg>
-)
-
-const GrillIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-  </svg>
-)
-
-const DessertIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-  </svg>
-)
-
-const DrinksIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} className="w-4 h-4 flex-shrink-0" aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15M14.25 3.104c.251.023.501.05.75.082M19.8 15a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 15M19.8 15H4.5" />
-  </svg>
-)
+const ICON_PROPS = { size: 24, strokeWidth: 1.5, className: 'flex-shrink-0', 'aria-hidden': true } as const
 
 const BasketIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 flex-shrink-0" aria-hidden>
@@ -82,7 +54,7 @@ type CatConfig = {
 const CATS: CatConfig[] = [
   {
     id: 'starters',
-    icon: <StarterIcon />,
+    icon: <Salad {...ICON_PROPS} />,
     tabActive: 'bg-[#1a3d1f] text-[#f5ead6] shadow-md',
     tabInactive: 'bg-[#f5ead6]/70 text-[#2c1a0e]/70 hover:bg-[#f5ead6] hover:text-[#2c1a0e]',
     contentStyle: { backgroundImage: 'linear-gradient(160deg, #fdf8f0 0%, #f5ead6 55%, #ede0c4 100%)' },
@@ -92,7 +64,7 @@ const CATS: CatConfig[] = [
   },
   {
     id: 'sandwiches',
-    icon: <SandwichIcon />,
+    icon: <Sandwich {...ICON_PROPS} />,
     tabActive: 'bg-[#a0622a] text-white shadow-md',
     tabInactive: 'bg-[#f0e0c8]/80 text-[#5c3010]/70 hover:bg-[#e8d4b8] hover:text-[#5c3010]',
     contentStyle: { backgroundImage: 'linear-gradient(160deg, #fdf0dc 0%, #f0d9a8 50%, #e0c480 100%)' },
@@ -102,7 +74,7 @@ const CATS: CatConfig[] = [
   },
   {
     id: 'grill',
-    icon: <GrillIcon />,
+    icon: <Flame {...ICON_PROPS} />,
     tabActive: 'bg-[#1a0e05] text-orange-200 shadow-md ring-1 ring-orange-800/50',
     tabInactive: 'bg-[#261206]/70 text-orange-300/70 hover:bg-[#301a08] hover:text-orange-200',
     contentStyle: {
@@ -115,7 +87,7 @@ const CATS: CatConfig[] = [
   },
   {
     id: 'desserts',
-    icon: <DessertIcon />,
+    icon: <IceCreamCone {...ICON_PROPS} />,
     tabActive: 'bg-rose-700 text-white shadow-md',
     tabInactive: 'bg-rose-50/80 text-rose-700/70 hover:bg-rose-100 hover:text-rose-700',
     contentStyle: { backgroundImage: 'linear-gradient(160deg, #fff9fc 0%, #fce8f0 50%, #f5d0e4 100%)' },
@@ -125,7 +97,7 @@ const CATS: CatConfig[] = [
   },
   {
     id: 'drinks',
-    icon: <DrinksIcon />,
+    icon: <Wine {...ICON_PROPS} />,
     tabActive: 'bg-[#0a1628] text-blue-200 shadow-md ring-1 ring-blue-800/50',
     tabInactive: 'bg-[#0d1e35]/70 text-blue-300/70 hover:bg-[#0a1628] hover:text-blue-200',
     contentStyle: {
