@@ -29,8 +29,39 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Restaurant',
+    name: 'El Racó del Pantà',
+    image: 'https://www.elracodelpanta.cat/logo.png',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'C-13, 91',
+      addressLocality: 'Talarn',
+      addressRegion: 'Lleida',
+      postalCode: '25630',
+      addressCountry: 'ES',
+    },
+    telephone: '+34633043077',
+    url: 'https://www.elracodelpanta.cat',
+    servesCuisine: ['Spanish', 'Tapas', 'Grill'],
+    priceRange: '€€',
+    openingHoursSpecification: [{
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      opens: '08:00',
+      closes: '23:00',
+    }],
+  }
+
   return (
     <html lang="ca">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-parchment text-brown font-body">
         {COMING_SOON ? (
           <ComingSoon />

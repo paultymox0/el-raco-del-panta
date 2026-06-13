@@ -241,6 +241,7 @@ export const i18n = {
   info_closed:        { ca: 'Tancat',          es: 'Cerrado',         en: 'Closed'        },
   info_map_ph:        { ca: 'Mapa de Google Maps', es: 'Mapa de Google Maps', en: 'Google Maps' },
   info_directions:    { ca: 'Com arribar',      es: 'Cómo llegar',     en: 'Get directions'},
+  info_hours_note:    { ca: "Obert tots els dies de l'any", es: 'Abierto todos los días del año', en: 'Open every day of the year' },
 
   // ── Days of the week ──────────────────────────────────────────────────────
   day_monday:    { ca: 'Dilluns',   es: 'Lunes',     en: 'Monday'    },

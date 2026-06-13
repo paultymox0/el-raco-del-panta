@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
 
-const PHONE = '34XXXXXXXXX'
+const PHONE = '34633043077'
 
 export default function WhatsAppButton() {
   const { lang } = useLanguage()
