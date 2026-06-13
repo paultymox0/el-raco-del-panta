@@ -17,12 +17,11 @@ export default function ResenyesContent() {
   const { lang } = useLanguage()
 
   useEffect(() => {
+    if (document.querySelector('script[src*="trustindex"]')) return
     const script = document.createElement('script')
     script.src = 'https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2'
     script.async = true
-    script.defer = true
     document.head.appendChild(script)
-    return () => { document.head.removeChild(script) }
   }, [])
 
   return (
@@ -56,7 +55,7 @@ export default function ResenyesContent() {
           {t('ressenyes_subtitle', lang)}
         </motion.h2>
 
-        <div data-widget-id="cf2dc8e74d201823cc461f139b2" />
+        <div data-widget-id="cf2dc8e74d201823cc461f139b2"></div>
       </div>
 
       {/* CTA */}
