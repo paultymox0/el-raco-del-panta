@@ -19,12 +19,12 @@ export default function ResenyesContent() {
 
   useEffect(() => {
     if (!widgetRef.current) return
-    if (document.querySelector('script[src*="trustindex"]')) return
     const script = document.createElement('script')
     script.src = 'https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2'
-    script.async = true
     script.defer = true
+    script.async = true
     widgetRef.current.after(script)
+    return () => script.remove()
   }, [])
 
   return (
