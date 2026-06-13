@@ -1,6 +1,6 @@
 'use client'
 
-import Script from 'next/script'
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -15,6 +15,15 @@ const fadeUp = {
 
 export default function ResenyesContent() {
   const { lang } = useLanguage()
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2'
+    script.async = true
+    script.defer = true
+    document.head.appendChild(script)
+    return () => { document.head.removeChild(script) }
+  }, [])
 
   return (
     <div className="min-h-screen bg-parchment">
@@ -48,11 +57,6 @@ export default function ResenyesContent() {
         </motion.h2>
 
         <div data-widget-id="cf2dc8e74d201823cc461f139b2" />
-
-        <Script
-          src="https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2"
-          strategy="afterInteractive"
-        />
       </div>
 
       {/* CTA */}
