@@ -858,12 +858,11 @@ export default function MenuContent() {
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => setCartOpen(true)}
-          className="fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2.5 bg-green-dark text-cream px-5 py-3 min-h-[48px] rounded-full shadow-2xl font-heading font-bold text-sm whitespace-nowrap"
+          className="fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2.5 bg-green-dark text-cream px-5 py-3 min-h-[48px] rounded-full shadow-2xl font-heading font-bold text-sm max-w-[calc(100vw-2rem)]"
         >
           <BasketIcon />
-          <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center text-xs font-black">{totalItems}</span>
           <span>{t('order_title', lang)}</span>
-          <span className="text-cream/70">{cart.reduce((s, c) => s + c.preu * c.quantitat, 0).toFixed(2)} €</span>
+          <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0">{totalItems}</span>
         </motion.button>
       )}
 

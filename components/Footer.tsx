@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
 import { useConsent } from '@/lib/ConsentContext'
+import { MapPin } from 'lucide-react'
 
 export default function Footer() {
   const { lang } = useLanguage()
@@ -25,7 +26,15 @@ export default function Footer() {
 
         {/* Contact summary */}
         <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-[#f5ead6]/70 font-body text-center">
-          <span>C-13, 91 · 25630 Talarn, Lleida</span>
+          <a
+            href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 hover:text-[#f5ead6] transition-colors"
+          >
+            <MapPin size={13} strokeWidth={1.5} className="flex-shrink-0 opacity-60" />
+            C-13, 91 · 25630 Talarn, Lleida
+          </a>
           <a href="tel:+34633043077" className="hover:text-[#f5ead6] transition-colors font-semibold text-[#f5ead6]/90">
             +34 633 04 30 77
           </a>
