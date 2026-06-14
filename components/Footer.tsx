@@ -3,9 +3,11 @@
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
+import { useConsent } from '@/lib/ConsentContext'
 
 export default function Footer() {
   const { lang } = useLanguage()
+  const { reopen } = useConsent()
 
   const navLinks = [
     { href: '/',            label: t('nav_home',     lang) },
@@ -41,6 +43,25 @@ export default function Footer() {
             ))}
           </ul>
         </nav>
+
+        {/* Legal links */}
+        <div className="flex flex-wrap justify-center gap-x-5 gap-y-1 text-xs text-[#f5ead6]/40">
+          <Link href="/aviso-legal" className="hover:text-[#f5ead6]/70 transition-colors font-body">
+            {t('legal_aviso', lang)}
+          </Link>
+          <span aria-hidden>·</span>
+          <Link href="/privacidad" className="hover:text-[#f5ead6]/70 transition-colors font-body">
+            {t('legal_privacidad', lang)}
+          </Link>
+          <span aria-hidden>·</span>
+          <Link href="/cookies" className="hover:text-[#f5ead6]/70 transition-colors font-body">
+            {t('legal_cookies', lang)}
+          </Link>
+          <span aria-hidden>·</span>
+          <button onClick={reopen} className="hover:text-[#f5ead6]/70 transition-colors font-body cursor-pointer focus:outline-none focus:underline">
+            {t('cookie_manage', lang)}
+          </button>
+        </div>
 
         <p className="text-[#f5ead6]/40 text-xs font-body text-center">
           © {new Date().getFullYear()} El Racó del Pantà · {t('footer_rights', lang)}

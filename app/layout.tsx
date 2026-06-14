@@ -4,6 +4,8 @@ import { Analytics } from '@vercel/analytics/next'
 import { COMING_SOON } from '@/lib/config'
 import ComingSoon from './coming-soon'
 import { LanguageProvider } from '@/contexts/LanguageContext'
+import { ConsentProvider } from '@/lib/ConsentContext'
+import CookieConsent from '@/components/CookieConsent'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import WhatsAppButton from '@/components/WhatsAppButton'
@@ -46,6 +48,8 @@ export default function RootLayout({
     url: 'https://www.elracodelpanta.cat',
     servesCuisine: ['Spanish', 'Tapas', 'Grill'],
     priceRange: '€€',
+    hasMenu: 'https://www.elracodelpanta.cat/menu',
+    acceptsReservations: true,
     openingHoursSpecification: [{
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -66,13 +70,16 @@ export default function RootLayout({
         {COMING_SOON ? (
           <ComingSoon />
         ) : (
-          <LanguageProvider>
-            <Navbar />
-            <LanguageSwitcher />
-            <main>{children}</main>
-            <Footer />
-            <WhatsAppButton />
-          </LanguageProvider>
+          <ConsentProvider>
+            <LanguageProvider>
+              <Navbar />
+              <LanguageSwitcher />
+              <main>{children}</main>
+              <Footer />
+              <WhatsAppButton />
+              <CookieConsent />
+            </LanguageProvider>
+          </ConsentProvider>
         )}
         <Analytics />
       </body>

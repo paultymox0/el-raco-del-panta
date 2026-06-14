@@ -277,6 +277,30 @@ export const i18n = {
   ressenyes_stars:    { ca: '⭐ 5.0 a Google Maps',              es: '⭐ 5.0 en Google Maps',             en: '⭐ 5.0 on Google Maps'              },
   ressenyes_note:     { ca: 'La teva ressenya ajuda altres a descobrir-nos 🙏', es: 'Tu reseña ayuda a otros a descubrirnos 🙏', en: 'Your review helps others discover us 🙏' },
   ressenyes_btn:      { ca: 'Escriu la teva ressenya',            es: 'Escribe tu reseña',                en: 'Write your review'                 },
+
+  // ── Legal pages ───────────────────────────────────────────────────────────
+  legal_aviso:      { ca: 'Avís Legal',           es: 'Aviso Legal',          en: 'Legal Notice'      },
+  legal_privacidad: { ca: 'Privacitat',            es: 'Privacidad',           en: 'Privacy'           },
+  legal_cookies:    { ca: 'Galetes',              es: 'Cookies',              en: 'Cookies'           },
+  legal_updated:    { ca: 'Última actualització:', es: 'Última actualización:', en: 'Last updated:'    },
+
+  // ── Cookie consent ────────────────────────────────────────────────────────
+  cookie_manage:    { ca: 'Gestionar galetes', es: 'Gestionar cookies', en: 'Manage cookies' },
+
+  // ── Consent-gated placeholders ────────────────────────────────────────────
+  consent_map_title:    { ca: 'Carrega el mapa',      es: 'Cargar el mapa',       en: 'Load map'           },
+  consent_map_body:     { ca: "Per veure el mapa de Google has d'acceptar les galetes de tercers.", es: 'Para ver el mapa de Google debes aceptar las cookies de terceros.', en: 'To see the Google Map you need to accept third-party cookies.' },
+  consent_map_btn:      { ca: 'Acceptar i carregar',  es: 'Aceptar y cargar',     en: 'Accept & load'      },
+  consent_reviews_title:{ ca: 'Carrega les ressenyes', es: 'Cargar las reseñas',  en: 'Load reviews'       },
+  consent_reviews_body: { ca: "Per veure les ressenyes de Google has d'acceptar les galetes de tercers.", es: 'Para ver las reseñas de Google debes aceptar las cookies de terceros.', en: 'To see the Google reviews you need to accept third-party cookies.' },
+  consent_reviews_btn:  { ca: 'Acceptar i carregar',  es: 'Aceptar y cargar',     en: 'Accept & load'      },
+
+  // ── Allergen disclaimer ───────────────────────────────────────────────────
+  allergen_disclaimer: {
+    ca: "La informació d'al·lèrgens pot variar segons la recepta o el proveïdor. Consulteu el nostre personal abans de demanar.",
+    es: 'La información de alérgenos puede variar según la receta o el proveedor. Consulta a nuestro personal antes de pedir.',
+    en: 'Allergen information may vary depending on the recipe or supplier. Please ask our staff before ordering.',
+  },
 } as const
 
 export type I18nKey = keyof typeof i18n

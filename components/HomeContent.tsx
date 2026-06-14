@@ -1,11 +1,12 @@
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { ScrollReveal } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
+import ConsentGatedWidget from '@/components/ConsentGatedWidget'
 
 const heroChildVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -20,17 +21,7 @@ export default function HomeContent() {
   const { lang } = useLanguage()
   const heroRef = useRef<HTMLElement>(null)
   const socialRef = useRef<HTMLElement>(null)
-  const reviewsWidgetRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (!reviewsWidgetRef.current) return
-    const script = document.createElement('script')
-    script.src = 'https://cdn.trustindex.io/loader.js?27d92f474f70182d418692ea060'
-    script.defer = true
-    script.async = true
-    reviewsWidgetRef.current.after(script)
-    return () => script.remove()
-  }, [])
   const socialInView = useInView(socialRef, { once: true, margin: '-80px' })
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
@@ -125,7 +116,10 @@ export default function HomeContent() {
               {t('ressenyes_subtitle', lang)}
             </h2>
           </ScrollReveal>
-          <div ref={reviewsWidgetRef} data-widget-id="27d92f474f70182d418692ea060"></div>
+          <ConsentGatedWidget
+            widgetId="27d92f474f70182d418692ea060"
+            scriptSrc="https://cdn.trustindex.io/loader.js?27d92f474f70182d418692ea060"
+          />
         </div>
       </section>
 

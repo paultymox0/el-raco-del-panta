@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
+import ConsentGatedWidget from '@/components/ConsentGatedWidget'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -15,17 +15,6 @@ const fadeUp = {
 
 export default function ResenyesContent() {
   const { lang } = useLanguage()
-  const widgetRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!widgetRef.current) return
-    const script = document.createElement('script')
-    script.src = 'https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2'
-    script.defer = true
-    script.async = true
-    widgetRef.current.after(script)
-    return () => script.remove()
-  }, [])
 
   return (
     <div className="min-h-screen bg-parchment">
@@ -58,7 +47,10 @@ export default function ResenyesContent() {
           {t('ressenyes_subtitle', lang)}
         </motion.h2>
 
-        <div ref={widgetRef} data-widget-id="cf2dc8e74d201823cc461f139b2"></div>
+        <ConsentGatedWidget
+          widgetId="cf2dc8e74d201823cc461f139b2"
+          scriptSrc="https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2"
+        />
       </div>
 
       {/* CTA */}

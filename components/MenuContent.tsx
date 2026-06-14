@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Salad, Sandwich, Flame, IceCreamCone, Wine } from 'lucide-react'
+import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle } from 'lucide-react'
 import { carta, MenuItem, Allergen } from '@/data/carta'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -687,6 +687,10 @@ export default function MenuContent() {
       {/* Allergen note */}
       <div className="border-t border-wood/30 py-10 px-4 text-center bg-cream/50">
         <p className="text-brown/45 text-xs font-body max-w-lg mx-auto leading-relaxed">{t('allergens_note', lang)}</p>
+        <p className="font-body text-xs text-brown/50 mt-4 leading-relaxed max-w-xl mx-auto flex items-start justify-center gap-1.5">
+          <AlertTriangle size={13} strokeWidth={1.8} className="flex-shrink-0 mt-0.5 text-brown/40" aria-hidden />
+          {t('allergen_disclaimer', lang)}
+        </p>
       </div>
 
       {/* Cart pill */}

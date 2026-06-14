@@ -4,6 +4,7 @@ import BotanicalLeaf from '@/components/BotanicalLeaf'
 import { ScrollReveal } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
+import ConsentGatedMap from '@/components/ConsentGatedMap'
 
 function ClockIcon() {
   return (
@@ -90,18 +91,7 @@ export default function InformacionContent() {
 
             {/* Google Map */}
             <ScrollReveal>
-              <div className="rounded-2xl overflow-hidden border border-wood/30 shadow-md" style={{ height: 300 }}>
-                <iframe
-                  title="Ubicació El Racó del Pantà"
-                  src="https://www.google.com/maps?q=C-13+91+25630+Talarn+Lleida&output=embed"
-                  width="100%"
-                  height="300"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+              <ConsentGatedMap />
               <a
                 href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
                 target="_blank"
