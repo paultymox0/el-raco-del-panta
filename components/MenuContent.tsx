@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle } from 'lucide-react'
+import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle, FileDown } from 'lucide-react'
 import { carta, MenuItem, Allergen } from '@/data/carta'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -466,6 +466,153 @@ export default function MenuContent() {
   const dessertItems  = carta.filter(i => i.categoria === 'postres')
   const sandwichItems = carta.filter(i => i.categoria === 'especiales' && i.subcategoria === activeSandwichSubcat)
 
+  async function downloadMenuPDF() {
+    const { jsPDF } = await import('jspdf')
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+
+    const pageW = 210
+    const pageH = 297
+    const ml = 18
+    const mr = 18
+    const cw = pageW - ml - mr
+    let y = ml
+
+    const GREEN: [number, number, number] = [26, 61, 31]
+    const BROWN: [number, number, number] = [44, 26, 14]
+    const MUTED: [number, number, number] = [120, 100, 80]
+    const GOLD:  [number, number, number] = [180, 140, 80]
+
+    function checkPage(need = 10) {
+      if (y + need > pageH - 14) { doc.addPage(); y = ml }
+    }
+
+    function drawRule(color: [number, number, number] = GOLD, lw = 0.3) {
+      doc.setDrawColor(...color)
+      doc.setLineWidth(lw)
+      doc.line(ml, y, pageW - mr, y)
+      y += 4
+    }
+
+    function sectionTitle(text: string) {
+      checkPage(14)
+      doc.setFont('helvetica', 'bold')
+      doc.setFontSize(13)
+      doc.setTextColor(...GREEN)
+      doc.text(text.toUpperCase(), ml, y)
+      y += 2
+      drawRule(GOLD, 0.4)
+    }
+
+    function subTitle(text: string) {
+      checkPage(10)
+      doc.setFont('helvetica', 'bold')
+      doc.setFontSize(9)
+      doc.setTextColor(...MUTED)
+      doc.text(text, ml, y)
+      y += 5
+    }
+
+    function itemRow(item: MenuItem) {
+      checkPage(7)
+      const name = item[lang].nom
+      const price = `${item.preu.toFixed(2).replace('.', ',')} €`
+      const allergens = item.alergenos.map(a => ALLERGEN[a].label).join(', ')
+
+      doc.setFont('helvetica', 'normal')
+      doc.setFontSize(10)
+      doc.setTextColor(...BROWN)
+      const lines = doc.splitTextToSize(name, cw - 22) as string[]
+      doc.text(lines, ml, y)
+      doc.setFont('helvetica', 'bold')
+      doc.text(price, pageW - mr, y, { align: 'right' })
+      y += lines.length * 4.5
+
+      if (allergens) {
+        checkPage(5)
+        doc.setFont('helvetica', 'italic')
+        doc.setFontSize(7.5)
+        doc.setTextColor(...MUTED)
+        doc.text(allergens, ml + 2, y)
+        y += 4
+      }
+      y += 1
+    }
+
+    // ── Header ──────────────────────────────────────────────────────────────
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(22)
+    doc.setTextColor(...GREEN)
+    doc.text('El Racó del Pantà', pageW / 2, y, { align: 'center' })
+    y += 7
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.setTextColor(...MUTED)
+    const cartaTitle = { ca: 'La Nostra Carta', es: 'Nuestra Carta', en: 'Our Menu' }[lang]
+    doc.text(cartaTitle, pageW / 2, y, { align: 'center' })
+    y += 2
+    doc.setFont('helvetica', 'italic')
+    doc.setFontSize(8)
+    doc.text('C-13, 91 · 25630 Talarn, Lleida · +34 633 04 30 77', pageW / 2, y + 4, { align: 'center' })
+    y += 10
+    drawRule(GOLD, 0.5)
+
+    // ── Starters ────────────────────────────────────────────────────────────
+    sectionTitle(CAT_LABELS.starters[lang])
+    for (const sub of STARTER_SUBCATS) {
+      const items = carta.filter(i => i.categoria === sub.id)
+      if (!items.length) continue
+      subTitle(sub.label[lang])
+      items.forEach(itemRow)
+      y += 2
+    }
+
+    // ── Sandwiches ──────────────────────────────────────────────────────────
+    y += 3
+    sectionTitle(CAT_LABELS.sandwiches[lang])
+    for (const sub of SANDWICH_SUBCATS) {
+      const items = carta.filter(i => i.categoria === 'especiales' && i.subcategoria === sub.id)
+      if (!items.length) continue
+      subTitle(sub.label[lang])
+      items.forEach(itemRow)
+      y += 2
+    }
+
+    // ── Grill ────────────────────────────────────────────────────────────────
+    y += 3
+    sectionTitle(CAT_LABELS.grill[lang])
+    grillItems.forEach(itemRow)
+
+    // ── Desserts ─────────────────────────────────────────────────────────────
+    y += 3
+    sectionTitle(CAT_LABELS.desserts[lang])
+    dessertItems.forEach(itemRow)
+
+    // ── Drinks ───────────────────────────────────────────────────────────────
+    y += 3
+    sectionTitle(CAT_LABELS.drinks[lang])
+    for (const sub of ALL_DRINK_SUBCATS) {
+      const items = carta.filter(i => i.categoria === sub.cat && i.subcategoria === sub.id)
+      if (!items.length) continue
+      subTitle(sub.label[lang])
+      items.forEach(itemRow)
+      y += 2
+    }
+
+    // ── Footer ────────────────────────────────────────────────────────────────
+    const totalPages = (doc as unknown as { internal: { pages: unknown[] } }).internal.pages.length - 1
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p)
+      doc.setFont('helvetica', 'italic')
+      doc.setFontSize(7)
+      doc.setTextColor(...MUTED)
+      const disclaimer = { ca: 'Preus amb IVA inclòs. Allergens disponibles en consulta al personal.', es: 'Precios con IVA incluido. Alérgenos disponibles en consulta al personal.', en: 'Prices include VAT. Allergen info available from our staff.' }[lang]
+      doc.text(disclaimer, pageW / 2, pageH - 8, { align: 'center' })
+    }
+
+    const langLabel = { ca: 'ca', es: 'es', en: 'en' }[lang]
+    doc.save(`Carta-El-Raco-del-Panta-${langLabel}.pdf`)
+  }
+
   function renderCardGrid(items: MenuItem[], darkFront?: boolean) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -646,6 +793,15 @@ export default function MenuContent() {
         <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }} className="font-heading text-4xl md:text-5xl font-black text-green-dark">
           La Nostra Carta
         </motion.h1>
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="mt-5">
+          <button
+            onClick={downloadMenuPDF}
+            className="inline-flex items-center gap-2 bg-green-dark/8 hover:bg-green-dark text-green-dark hover:text-cream border border-green-dark/25 hover:border-green-dark font-body font-semibold text-sm py-2.5 px-5 rounded-xl transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-dark/40 min-h-[44px]"
+          >
+            <FileDown size={16} strokeWidth={1.5} />
+            {{ ca: 'Descarregar carta en PDF', es: 'Descargar carta en PDF', en: 'Download menu PDF' }[lang]}
+          </button>
+        </motion.div>
       </div>
 
       {/* Horizontal category tabs — sticky */}
