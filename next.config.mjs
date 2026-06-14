@@ -18,9 +18,10 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' *.vercel-insights.com cdn.trustindex.io *.trustindex.io",
-              "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
-              "font-src 'self' fonts.gstatic.com data:",
-              "img-src 'self' data: blob: https:",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.trustindex.io https://cdn.trustindex.io",
+              "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.trustindex.io https://cdn.trustindex.io",
+              "font-src 'self' https://fonts.gstatic.com https://*.trustindex.io data:",
+              "img-src 'self' data: blob: https://*.trustindex.io https://*.googleusercontent.com https://*.google.com https://lh3.googleusercontent.com https:",
               "frame-src 'self' *.google.com maps.google.com",
               "connect-src 'self' vitals.vercel-insights.com *.trustindex.io",
               "object-src 'none'",
