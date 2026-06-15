@@ -221,12 +221,20 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
         </div>
       </section>
 
-      {/* SVG Map */}
-      <section className="py-16 px-4 bg-green-light/30">
-        <div className="max-w-2xl mx-auto text-center">
+      {/* Dónde estamos — map over the reservoir photo */}
+      <section className="py-16 px-4">
+        <div className="max-w-2xl mx-auto">
           <ScrollReveal>
-            <h2 className="font-heading text-3xl text-green-dark font-bold mb-8">{t('entorn_map_title', lang)}</h2>
-            <div className="bg-cream rounded-3xl p-8 shadow-lg border border-wood/30 mb-6">
+            <div
+              className="relative rounded-2xl overflow-hidden shadow-xl bg-cover bg-center"
+              style={{ backgroundImage: "url('/entorno/donde-estamos.jpg')" }}
+            >
+              {/* Dark overlay keeps the map and text readable */}
+              <div className="absolute inset-0 bg-black/40" />
+
+              <div className="relative z-10 text-center px-6 py-12 sm:px-10 sm:py-16">
+            <h2 className="font-heading text-3xl text-cream font-bold mb-8 drop-shadow">{t('entorn_map_title', lang)}</h2>
+            <div className="bg-cream rounded-3xl p-8 shadow-lg border border-wood/30 mb-6 max-w-md mx-auto">
               <svg viewBox="0 0 400 300" className="w-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
                 <rect width="400" height="300" fill="#d4e8d0" rx="12" />
                 <polygon points="0,200 60,100 120,160 180,80 240,150 300,90 360,140 400,120 400,200" fill="#4a7c3f" opacity="0.8" />
@@ -260,6 +268,8 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
               </svg>
               {t('entorn_directions', lang)}
             </a>
+              </div>
+            </div>
           </ScrollReveal>
         </div>
       </section>
