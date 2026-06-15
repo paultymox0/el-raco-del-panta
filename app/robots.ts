@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/qr',
     },
-    sitemap: 'https://elracodelpanta.cat/sitemap.xml',
+    sitemap: 'https://www.elracodelpanta.cat/sitemap.xml',
   }
 }

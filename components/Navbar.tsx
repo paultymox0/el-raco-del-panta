@@ -15,11 +15,12 @@ export default function Navbar() {
   const isHome = pathname === '/'
 
   const navLinks = [
-    { href: '/',          labelKey: 'nav_home'      as const },
-    { href: '/menu',      labelKey: 'nav_menu'      as const },
-    { href: '/entorno',   labelKey: 'nav_entorn'    as const },
-    { href: '/historia',  labelKey: 'nav_historia'  as const },
-    { href: '/ressenyes', labelKey: 'nav_ressenyes' as const },
+    { href: '/',            labelKey: 'nav_home'      as const },
+    { href: '/menu',        labelKey: 'nav_menu'      as const },
+    { href: '/entorno',     labelKey: 'nav_entorn'    as const },
+    { href: '/historia',    labelKey: 'nav_historia'  as const },
+    { href: '/ressenyes',   labelKey: 'nav_ressenyes' as const },
+    { href: '/informacion', labelKey: 'nav_info'      as const },
   ]
 
   useEffect(() => {

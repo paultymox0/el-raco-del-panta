@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle, FileDown } from 'lucide-react'
+import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle, FileDown, ChevronDown } from 'lucide-react'
 import { carta, MenuItem, Allergen } from '@/data/carta'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -217,7 +217,7 @@ function FlipCard({
 
   return (
     <div
-      className="relative cursor-pointer"
+      className="group relative cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1"
       style={{ perspective: '900px', height: '260px' }}
       onClick={handleCardClick}
       onPointerDown={handlePointerDown}
@@ -241,9 +241,18 @@ function FlipCard({
               {item.preu.toFixed(2)} €
             </div>
           </div>
-          <div className="px-3 py-2.5">
+          <div className="px-3 py-2.5 flex items-center justify-between gap-2">
             <p className={`font-heading font-bold text-sm leading-snug ${frontName}`}>{item[lang].nom}</p>
-            <p className="text-[10px] text-gray-400 mt-0.5 font-body">{t('card_tap', lang)}</p>
+            <span
+              aria-hidden="true"
+              className={`flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-300 group-hover:translate-y-0.5 ${
+                darkFront
+                  ? 'border-white/20 text-orange-100/50 group-hover:border-white/40 group-hover:text-orange-100'
+                  : 'border-wood/30 text-green-dark/45 group-hover:border-green-mid group-hover:text-green-dark'
+              }`}
+            >
+              <ChevronDown size={14} strokeWidth={2} />
+            </span>
           </div>
         </div>
 

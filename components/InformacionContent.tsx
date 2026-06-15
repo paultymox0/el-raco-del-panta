@@ -66,21 +66,8 @@ export default function InformacionContent() {
       <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
-          {/* Left: About + Map */}
+          {/* Left: Map */}
           <div className="space-y-8">
-            {/* History banner — placeholder, to be filled with the summarized history later */}
-            <ScrollReveal>
-              <div className="relative rounded-2xl overflow-hidden bg-green-dark px-6 py-14 sm:py-16 text-center shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-b from-green-dark/50 to-green-dark/80" />
-                <BotanicalLeaf className="absolute top-3 left-3 w-12 h-20 opacity-20" />
-                <BotanicalLeaf className="absolute top-3 right-3 w-12 h-20 opacity-20 scale-x-[-1]" />
-                <div className="relative z-10">
-                  <h2 className="font-heading text-3xl md:text-4xl font-black text-cream mb-3">{t('historia_title', lang)}</h2>
-                  <p className="font-body text-cream/70 italic">{t('historia_subtitle', lang)}</p>
-                </div>
-              </div>
-            </ScrollReveal>
-
             {/* Google Map */}
             <ScrollReveal>
               <ConsentGatedMap />

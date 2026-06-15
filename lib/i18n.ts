@@ -20,7 +20,7 @@ export const i18n = {
   },
 
   // ── Home ─────────────────────────────────────────────────────────────────
-  hero_tagline:      { ca: 'Bona cuina, bon ambient i vistes increïbles',     es: 'Buena comida, buen ambiente y vistas increíbles',          en: 'Great food, great atmosphere and incredible views'        },
+  hero_tagline:      { ca: 'A la vora del Pantà de Sant Antoni',     es: 'A orillas del Pantà de Sant Antoni',          en: 'On the shore of the Pantà de Sant Antoni'        },
   hero_btn_menu:     { ca: 'Veure Menú',        es: 'Ver Menú',        en: 'View Menu'    },
   hero_btn_book:     { ca: 'Reservar taula',    es: 'Reservar Mesa',   en: 'Book a Table' },
   banner_new_open:   { ca: "🎉 Acabem d'obrir! Vine a celebrar aquesta nova aventura amb nosaltres", es: '🎉 ¡Recién abiertos! Ven a celebrar esta nueva aventura con nosotros', en: '🎉 Just opened! Come celebrate this new adventure with us' },

@@ -49,7 +49,7 @@ export default function OGImage() {
           <div style={{ width: '80px', height: '2px', backgroundColor: '#c8a96e', margin: '28px 0' }} />
 
           <p style={{ color: 'rgba(245,234,214,0.75)', fontSize: '24px', margin: '0', textAlign: 'center', maxWidth: '700px', lineHeight: '1.4' }}>
-            Tapas, brasa i cuina catalana amb vistes al Pantà de Sant Antoni
+            Tapas, brasa i cuina catalana de temporada amb vistes al Pantà de Sant Antoni
           </p>
 
           <p style={{ color: 'rgba(245,234,214,0.3)', fontSize: '16px', marginTop: '40px', marginBottom: '0', letterSpacing: '0.05em' }}>

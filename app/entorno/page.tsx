@@ -9,9 +9,25 @@ import path from 'path'
 import type { Metadata } from 'next'
 import EntornoContent from '@/components/EntornoContent'
 
+const PAGE_URL = 'https://www.elracodelpanta.cat/entorno'
+
 export const metadata: Metadata = {
   title: 'El Entorno – El Racó del Pantà',
   description: 'Un rincón único entre montañas y agua. Conoce el entorno natural que rodea El Racó del Pantà.',
+  alternates: { canonical: PAGE_URL },
+  openGraph: {
+    title: 'El Entorno – El Racó del Pantà',
+    description: 'Un rincón único entre montañas y agua. Conoce el entorno natural que rodea El Racó del Pantà.',
+    url: PAGE_URL,
+    siteName: 'El Racó del Pantà',
+    images: [{ url: '/entorno/hero-entorno.JPG', width: 1200, height: 630, alt: 'El Entorno – El Racó del Pantà' }],
+    locale: 'es_ES',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/entorno/hero-entorno.JPG'],
+  },
 }
 
 const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp'])
