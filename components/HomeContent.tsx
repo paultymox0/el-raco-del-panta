@@ -101,6 +101,16 @@ export default function HomeContent() {
                 {t('hero_btn_menu', lang)}
               </Link>
             </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }} className="w-full sm:w-auto">
+              <a
+                href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full sm:w-auto bg-white/15 backdrop-blur-sm text-white border-2 border-white/60 px-8 py-4 rounded-full font-heading font-bold text-lg hover:bg-white hover:text-green-dark transition-colors shadow-lg text-center"
+              >
+                {t('entorn_directions', lang)}
+              </a>
+            </motion.div>
           </motion.div>
         </motion.div>
       </section>

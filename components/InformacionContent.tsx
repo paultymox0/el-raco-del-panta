@@ -32,14 +32,6 @@ function PhoneIcon() {
   )
 }
 
-function RestaurantIcon() {
-  return (
-    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5M3.75 21V7.5A2.25 2.25 0 016 5.25h12A2.25 2.25 0 0120.25 7.5V21M9 21V12m6 9V12M3.75 9h16.5" />
-    </svg>
-  )
-}
-
 function DirectionsIcon() {
   return (
     <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden>
@@ -76,16 +68,16 @@ export default function InformacionContent() {
 
           {/* Left: About + Map */}
           <div className="space-y-8">
+            {/* History banner — placeholder, to be filled with the summarized history later */}
             <ScrollReveal>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-green-dark rounded-full flex items-center justify-center text-cream">
-                  <RestaurantIcon />
+              <div className="relative rounded-2xl overflow-hidden bg-green-dark px-6 py-14 sm:py-16 text-center shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-b from-green-dark/50 to-green-dark/80" />
+                <BotanicalLeaf className="absolute top-3 left-3 w-12 h-20 opacity-20" />
+                <BotanicalLeaf className="absolute top-3 right-3 w-12 h-20 opacity-20 scale-x-[-1]" />
+                <div className="relative z-10">
+                  <h2 className="font-heading text-3xl md:text-4xl font-black text-cream mb-3">{t('historia_title', lang)}</h2>
+                  <p className="font-body text-cream/70 italic">{t('historia_subtitle', lang)}</p>
                 </div>
-                <h2 className="font-heading text-3xl text-green-dark font-bold">{t('info_about_title', lang)}</h2>
-              </div>
-              <div className="space-y-4 font-body text-brown/80 text-base leading-relaxed">
-                <p>{t('info_about_p1', lang)}</p>
-                <p>{t('info_about_p2', lang)}</p>
               </div>
             </ScrollReveal>
 
@@ -121,7 +113,6 @@ export default function InformacionContent() {
                     </div>
                   ))}
                 </div>
-                <p className="mt-4 text-xs text-brown/50 font-body">{t('info_hours_note', lang)}</p>
               </div>
             </ScrollReveal>
 

@@ -198,66 +198,40 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
         </div>
       </div>
 
-      {/* Feature cards */}
-      <section className="py-14 sm:py-20 px-4 bg-parchment">
-        <div className="max-w-6xl mx-auto">
-          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((f) => (
-              <StaggerItem key={f.title}>
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                  className="bg-cream rounded-2xl p-8 text-center shadow-md border border-wood/20 hover:border-green-mid transition-colors duration-300"
-                >
-                  <div className="flex items-center justify-center w-20 h-20 bg-green-light/60 rounded-full mx-auto mb-5 text-green-dark">
-                    {f.icon}
-                  </div>
-                  <h3 className="font-heading text-2xl font-bold text-green-dark mb-3">{f.title}</h3>
-                  <p className="text-brown/70 font-body">{f.description}</p>
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
-        </div>
-      </section>
-
-      {/* Dónde estamos — map over the reservoir photo */}
-      <section className="py-16 px-4">
-        <div className="max-w-2xl mx-auto">
+      {/* Dónde estamos */}
+      <section className="py-16 px-4 bg-green-light/30">
+        <div className="max-w-2xl mx-auto text-center">
           <ScrollReveal>
-            <div
-              className="relative rounded-2xl overflow-hidden shadow-xl bg-cover bg-center"
-              style={{ backgroundImage: "url('/entorno/donde-estamos.jpg')" }}
-            >
-              {/* Dark overlay keeps the map and text readable */}
-              <div className="absolute inset-0 bg-black/40" />
-
-              <div className="relative z-10 text-center px-6 py-12 sm:px-10 sm:py-16">
-            <h2 className="font-heading text-3xl text-cream font-bold mb-8 drop-shadow">{t('entorn_map_title', lang)}</h2>
-            <div className="bg-cream rounded-3xl p-8 shadow-lg border border-wood/30 mb-6 max-w-md mx-auto">
-              <svg viewBox="0 0 400 300" className="w-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="300" fill="#d4e8d0" rx="12" />
-                <polygon points="0,200 60,100 120,160 180,80 240,150 300,90 360,140 400,120 400,200" fill="#4a7c3f" opacity="0.8" />
-                <polygon points="0,200 60,130 120,180 160,110 220,170 260,120 320,160 400,140 400,200" fill="#1a3d1f" opacity="0.6" />
-                <ellipse cx="200" cy="240" rx="180" ry="50" fill="#7ec8e3" opacity="0.7" />
-                <ellipse cx="200" cy="240" rx="160" ry="40" fill="#5ab4d4" opacity="0.5" />
-                <path d="M60,235 Q100,225 140,235 Q180,245 220,235 Q260,225 300,235 Q340,245 340,235" stroke="white" strokeWidth="2" fill="none" opacity="0.6" />
-                <path d="M80,248 Q120,238 160,248 Q200,258 240,248 Q280,238 320,248" stroke="white" strokeWidth="1.5" fill="none" opacity="0.4" />
-                <circle cx="200" cy="190" r="14" fill="#1a3d1f" />
-                <circle cx="200" cy="190" r="8" fill="#f5ead6" />
-                <circle cx="200" cy="190" r="4" fill="#1a3d1f" />
-                <line x1="200" y1="204" x2="200" y2="215" stroke="#1a3d1f" strokeWidth="2" />
-                <rect x="150" y="158" width="100" height="22" rx="11" fill="#1a3d1f" />
-                <text x="200" y="173" textAnchor="middle" fill="#f5ead6" fontSize="9" fontFamily="serif">El Racó del Pantà</text>
-                <circle cx="80" cy="185" r="12" fill="#4a7c3f" opacity="0.8" />
-                <circle cx="100" cy="178" r="10" fill="#4a7c3f" opacity="0.8" />
-                <circle cx="300" cy="183" r="12" fill="#4a7c3f" opacity="0.8" />
-                <circle cx="320" cy="176" r="10" fill="#4a7c3f" opacity="0.8" />
-              </svg>
+            <h2 className="font-heading text-3xl text-green-dark font-bold mb-8">{t('entorn_map_title', lang)}</h2>
+            <div className="bg-cream rounded-3xl p-4 sm:p-5 shadow-lg border border-wood/30 mb-6 max-w-md mx-auto">
+              {/* Clickable reservoir photo → opens Google Maps directions */}
+              <a
+                href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative block overflow-hidden rounded-2xl"
+                aria-label={t('entorn_directions', lang)}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/entorno/donde-estamos.jpg"
+                  alt={t('entorn_map_caption', lang)}
+                  className="w-full h-64 sm:h-72 object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+                  <span className="opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 inline-flex items-center gap-2 bg-cream text-green-dark px-5 py-2.5 rounded-full font-heading font-bold text-sm shadow-lg">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {t('entorn_directions', lang)}
+                  </span>
+                </div>
+              </a>
               <p className="font-body text-brown/70 mt-4 text-sm">{t('entorn_map_caption', lang)}</p>
             </div>
             <a
-              href="https://maps.google.com/?q=El+Raco+del+Panta"
+              href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-green-dark text-cream px-8 py-3 rounded-full font-heading font-bold hover:bg-green-mid transition-colors"
@@ -268,8 +242,6 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
               </svg>
               {t('entorn_directions', lang)}
             </a>
-              </div>
-            </div>
           </ScrollReveal>
         </div>
       </section>
@@ -309,6 +281,29 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
           </div>
         </section>
       )}
+
+      {/* Feature cards */}
+      <section className="py-14 sm:py-20 px-4 bg-parchment">
+        <div className="max-w-6xl mx-auto">
+          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {features.map((f) => (
+              <StaggerItem key={f.title}>
+                <motion.div
+                  whileHover={{ y: -6 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                  className="bg-cream rounded-2xl p-8 text-center shadow-md border border-wood/20 hover:border-green-mid transition-colors duration-300"
+                >
+                  <div className="flex items-center justify-center w-20 h-20 bg-green-light/60 rounded-full mx-auto mb-5 text-green-dark">
+                    {f.icon}
+                  </div>
+                  <h3 className="font-heading text-2xl font-bold text-green-dark mb-3">{f.title}</h3>
+                  <p className="text-brown/70 font-body">{f.description}</p>
+                </motion.div>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+        </div>
+      </section>
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
