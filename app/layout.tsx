@@ -16,14 +16,32 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+const BASE_URL = 'https://elracodelpanta.cat'
+
 export const metadata: Metadata = COMING_SOON
   ? {
       title: 'Próximamente – El Racó del Pantà',
       description: 'El Racó del Pantà – Algo especial está en camino.',
     }
   : {
+      metadataBase: new URL(BASE_URL),
       title: 'El Racó del Pantà – Restaurante',
       description: 'Restaurante El Racó del Pantà. Tapas, brasa y cocina española con vistas increíbles al pantano.',
+      openGraph: {
+        title: 'El Racó del Pantà – Restaurante',
+        description: 'Tapas, brasa y cocina catalana con vistas al Pantà de Sant Antoni.',
+        url: BASE_URL,
+        siteName: 'El Racó del Pantà',
+        images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'El Racó del Pantà – Restaurante' }],
+        locale: 'es_ES',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'El Racó del Pantà – Restaurante',
+        description: 'Tapas, brasa y cocina catalana con vistas al Pantà de Sant Antoni.',
+        images: ['/opengraph-image'],
+      },
     }
 
 export default function RootLayout({
