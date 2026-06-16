@@ -6,7 +6,7 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { ScrollReveal } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
-import ReviewsGrid from '@/components/ReviewsGrid'
+import ConsentGatedWidget from '@/components/ConsentGatedWidget'
 
 const heroChildVariants = {
   hidden: { opacity: 0, y: 24 },
@@ -126,7 +126,10 @@ export default function HomeContent() {
               {t('ressenyes_subtitle', lang)}
             </h2>
           </ScrollReveal>
-          <ReviewsGrid />
+          <ConsentGatedWidget
+            widgetId="27d92f474f70182d418692ea060"
+            scriptSrc="https://cdn.trustindex.io/loader.js?27d92f474f70182d418692ea060"
+          />
         </div>
       </section>
 
