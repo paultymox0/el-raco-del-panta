@@ -5,27 +5,27 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle, FileDown, ChevronDown } from 'lucide-react'
 import { carta, MenuItem, Allergen } from '@/data/carta'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { t } from '@/lib/i18n'
+import { t, type Lang } from '@/lib/i18n'
 import LocalImage from '@/components/LocalImage'
 
 type CartItem = { id: string; preu: number; quantitat: number; categoria: string }
 type CategoryId = 'starters' | 'sandwiches' | 'grill' | 'desserts' | 'drinks'
 
-const ALLERGEN: Record<Allergen, { emoji: string; label: string }> = {
-  gluten:       { emoji: '🌾', label: 'Gluten' },
-  lacteos:      { emoji: '🥛', label: 'Lácteos' },
-  huevo:        { emoji: '🥚', label: 'Huevo' },
-  pescado:      { emoji: '🐟', label: 'Pescado' },
-  crustaceos:   { emoji: '🦞', label: 'Crustáceos' },
-  frutos_casca: { emoji: '🌰', label: 'Frutos secos' },
-  apio:         { emoji: '🌿', label: 'Apio' },
-  mostaza:      { emoji: '🌼', label: 'Mostaza' },
-  sesamo:       { emoji: '🫘', label: 'Sésamo' },
-  soja:         { emoji: '🫘', label: 'Soja' },
-  sulfitos:     { emoji: '🍷', label: 'Sulfitos' },
-  moluscos:     { emoji: '🦑', label: 'Moluscos' },
-  altramuces:   { emoji: '🌱', label: 'Altramuces' },
-  cacahuetes:   { emoji: '🥜', label: 'Cacahuetes' },
+const ALLERGEN: Record<Allergen, { emoji: string; label: Record<Lang, string> }> = {
+  gluten:       { emoji: '🌾', label: { es: 'Gluten',           ca: 'Gluten',            en: 'Gluten'        } },
+  lacteos:      { emoji: '🥛', label: { es: 'Lácteos',          ca: 'Lactis',            en: 'Dairy'         } },
+  huevo:        { emoji: '🥚', label: { es: 'Huevo',            ca: 'Ou',                en: 'Egg'           } },
+  pescado:      { emoji: '🐟', label: { es: 'Pescado',          ca: 'Peix',              en: 'Fish'          } },
+  crustaceos:   { emoji: '🦞', label: { es: 'Crustáceos',       ca: 'Crustacis',         en: 'Crustaceans'   } },
+  frutos_casca: { emoji: '🌰', label: { es: 'Frutos Secos',     ca: 'Fruits Secs',       en: 'Tree Nuts'     } },
+  apio:         { emoji: '🌿', label: { es: 'Apio',             ca: 'Api',               en: 'Celery'        } },
+  mostaza:      { emoji: '🌼', label: { es: 'Mostaza',          ca: 'Mostassa',          en: 'Mustard'       } },
+  sesamo:       { emoji: '🫘', label: { es: 'Granos de Sésamo', ca: 'Llavors de Sèsam',  en: 'Sesame Seeds'  } },
+  soja:         { emoji: '🫘', label: { es: 'Soja',             ca: 'Soja',              en: 'Soy'           } },
+  sulfitos:     { emoji: '🍷', label: { es: 'Sulfitos',         ca: 'Sulfits',           en: 'Sulphites'     } },
+  moluscos:     { emoji: '🦑', label: { es: 'Moluscos',         ca: 'Mol·luscs',         en: 'Molluscs'      } },
+  altramuces:   { emoji: '🌱', label: { es: 'Altramuces',       ca: 'Tramussos',         en: 'Lupin'         } },
+  cacahuetes:   { emoji: '🥜', label: { es: 'Cacahuetes',       ca: 'Cacauets',          en: 'Peanuts'       } },
 }
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
@@ -269,7 +269,7 @@ function FlipCard({
             <div className="flex flex-wrap gap-1 my-2">
               {item.alergenos.map(a => (
                 <span key={a} className="text-[10px] bg-amber-900/50 text-amber-200 px-1.5 py-0.5 rounded-full font-body">
-                  {ALLERGEN[a].label}
+                  {ALLERGEN[a].label[lang]}
                 </span>
               ))}
             </div>
@@ -302,7 +302,7 @@ function DrinkRow({ item, onAdd }: { item: MenuItem; onAdd: () => void }) {
       <div className="flex-1 min-w-0">
         <span className="font-body text-sm text-blue-100 truncate block">{item[lang].nom}</span>
         {item.alergenos.length > 0 && (
-          <span className="text-[10px] text-blue-300/60 font-body">{item.alergenos.map(a => ALLERGEN[a].label).join(', ')}</span>
+          <span className="text-[10px] text-blue-300/60 font-body">{item.alergenos.map(a => ALLERGEN[a].label[lang]).join(', ')}</span>
         )}
       </div>
       <div className="flex items-center gap-3 ml-3 flex-shrink-0">
@@ -525,7 +525,7 @@ export default function MenuContent() {
       checkPage(7)
       const name = item[lang].nom
       const price = `${item.preu.toFixed(2).replace('.', ',')} €`
-      const allergens = item.alergenos.map(a => ALLERGEN[a].label).join(', ')
+      const allergens = item.alergenos.map(a => ALLERGEN[a].label[lang]).join(', ')
 
       doc.setFont('helvetica', 'normal')
       doc.setFontSize(10)
