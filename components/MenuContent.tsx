@@ -194,8 +194,6 @@ function FlipCard({
   const { lang } = useLanguage()
   const pressTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressTriggered = useRef(false)
-  const frontBg   = darkFront ? 'bg-neutral-900 border-white/10' : 'bg-white border-wood/20'
-  const frontName  = darkFront ? 'text-orange-100' : 'text-green-dark'
 
   function handlePointerDown() {
     if (isFlipped) return
@@ -217,8 +215,8 @@ function FlipCard({
 
   return (
     <div
-      className="group relative cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1"
-      style={{ perspective: '900px', height: '260px' }}
+      className="group relative cursor-pointer transition-transform duration-300 ease-out hover:-translate-y-1.5"
+      style={{ perspective: '1000px', height: '260px' }}
       onClick={handleCardClick}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
@@ -230,54 +228,71 @@ function FlipCard({
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         style={{ transformStyle: 'preserve-3d' }}
       >
-        {/* Front */}
+        {/* ── Front: photo-forward ── */}
         <div
-          className={`absolute inset-0 rounded-2xl overflow-hidden shadow-md border ${frontBg} flex flex-col`}
+          className={`absolute inset-0 rounded-2xl overflow-hidden shadow-[0_12px_30px_-14px_rgba(22,38,26,0.5)] ring-1 ${darkFront ? 'ring-amber-500/30' : 'ring-black/[0.06]'}`}
           style={{ backfaceVisibility: 'hidden' }}
         >
-          <div className="relative flex-1 overflow-hidden">
-            <LocalImage src={item.imatge} alt={item[lang].nom} className="w-full h-full object-cover" icon="🍽️" />
-            <div className="absolute bottom-0 right-0 m-2 bg-black/60 backdrop-blur-sm text-white text-xs font-heading font-bold px-2 py-1 rounded-full">
-              {item.preu.toFixed(2)} €
-            </div>
+          <LocalImage
+            src={item.imatge}
+            alt={item[lang].nom}
+            className="w-full h-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
+            icon="🍽️"
+          />
+          {/* Legibility scrim */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/5" />
+
+          {/* Price — ember pill for grill items, cream for the rest */}
+          <div
+            className={`absolute top-2.5 right-2.5 text-xs font-heading font-black px-2.5 py-1 rounded-full shadow-md ${
+              darkFront ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white' : 'bg-cream text-green-dark'
+            }`}
+          >
+            {item.preu.toFixed(2)} €
           </div>
-          <div className="px-3 py-2.5 flex items-center justify-between gap-2">
-            <p className={`font-heading font-bold text-sm leading-snug ${frontName}`}>{item[lang].nom}</p>
+
+          {/* Name + flip affordance */}
+          <div className="absolute inset-x-0 bottom-0 p-3 flex items-end justify-between gap-2">
+            <p
+              className="font-heading font-bold text-[15px] leading-tight text-white"
+              style={{ textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}
+            >
+              {item[lang].nom}
+            </p>
             <span
               aria-hidden="true"
-              className={`flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-300 group-hover:translate-y-0.5 ${
-                darkFront
-                  ? 'border-white/20 text-orange-100/50 group-hover:border-white/40 group-hover:text-orange-100'
-                  : 'border-wood/30 text-green-dark/45 group-hover:border-green-mid group-hover:text-green-dark'
-              }`}
+              className="flex-shrink-0 grid place-items-center w-6 h-6 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white/85 transition-all duration-300 group-hover:bg-white/25 group-hover:translate-y-0.5"
             >
-              <ChevronDown size={14} strokeWidth={2} />
+              <ChevronDown size={14} strokeWidth={2.5} />
             </span>
           </div>
         </div>
 
-        {/* Back */}
+        {/* ── Back: details ── */}
         <div
-          className="absolute inset-0 rounded-2xl overflow-hidden shadow-md bg-[#1a3d1f] border border-green-900/40 flex flex-col p-4"
+          className="absolute inset-0 rounded-2xl overflow-hidden shadow-[0_12px_30px_-14px_rgba(22,38,26,0.5)] flex flex-col p-4 bg-gradient-to-br from-[#1f4526] to-[#13291a] ring-1 ring-black/20"
           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >
-          <p className="font-heading font-bold text-sm mb-1 text-cream">{item[lang].nom}</p>
-          <p className="font-body text-xs leading-relaxed flex-1 overflow-hidden text-cream/70">
+          {/* Ember glow accent (brasa) */}
+          <div className="pointer-events-none absolute -top-10 -right-10 w-28 h-28 rounded-full bg-amber-500/15 blur-2xl" aria-hidden />
+
+          <p className="relative font-heading font-bold text-sm mb-1 text-cream">{item[lang].nom}</p>
+          <p className="relative font-body text-xs leading-relaxed flex-1 overflow-hidden text-cream/70">
             {item[lang].descripcio || '—'}
           </p>
           {item.alergenos.length > 0 ? (
-            <div className="flex flex-wrap gap-1 my-2">
+            <div className="relative flex flex-wrap gap-1 my-2">
               {item.alergenos.map(a => (
-                <span key={a} className="text-[10px] bg-amber-900/50 text-amber-200 px-1.5 py-0.5 rounded-full font-body">
+                <span key={a} className="text-[10px] bg-amber-400/15 text-amber-200 border border-amber-300/20 px-1.5 py-0.5 rounded-full font-body">
                   {ALLERGEN[a].label[lang]}
                 </span>
               ))}
             </div>
           ) : (
-            <p className="text-[10px] text-green-400/80 my-2 font-body">{t('card_no_allergens', lang)}</p>
+            <p className="relative text-[10px] text-emerald-300/80 my-2 font-body">{t('card_no_allergens', lang)}</p>
           )}
-          <div className="flex items-center justify-between mt-1">
-            <span className="font-heading font-black text-base text-green-300">{item.preu.toFixed(2)} €</span>
+          <div className="relative flex items-center justify-between mt-1">
+            <span className="font-heading font-black text-base text-amber-300">{item.preu.toFixed(2)} €</span>
             <motion.button
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.95 }}

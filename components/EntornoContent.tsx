@@ -1,37 +1,13 @@
 'use client'
 
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
+import { Mountain, Waves, Flame, MapPin } from 'lucide-react'
 import BotanicalLeaf from '@/components/BotanicalLeaf'
-import { ScrollReveal, StaggerGroup, StaggerItem } from '@/components/ScrollReveal'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
 
-function MountainIcon() {
-  return (
-    <svg className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth={1.4} viewBox="0 0 48 48" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4 40 L16 18 L24 28 L32 14 L44 40 Z" />
-      <circle cx="32" cy="12" r="3" strokeWidth={1.4} />
-    </svg>
-  )
-}
-
-function WaterIcon() {
-  return (
-    <svg className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth={1.4} viewBox="0 0 48 48" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M24 6 C24 6 12 18 12 27 a12 12 0 0 0 24 0 C36 18 24 6 24 6 Z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M18 30 Q21 27 24 30 Q27 33 30 30" opacity={0.6} />
-    </svg>
-  )
-}
-
-function FireIcon() {
-  return (
-    <svg className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth={1.4} viewBox="0 0 48 48" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M24 42 C14 42 10 34 12 26 C14 18 20 16 20 16 C20 22 24 24 24 24 C24 24 28 18 26 10 C32 14 36 22 34 30 C36 28 37 24 36 20 C40 24 38 36 24 42 Z" />
-    </svg>
-  )
-}
+const MAPS_URL = 'https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9'
 
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
@@ -79,7 +55,6 @@ function Lightbox({ photos, index, onClose }: {
       onPointerUp={handlePointerUp}
       onClick={onClose}
     >
-      {/* Close */}
       <button
         onClick={onClose}
         className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center text-xl transition-colors"
@@ -88,12 +63,10 @@ function Lightbox({ photos, index, onClose }: {
         ✕
       </button>
 
-      {/* Counter */}
       <span className="absolute top-4 left-4 text-white/50 text-sm font-body">
         {current + 1} / {photos.length}
       </span>
 
-      {/* Image */}
       <motion.img
         key={current}
         src={photos[current]}
@@ -106,7 +79,6 @@ function Lightbox({ photos, index, onClose }: {
         onClick={e => e.stopPropagation()}
       />
 
-      {/* Prev */}
       {photos.length > 1 && (
         <>
           <button
@@ -133,179 +105,197 @@ function Lightbox({ photos, index, onClose }: {
 
 export default function EntornoContent({ photos = [], heroSrc = null }: { photos: string[]; heroSrc?: string | null }) {
   const { lang } = useLanguage()
+  const reduce = useReducedMotion()
   const heroRef = useRef<HTMLDivElement>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  })
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '22%'])
 
-  const features = [
-    { icon: <MountainIcon />, title: t('entorn_mountains_title', lang), description: t('entorn_mountains_desc', lang) },
-    { icon: <WaterIcon />,    title: t('entorn_water_title', lang),     description: t('entorn_water_desc', lang)     },
-    { icon: <FireIcon />,     title: t('entorn_grill_title', lang),     description: t('entorn_grill_desc', lang)     },
+  const story = [
+    { Icon: Mountain, title: t('entorn_mountains_title', lang), description: t('entorn_mountains_desc', lang) },
+    { Icon: Waves,    title: t('entorn_water_title', lang),     description: t('entorn_water_desc', lang)     },
+    { Icon: Flame,    title: t('entorn_grill_title', lang),     description: t('entorn_grill_desc', lang)     },
   ]
 
-  return (
-    <div className="pt-20 min-h-screen bg-parchment">
+  const [lead, ...rest] = photos
 
-      {/* Parallax Hero */}
-      {/* 📸 Hero background: add photo as /public/entorno/hero-entorno.jpg */}
-      {/* Any photo from the /public/entorno/ folder works as fallback   */}
-      <div ref={heroRef} className="relative h-[60vh] min-h-[400px] overflow-hidden bg-green-dark">
+  return (
+    <div className="min-h-screen bg-parchment">
+
+      {/* ── Parallax photo hero (full-bleed) ── */}
+      <section ref={heroRef} className="relative h-[78vh] min-h-[520px] overflow-hidden bg-green-dark">
         {heroSrc ? (
-          <motion.div style={{ y: bgY }} className="absolute inset-0 h-[130%] -top-[15%]">
+          <motion.div style={{ y: reduce ? 0 : bgY }} className="absolute inset-0 h-[125%] -top-[12%]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={heroSrc}
-              alt=""
-              aria-hidden="true"
-              className="w-full h-full object-cover"
-            />
+            <img src={heroSrc} alt="" aria-hidden="true" className="w-full h-full object-cover" />
           </motion.div>
         ) : (
-          /* No image yet — dark green gradient placeholder */
           <div className="absolute inset-0 bg-gradient-to-b from-green-dark via-[#1a3d1f] to-[#10200f]" />
         )}
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <div className="text-center px-4">
+        {/* Scrim for nav + headline legibility, fading into the parchment page */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/25 to-black/65" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-parchment" />
+
+        <div className="relative h-full flex items-center justify-center text-center px-4">
+          <div>
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 0.4, scale: 1 }}
+              initial={reduce ? false : { opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 0.5, scale: 1 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <BotanicalLeaf className="w-16 h-24 mx-auto mb-4" />
+              <BotanicalLeaf className="w-14 h-20 mx-auto mb-5" />
             </motion.div>
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
+              initial={reduce ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="font-heading text-4xl md:text-6xl font-black text-cream mb-4"
+              transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="font-heading text-5xl md:text-7xl font-black text-cream mb-4 leading-[1.05]"
+              style={{ textShadow: '0 2px 28px rgba(0,0,0,0.6)' }}
             >
               {t('entorn_hero_title', lang)}
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={reduce ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="font-body text-cream/90 text-lg md:text-2xl"
+              transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="font-body italic text-cream/85 text-lg md:text-2xl max-w-xl mx-auto"
+              style={{ textShadow: '0 1px 12px rgba(0,0,0,0.6)' }}
             >
               {t('entorn_hero_subtitle', lang)}
             </motion.p>
           </div>
         </div>
-      </div>
-
-      {/* Dónde estamos */}
-      <section className="py-16 px-4 bg-green-light/30">
-        <div className="max-w-2xl mx-auto text-center">
-          <ScrollReveal>
-            <h2 className="font-heading text-3xl text-green-dark font-bold mb-8">{t('entorn_map_title', lang)}</h2>
-            <div className="bg-cream rounded-3xl p-4 sm:p-5 shadow-lg border border-wood/30 mb-6 max-w-md mx-auto">
-              {/* Clickable reservoir photo → opens Google Maps directions */}
-              <a
-                href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative block overflow-hidden rounded-2xl"
-                aria-label={t('entorn_directions', lang)}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/entorno/donde-estamos.jpg"
-                  alt={t('entorn_map_caption', lang)}
-                  className="w-full h-64 sm:h-72 object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                  <span className="opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 inline-flex items-center gap-2 bg-cream text-green-dark px-5 py-2.5 rounded-full font-heading font-bold text-sm shadow-lg">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    {t('entorn_directions', lang)}
-                  </span>
-                </div>
-              </a>
-              <p className="font-body text-brown/70 mt-4 text-sm">{t('entorn_map_caption', lang)}</p>
-            </div>
-            <a
-              href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-green-dark text-cream px-8 py-3 rounded-full font-heading font-bold hover:bg-green-mid transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              {t('entorn_directions', lang)}
-            </a>
-          </ScrollReveal>
-        </div>
       </section>
 
-      {/* Photo gallery — masonry grid */}
+      {/* ── Gallery: photos are the protagonists ── */}
       {photos.length > 0 && (
-        <section className="py-14 sm:py-20 px-4 bg-parchment">
+        <section className="px-4 sm:px-6 py-16 md:py-24">
           <div className="max-w-6xl mx-auto">
-            <ScrollReveal>
-              <h2 className="font-heading text-3xl text-green-dark text-center mb-10">
-                {t('entorn_photos_title', lang)}
-              </h2>
-            </ScrollReveal>
+            <motion.h2
+              initial={reduce ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="font-heading text-3xl md:text-5xl font-black text-green-dark text-center mb-12"
+            >
+              {t('entorn_photos_title', lang)}
+            </motion.h2>
 
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-              {photos.map((src, i) => (
-                <motion.div
-                  key={src}
-                  className="break-inside-avoid relative group overflow-hidden rounded-2xl cursor-zoom-in"
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-40px' }}
-                  transition={{ duration: 0.45, delay: (i % 3) * 0.07 }}
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() => setLightboxIndex(i)}
-                >
-                  <img
-                    src={src}
-                    alt=""
-                    className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 rounded-2xl" />
-                </motion.div>
-              ))}
-            </div>
+            {lead && (
+              <motion.button
+                type="button"
+                onClick={() => setLightboxIndex(0)}
+                aria-label={t('entorn_photos_title', lang)}
+                initial={reduce ? false : { opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="group relative block w-full overflow-hidden rounded-3xl cursor-zoom-in shadow-[0_24px_60px_-28px_rgba(22,38,26,0.55)] mb-4 md:mb-5"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={lead} alt="" className="w-full h-[44vh] md:h-[62vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+              </motion.button>
+            )}
+
+            {rest.length > 0 && (
+              <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-5 [&>*]:mb-4 md:[&>*]:mb-5">
+                {rest.map((src, i) => {
+                  const idx = i + 1
+                  return (
+                    <motion.button
+                      type="button"
+                      key={src}
+                      onClick={() => setLightboxIndex(idx)}
+                      aria-label={t('entorn_photos_title', lang)}
+                      initial={reduce ? false : { opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ duration: 0.5, delay: (i % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                      className="group relative block w-full break-inside-avoid overflow-hidden rounded-2xl cursor-zoom-in shadow-[0_12px_30px_-18px_rgba(22,38,26,0.4)]"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt="" loading="lazy" className="w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/5 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
+                    </motion.button>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </section>
       )}
 
-      {/* Feature cards */}
-      <section className="py-14 sm:py-20 px-4 bg-parchment">
-        <div className="max-w-6xl mx-auto">
-          <StaggerGroup className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((f) => (
-              <StaggerItem key={f.title}>
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-                  className="bg-cream rounded-2xl p-8 text-center shadow-md border border-wood/20 hover:border-green-mid transition-colors duration-300"
-                >
-                  <div className="flex items-center justify-center w-20 h-20 bg-green-light/60 rounded-full mx-auto mb-5 text-green-dark">
-                    {f.icon}
-                  </div>
-                  <h3 className="font-heading text-2xl font-bold text-green-dark mb-3">{f.title}</h3>
-                  <p className="text-brown/70 font-body">{f.description}</p>
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
+      {/* ── Story band: mountains · water · grill ── */}
+      <section className="px-4 sm:px-6 py-16 md:py-20 bg-green-dark">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-cream/15">
+          {story.map((s, i) => (
+            <motion.div
+              key={s.title}
+              initial={reduce ? false : { opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="px-6 md:px-8 py-8 md:py-4 text-center"
+            >
+              <s.Icon className="w-9 h-9 mx-auto mb-4 text-amber-300/90" strokeWidth={1.4} aria-hidden />
+              <h3 className="font-heading text-2xl font-bold text-cream mb-2">{s.title}</h3>
+              <p className="font-body text-cream/65 text-[15px] leading-relaxed max-w-xs mx-auto">{s.description}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* Lightbox */}
+      {/* ── Location / directions ── */}
+      <section className="px-4 sm:px-6 py-16 md:py-24">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.h2
+            initial={reduce ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="font-heading text-3xl md:text-4xl font-black text-green-dark mb-8"
+          >
+            {t('entorn_map_title', lang)}
+          </motion.h2>
+
+          <div className="max-w-xl mx-auto rounded-3xl overflow-hidden bg-cream border border-wood/15 shadow-[0_24px_60px_-30px_rgba(22,38,26,0.5)]">
+            <a
+              href={MAPS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block overflow-hidden"
+              aria-label={t('entorn_directions', lang)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/entorno/donde-estamos.jpg"
+                alt={t('entorn_map_caption', lang)}
+                className="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+                <span className="opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 inline-flex items-center gap-2 bg-cream text-green-dark px-5 py-2.5 rounded-full font-heading font-bold text-sm shadow-lg">
+                  <MapPin className="w-4 h-4" strokeWidth={2.2} aria-hidden />
+                  {t('entorn_directions', lang)}
+                </span>
+              </div>
+            </a>
+            <p className="font-body text-brown/65 px-5 py-4 text-sm">{t('entorn_map_caption', lang)}</p>
+          </div>
+
+          <a
+            href={MAPS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center gap-2 bg-green-dark text-cream px-8 py-3.5 rounded-full font-heading font-bold shadow-md transition-all duration-300 hover:bg-green-mid hover:-translate-y-0.5"
+          >
+            <MapPin className="w-5 h-5" strokeWidth={2.2} aria-hidden />
+            {t('entorn_directions', lang)}
+          </a>
+        </div>
+      </section>
+
       {lightboxIndex !== null && (
         <Lightbox
           photos={photos}

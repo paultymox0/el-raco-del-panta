@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+// next dev bundles client modules with eval(), which a CSP without 'unsafe-eval'
+// blocks — that breaks hydration in `next dev`. Allow it in development only;
+// production stays strict (no eval is used in production builds).
+const isDev = process.env.NODE_ENV !== 'production'
+
 const nextConfig = {
   eslint: {
     // ESLint is run separately (npm run lint); skip it during `next build` to
@@ -22,7 +27,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' *.vercel-insights.com cdn.trustindex.io *.trustindex.io",
+              `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ''}*.vercel-insights.com cdn.trustindex.io *.trustindex.io`,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.trustindex.io https://cdn.trustindex.io",
               "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.trustindex.io https://cdn.trustindex.io",
               "font-src 'self' https://fonts.gstatic.com https://*.trustindex.io data:",
