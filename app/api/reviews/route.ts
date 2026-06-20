@@ -9,14 +9,17 @@ const PLACE_QUERY = 'El Racó del Pantà Talarn Lleida'
 
 const EMPTY = { reviews: [] as ReviewOut[], rating: null as number | null, total: 0 }
 
-// Shape of a review as returned by the Google Places Details API.
-type GoogleReview = {
-  author_name: string
-  rating: number
-  text: string
-  time: number // unix seconds
-  relative_time_description: string
-  profile_photo_url?: string
+// Shape of a review as returned by the Places API (New).
+type NewReview = {
+  rating?: number
+  text?: { text?: string; languageCode?: string }
+  originalText?: { text?: string; languageCode?: string }
+  publishTime?: string // RFC 3339 timestamp
+  relativePublishTimeDescription?: string
+  authorAttribution?: {
+    displayName?: string
+    photoUri?: string
+  }
 }
 
 // Trimmed shape we expose to the client.
@@ -24,26 +27,29 @@ type ReviewOut = {
   author: string
   rating: number
   text: string
-  time: number
+  time: number // unix seconds
   relativeTime: string
   profilePhoto?: string
 }
 
 // Resolve the Place ID: prefer an explicit env override, otherwise look it up
-// once via the Find Place endpoint (cached for an hour like everything else).
+// via Text Search (Places API New). The returned `id` is the place ID.
 async function resolvePlaceId(key: string): Promise<string | null> {
   if (process.env.GOOGLE_PLACE_ID) return process.env.GOOGLE_PLACE_ID
 
-  const url =
-    'https://maps.googleapis.com/maps/api/place/findplacefromtext/json' +
-    `?input=${encodeURIComponent(PLACE_QUERY)}` +
-    '&inputtype=textquery&fields=place_id' +
-    `&key=${key}`
-
-  const res = await fetch(url, { next: { revalidate } })
+  const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': key,
+      'X-Goog-FieldMask': 'places.id',
+    },
+    body: JSON.stringify({ textQuery: PLACE_QUERY }),
+    next: { revalidate },
+  })
   if (!res.ok) return null
-  const data = await res.json()
-  return data?.candidates?.[0]?.place_id ?? null
+  const data = await res.json().catch(() => null)
+  return data?.places?.[0]?.id ?? null
 }
 
 export async function GET() {
@@ -57,37 +63,35 @@ export async function GET() {
     const placeId = await resolvePlaceId(key)
     if (!placeId) return NextResponse.json(EMPTY)
 
-    const detailsUrl =
-      'https://maps.googleapis.com/maps/api/place/details/json' +
-      `?place_id=${placeId}` +
-      '&fields=reviews,rating,user_ratings_total' +
-      '&reviews_sort=newest' +
-      `&key=${key}`
-
-    const res = await fetch(detailsUrl, { next: { revalidate } })
+    const res = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+      headers: {
+        'X-Goog-Api-Key': key,
+        'X-Goog-FieldMask': 'rating,userRatingCount,reviews',
+      },
+      next: { revalidate },
+    })
     if (!res.ok) return NextResponse.json(EMPTY)
 
-    const data = await res.json()
-    const result = data?.result ?? {}
-    const raw: GoogleReview[] = Array.isArray(result.reviews) ? result.reviews : []
+    const data = await res.json().catch(() => null)
+    const raw: NewReview[] = Array.isArray(data?.reviews) ? data.reviews : []
 
     const reviews: ReviewOut[] = raw
       .filter((r) => typeof r.rating === 'number' && r.rating >= 4)
+      .map((r) => ({
+        author: r.authorAttribution?.displayName ?? 'Google',
+        rating: r.rating as number,
+        text: r.text?.text ?? r.originalText?.text ?? '',
+        time: r.publishTime ? Math.floor(new Date(r.publishTime).getTime() / 1000) : 0,
+        relativeTime: r.relativePublishTimeDescription ?? '',
+        profilePhoto: r.authorAttribution?.photoUri,
+      }))
       .sort((a, b) => b.time - a.time) // most recent first
       .slice(0, 5)
-      .map((r) => ({
-        author: r.author_name,
-        rating: r.rating,
-        text: r.text,
-        time: r.time,
-        relativeTime: r.relative_time_description,
-        profilePhoto: r.profile_photo_url,
-      }))
 
     return NextResponse.json({
       reviews,
-      rating: typeof result.rating === 'number' ? result.rating : null,
-      total: typeof result.user_ratings_total === 'number' ? result.user_ratings_total : 0,
+      rating: typeof data?.rating === 'number' ? data.rating : null,
+      total: typeof data?.userRatingCount === 'number' ? data.userRatingCount : 0,
     })
   } catch {
     // Network error / malformed response: silent fallback, never 500 the page.
