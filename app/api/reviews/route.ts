@@ -63,7 +63,9 @@ export async function GET() {
     const placeId = await resolvePlaceId(key)
     if (!placeId) return NextResponse.json(EMPTY)
 
-    const res = await fetch(`https://places.googleapis.com/v1/places/${placeId}`, {
+    // languageCode=es prioritizes Spanish reviews and returns Google's automatic
+    // translations into Spanish (in `text`; `originalText` keeps the original).
+    const res = await fetch(`https://places.googleapis.com/v1/places/${placeId}?languageCode=es`, {
       headers: {
         'X-Goog-Api-Key': key,
         'X-Goog-FieldMask': 'rating,userRatingCount,reviews',
