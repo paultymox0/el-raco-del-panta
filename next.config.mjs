@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    // ESLint is run separately (npm run lint); skip it during `next build` to
+    // keep production builds fast. Type-checking still runs and still fails builds.
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'picsum.photos' },

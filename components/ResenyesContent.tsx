@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
-import ConsentGatedWidget from '@/components/ConsentGatedWidget'
+import ReviewsGrid from '@/components/ReviewsGrid'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -38,7 +38,7 @@ export default function ResenyesContent() {
         </div>
       </div>
 
-      {/* Trustindex widget */}
+      {/* Live Google reviews (no cookie wall) */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         <motion.h2
           custom={0} variants={fadeUp} initial="hidden" animate="visible"
@@ -47,10 +47,7 @@ export default function ResenyesContent() {
           {t('ressenyes_subtitle', lang)}
         </motion.h2>
 
-        <ConsentGatedWidget
-          widgetId="cf2dc8e74d201823cc461f139b2"
-          scriptSrc="https://cdn.trustindex.io/loader.js?cf2dc8e74d201823cc461f139b2"
-        />
+        <ReviewsGrid />
       </div>
 
       {/* CTA */}

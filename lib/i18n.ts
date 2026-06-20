@@ -28,6 +28,7 @@ export const i18n = {
   reviews_title:     { ca: 'Sigues dels primers en valorar-nos',      es: 'Sé de los primeros en valorarnos',      en: 'Be among the first to review us'         },
   reviews_note:      { ca: 'La teva opinió ens ajuda a créixer 🙏',   es: 'Tu opinión nos ayuda a crecer 🙏',       en: 'Your opinion helps us grow 🙏'           },
   reviews_btn:       { ca: 'Deixa la teva opinió a Google Maps',      es: 'Déjanos tu opinión en Google Maps',     en: 'Leave a review on Google Maps'          },
+  reviews_google_cta:{ ca: 'Veure totes les ressenyes a Google',      es: 'Ver todas las reseñas en Google',       en: 'See all reviews on Google'              },
   social_title:      { ca: 'Segueix-nos',    es: 'Síguenos',    en: 'Follow us'   },
   social_wa_label:   { ca: 'Escriu-nos',     es: 'Escríbenos',  en: 'Message us'  },
 
