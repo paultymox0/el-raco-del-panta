@@ -1,6 +1,5 @@
 import { ImageResponse } from 'next/og'
 
-export const runtime = 'edge'
 export const alt = 'El Racó del Pantà – Restaurante con vistas al Pantà de Sant Antoni'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
@@ -37,7 +36,7 @@ export default function OGImage() {
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '6px', backgroundColor: '#c8a96e' }} />
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '6px', backgroundColor: '#c8a96e' }} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 1 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <p style={{ color: 'rgba(245,234,214,0.5)', fontSize: '14px', letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: '16px', marginTop: '0' }}>
             Restaurant · Talarn, Lleida
           </p>

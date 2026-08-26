@@ -470,6 +470,7 @@ export default function CartaCompleta() {
   // Persist order to sessionStorage
   useEffect(() => {
     const saved = sessionStorage.getItem('raco-order')
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage is client-only; loading after mount avoids an SSR hydration mismatch
     if (saved) setOrder(JSON.parse(saved))
   }, [])
 

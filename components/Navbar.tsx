@@ -25,6 +25,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!isHome) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- window scroll position is client-only; syncing after mount avoids an SSR hydration mismatch
       setScrolled(true)
       return
     }

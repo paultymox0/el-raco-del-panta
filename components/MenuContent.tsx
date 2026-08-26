@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, type JSX } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle, FileDown, ChevronDown } from 'lucide-react'
 import { carta, MenuItem, Allergen } from '@/data/carta'
@@ -457,6 +457,7 @@ export default function MenuContent() {
   const [lightboxSrc, setLightboxSrc]                   = useState<string | null>(null)
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sessionStorage is client-only; loading after mount avoids an SSR hydration mismatch
     try { const raw = sessionStorage.getItem('raco-cart'); if (raw) setCart(JSON.parse(raw)) } catch {}
     setCartLoaded(true)
   }, [])
@@ -465,6 +466,7 @@ export default function MenuContent() {
     if (cartLoaded) sessionStorage.setItem('raco-cart', JSON.stringify(cart))
   }, [cart, cartLoaded])
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional reset of the flipped card when the visible category changes
   useEffect(() => { setActiveCardId(null) }, [activeCategory, activeStarterSubcat, activeSandwichSubcat])
 
   const addToCart = useCallback((item: MenuItem) => {

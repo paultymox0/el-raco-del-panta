@@ -38,6 +38,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const stored = load()
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage is client-only; loading after mount avoids an SSR hydration mismatch
     setConsent(stored)
     if (!stored.decided) setBannerOpen(true)
   }, [])

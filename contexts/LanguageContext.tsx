@@ -20,6 +20,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const saved = localStorage.getItem('raco-language') as Lang | null
     if (saved && ['ca', 'es', 'en'].includes(saved)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- localStorage is client-only; loading after mount avoids an SSR hydration mismatch
       setLangState(saved)
     }
   }, [])
