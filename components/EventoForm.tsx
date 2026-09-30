@@ -5,6 +5,16 @@ import { motion } from 'framer-motion'
 import { FloatingInput, FloatingSelect, FloatingTextarea } from '@/components/FloatingInput'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
+import { buildWhatsAppUrl } from '@/lib/whatsapp'
+
+type TKey = Parameters<typeof t>[0]
+
+const EVENT_TYPE_KEYS: Record<string, TKey> = {
+  cumpleanos: 'form_event_birthday',
+  empresa: 'form_event_business',
+  grupo: 'form_event_group',
+  boda: 'form_event_wedding',
+}
 
 type FormData = {
   nombre: string
@@ -20,9 +30,29 @@ type FormData = {
 export default function EventoForm() {
   const { lang } = useLanguage()
   const [submitted, setSubmitted] = useState(false)
+  const [waUrl, setWaUrl] = useState('')
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
 
-  const onSubmit = () => setSubmitted(true)
+  const onSubmit = (data: FormData) => {
+    const label = (key: TKey) => t(key, lang).replace(' *', '')
+    const lines = [
+      `🎉 ${t('form_wa_event_header', lang)}`,
+      '',
+      `${label('form_fullname')}: ${data.nombre}`,
+      `${label('form_phone')}: ${data.telefono}`,
+      `${label('form_email')}: ${data.email}`,
+      `${label('form_event_type')}: ${t(EVENT_TYPE_KEYS[data.tipoEvento] ?? 'form_event_type', lang)}`,
+      `${label('form_approx_date')}: ${data.fecha}`,
+      `${label('form_num_guests')}: ${data.personas}`,
+    ]
+    if (data.presupuesto) lines.push(`${label('form_budget')}: ${data.presupuesto}`)
+    lines.push(`${label('form_description')}: ${data.descripcion}`)
+
+    const url = buildWhatsAppUrl(lines.join('\n'))
+    setWaUrl(url)
+    setSubmitted(true)
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
 
   if (submitted) {
     return (
@@ -34,6 +64,15 @@ export default function EventoForm() {
         <div className="text-5xl mb-4">🎉</div>
         <h3 className="font-heading text-2xl text-green-dark mb-3">{t('form_success_title', lang)}!</h3>
         <p className="text-brown">{t('form_success_event', lang)}</p>
+        <p className="text-brown/70 text-sm mt-4">{t('form_wa_fallback', lang)}</p>
+        <a
+          href={waUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 mt-3 bg-green-dark text-cream py-3 px-6 rounded-2xl font-heading font-bold hover:bg-green-mid transition-colors shadow-md"
+        >
+          {t('form_wa_send', lang)}
+        </a>
       </motion.div>
     )
   }

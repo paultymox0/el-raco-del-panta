@@ -5,6 +5,17 @@ import { motion } from 'framer-motion'
 import { FloatingInput, FloatingSelect, FloatingTextarea } from '@/components/FloatingInput'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
+import { buildWhatsAppUrl } from '@/lib/whatsapp'
+
+type TKey = Parameters<typeof t>[0]
+
+const OCCASION_KEYS: Record<string, TKey> = {
+  ninguna: 'form_occ_none',
+  cumpleanos: 'form_occ_birthday',
+  aniversario: 'form_occ_anniversary',
+  empresa: 'form_occ_business',
+  otra: 'form_occ_other',
+}
 
 type FormData = {
   nombre: string
@@ -21,6 +32,7 @@ export default function ReservaForm() {
   const { lang } = useLanguage()
   const [submitted, setSubmitted] = useState(false)
   const [submittedName, setSubmittedName] = useState('')
+  const [waUrl, setWaUrl] = useState('')
   const [personas, setPersonas] = useState(2)
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ defaultValues: { personas: 2 } })
@@ -28,8 +40,27 @@ export default function ReservaForm() {
   const today = new Date().toISOString().split('T')[0]
 
   const onSubmit = (data: FormData) => {
+    const label = (key: TKey) => t(key, lang).replace(' *', '')
+    const lines = [
+      `🍽️ ${t('form_wa_reserve_header', lang)}`,
+      '',
+      `${label('form_name')}: ${data.nombre}`,
+      `${label('form_phone')}: ${data.telefono}`,
+      `${label('form_email')}: ${data.email}`,
+      `${label('form_date')}: ${data.fecha}`,
+      `${label('form_time')}: ${data.hora}`,
+      `${label('form_guests')}: ${personas}`,
+    ]
+    if (data.ocasion && data.ocasion !== 'ninguna') {
+      lines.push(`${label('form_occasion')}: ${t(OCCASION_KEYS[data.ocasion] ?? 'form_occ_other', lang)}`)
+    }
+    if (data.comentarios) lines.push(`${label('form_comments')}: ${data.comentarios}`)
+
+    const url = buildWhatsAppUrl(lines.join('\n'))
+    setWaUrl(url)
     setSubmittedName(data.nombre)
     setSubmitted(true)
+    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   if (submitted) {
@@ -50,6 +81,15 @@ export default function ReservaForm() {
         <p className="text-brown text-base leading-relaxed">
           {t('form_success_msg', lang)}
         </p>
+        <p className="text-brown/70 text-sm mt-4">{t('form_wa_fallback', lang)}</p>
+        <a
+          href={waUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 mt-3 bg-green-dark text-cream py-3 px-6 rounded-2xl font-heading font-bold hover:bg-green-mid transition-colors shadow-md"
+        >
+          {t('form_wa_send', lang)}
+        </a>
       </motion.div>
     )
   }

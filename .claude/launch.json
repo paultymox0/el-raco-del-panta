@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "dev-coming-soon",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "COMING_SOON=1 npm run dev"
+      ],
+      "port": 3000,
+      "autoPort": true
+    }
+  ]
+}

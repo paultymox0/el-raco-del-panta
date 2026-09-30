@@ -1,0 +1,20 @@
+CÓMO ACTUALIZAR LOS ESPECIALES DEL DÍA
+=======================================
+
+Los platos especiales se editan en este archivo:
+
+    data/menu-del-dia.json
+
+Campos:
+  - "fecha":      texto libre, ej. "26 d'agost". Si se deja vacío (""), no se
+                  muestra ninguna fecha (así nunca sale una fecha antigua).
+  - "especials":  lista de platos, cada uno con "nom", "descripcio" y "preu".
+  - "nota":       texto pequeño al pie (ej. disponibilidad limitada).
+
+IMPORTANTE: ahora mismo esta sección (la "pizarra" de especiales, componente
+EspecialsDelDia) NO está incluida en ninguna página de la web — quedó fuera
+en el rediseño. Si queréis volver a mostrarla en la portada, pedidlo y se
+añade en un momento; solo entonces tiene sentido mantener este JSON al día.
+
+Después de editar, publicar con:
+    git add . && git commit -m "menu del dia" && git push

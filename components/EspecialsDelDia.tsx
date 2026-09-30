@@ -35,8 +35,8 @@ export default function EspecialsDelDia({ fecha, especials, nota }: Props) {
           <div className="absolute bottom-3 left-3 w-5 h-5 border-l-2 border-b-2 border-white/35 rounded-bl" />
           <div className="absolute bottom-3 right-3 w-5 h-5 border-r-2 border-b-2 border-white/35 rounded-br" />
 
-          {/* Date */}
-          <p className="absolute top-5 right-8 font-chalk text-white/50 text-sm italic">{fecha}</p>
+          {/* Date (hidden when not set, so a stale date never shows) */}
+          {fecha && <p className="absolute top-5 right-8 font-chalk text-white/50 text-sm italic">{fecha}</p>}
 
           {/* Title */}
           <h1
