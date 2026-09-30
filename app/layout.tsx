@@ -20,8 +20,9 @@ const BASE_URL = 'https://www.elracodelpanta.cat'
 
 export const metadata: Metadata = COMING_SOON
   ? {
-      title: 'Próximamente – El Racó del Pantà',
-      description: 'El Racó del Pantà – Algo especial está en camino.',
+      metadataBase: new URL(BASE_URL),
+      title: 'El Racó del Pantà – Restaurant a Talarn',
+      description: 'Restaurant al Pantà de Sant Antoni, Talarn (Lleida). Estem preparant la nostra web. Estamos preparando nuestra web.',
     }
   : {
       metadataBase: new URL(BASE_URL),
@@ -64,6 +65,9 @@ export default function RootLayout({
     },
     telephone: '+34633043077',
     url: 'https://www.elracodelpanta.cat',
+    description:
+      'Tapas, brasa i cuina catalana de temporada amb vistes al Pantà de Sant Antoni, a Talarn (Pallars Jussà).',
+    hasMap: 'https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9',
     servesCuisine: ['Catalan', 'Tapas', 'Grill'],
     priceRange: '€€',
     hasMenu: 'https://www.elracodelpanta.cat/menu',
