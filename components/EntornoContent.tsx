@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import { Mountain, Waves, Flame, MapPin } from 'lucide-react'
+import Image from 'next/image'
 import BotanicalLeaf from '@/components/BotanicalLeaf'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t } from '@/lib/i18n'
@@ -127,8 +128,7 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
       <section ref={heroRef} className="relative h-[78vh] min-h-[520px] overflow-hidden bg-green-dark">
         {heroSrc ? (
           <motion.div style={{ y: reduce ? 0 : bgY }} className="absolute inset-0 h-[125%] -top-[12%]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={heroSrc} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+            <Image src={heroSrc} alt="" aria-hidden="true" fill priority sizes="100vw" className="object-cover" />
           </motion.div>
         ) : (
           <div className="absolute inset-0 bg-gradient-to-b from-green-dark via-[#1a3d1f] to-[#10200f]" />
@@ -193,8 +193,7 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative block w-full overflow-hidden rounded-3xl cursor-zoom-in shadow-[0_24px_60px_-28px_rgba(22,38,26,0.55)] mb-4 md:mb-5"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={lead} alt="" className="w-full h-[44vh] md:h-[62vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <Image src={lead} alt="" width={0} height={0} sizes="(min-width: 1280px) 1200px, 100vw" className="w-full h-[44vh] md:h-[62vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
               </motion.button>
             )}
@@ -215,8 +214,7 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
                       transition={{ duration: 0.5, delay: (i % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
                       className="group relative block w-full break-inside-avoid overflow-hidden rounded-2xl cursor-zoom-in shadow-[0_12px_30px_-18px_rgba(22,38,26,0.4)]"
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={src} alt="" loading="lazy" className="w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <Image src={src} alt="" width={0} height={0} sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/5 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
                     </motion.button>
                   )
@@ -268,9 +266,11 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
               className="group relative block overflow-hidden"
               aria-label={t('entorn_directions', lang)}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src="/entorno/donde-estamos.jpg"
+                width={0}
+                height={0}
+                sizes="(min-width: 768px) 50vw, 100vw"
                 alt={t('entorn_map_caption', lang)}
                 className="w-full h-72 sm:h-80 object-cover transition-transform duration-500 group-hover:scale-105"
               />

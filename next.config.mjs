@@ -10,14 +10,6 @@ const nextConfig = {
     // keep production builds fast. Type-checking still runs and still fails builds.
     ignoreDuringBuilds: true,
   },
-  images: {
-    remotePatterns: [
-      { protocol: 'https', hostname: 'picsum.photos' },
-      { protocol: 'https', hostname: 'source.unsplash.com' },
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'images.pexels.com' },
-    ],
-  },
   async headers() {
     return [
       {
@@ -27,13 +19,13 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ''}*.vercel-insights.com cdn.trustindex.io *.trustindex.io`,
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.trustindex.io https://cdn.trustindex.io",
-              "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.trustindex.io https://cdn.trustindex.io",
-              "font-src 'self' https://fonts.gstatic.com https://*.trustindex.io data:",
-              "img-src 'self' data: blob: https://*.trustindex.io https://*.googleusercontent.com https://*.google.com https://lh3.googleusercontent.com https:",
+              `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval' " : ''}*.vercel-insights.com`,
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com data:",
+              "img-src 'self' data: blob: https://*.googleusercontent.com https://*.google.com https://lh3.googleusercontent.com https:",
               "frame-src 'self' *.google.com maps.google.com",
-              "connect-src 'self' vitals.vercel-insights.com *.trustindex.io",
+              "connect-src 'self' vitals.vercel-insights.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",

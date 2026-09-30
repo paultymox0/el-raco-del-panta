@@ -72,12 +72,6 @@ export default function RootLayout({
     priceRange: '€€',
     hasMenu: 'https://www.elracodelpanta.cat/menu',
     acceptsReservations: true,
-    openingHoursSpecification: [{
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '08:00',
-      closes: '23:00',
-    }],
   }
 
   return (

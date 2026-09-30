@@ -21,7 +21,7 @@ Correu electrònic: info@elracodelpanta.cat`,
       heading: '2. Finalitats i base jurídica',
       body: `Les dades personals que ens facilites es tractaran per a les finalitats següents:
 
-• Gestió de reserves i consultes via WhatsApp o formulari web (base jurídica: execució d'un contracte o mesures precontractuals).
+• Gestió de reserves i consultes per telèfon o WhatsApp (base jurídica: execució d'un contracte o mesures precontractuals).
 • Analítica web anònima a través de Vercel Analytics (base jurídica: interès legítim; no utilitza cookies).`,
     },
     {
@@ -61,7 +61,7 @@ Correo electrónico: info@elracodelpanta.cat`,
       heading: '2. Finalidades y base jurídica',
       body: `Los datos personales que nos facilitas se tratarán para las siguientes finalidades:
 
-• Gestión de reservas y consultas vía WhatsApp o formulario web (base jurídica: ejecución de un contrato o medidas precontractuales).
+• Gestión de reservas y consultas por teléfono o WhatsApp (base jurídica: ejecución de un contrato o medidas precontractuales).
 • Analítica web anónima a través de Vercel Analytics (base jurídica: interés legítimo; no utiliza cookies).`,
     },
     {
@@ -101,7 +101,7 @@ Email: info@elracodelpanta.cat`,
       heading: '2. Purposes and legal basis',
       body: `Your personal data will be processed for the following purposes:
 
-• Managing reservations and enquiries via WhatsApp or web form (legal basis: performance of a contract or pre-contractual measures).
+• Managing reservations and enquiries by phone or WhatsApp (legal basis: performance of a contract or pre-contractual measures).
 • Anonymous web analytics via Vercel Analytics (legal basis: legitimate interest; no cookies used).`,
     },
     {

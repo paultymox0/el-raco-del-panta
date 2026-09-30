@@ -40,16 +40,6 @@ function DirectionsIcon() {
   )
 }
 
-const DAYS_KEYS = [
-  'day_monday',
-  'day_tuesday',
-  'day_wednesday',
-  'day_thursday',
-  'day_friday',
-  'day_saturday',
-  'day_sunday',
-] as const
-
 export default function InformacionContent() {
   const { lang } = useLanguage()
 
@@ -92,14 +82,22 @@ export default function InformacionContent() {
                 <h3 className="font-heading text-xl font-bold text-green-dark mb-5 flex items-center gap-2">
                   <ClockIcon /> {t('info_hours_title', lang)}
                 </h3>
-                <div className="space-y-0 font-body text-sm divide-y divide-wood/10">
-                  {DAYS_KEYS.map((key) => (
-                    <div key={key} className="flex justify-between items-center py-2.5">
-                      <span className="text-brown font-medium">{t(key, lang)}</span>
-                      <span className="text-green-dark font-semibold tabular-nums">8:00 – 23:00</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="font-body text-sm text-brown/80 mb-4">
+                  {{
+                    ca: "L'horari pot canviar segons la temporada. Consulta'l actualitzat a Google Maps.",
+                    es: 'El horario puede cambiar según la temporada. Consúltalo actualizado en Google Maps.',
+                    en: 'Hours may change with the season. Check the up-to-date hours on Google Maps.',
+                  }[lang]}
+                </p>
+                <a
+                  href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 min-h-[44px] px-5 rounded-full bg-green-dark text-cream font-body font-semibold text-sm hover:bg-green-mid transition-colors"
+                >
+                  <ClockIcon />
+                  {{ ca: "Veure l'horari", es: 'Ver horario', en: 'See opening hours' }[lang]}
+                </a>
               </div>
             </ScrollReveal>
 

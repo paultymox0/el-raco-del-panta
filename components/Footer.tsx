@@ -38,7 +38,14 @@ export default function Footer() {
           <a href="tel:+34633043077" className="hover:text-[#f5ead6] transition-colors font-semibold text-[#f5ead6]/90">
             +34 633 04 30 77
           </a>
-          <span>{t('day_monday', lang)} – {t('day_sunday', lang)} · 8:00 – 23:00</span>
+          <a
+            href="https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4 decoration-[#f5ead6]/30 hover:text-[#f5ead6] transition-colors"
+          >
+            {{ ca: 'Horari a Google Maps', es: 'Horario en Google Maps', en: 'Opening hours on Google Maps' }[lang]}
+          </a>
         </div>
 
         <nav aria-label="Footer navigation">

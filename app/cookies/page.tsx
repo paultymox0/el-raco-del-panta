@@ -10,21 +10,18 @@ const cookieTable = `| Cookie | Titular | Finalitat | Duración |
 |---|---|---|---|
 | raco_consent | Propi | Guardar preferències de galetes | 1 any |
 | _vercel_* | Vercel | Analítica sense cookies | Sessió |
-| trustindex-* | Trustindex | Mostrar ressenyes | 1 any |
 | Google Maps | Google | Mostrar mapa interactiu | Sessió |`
 
 const cookieTableEs = `| Cookie | Titular | Finalidad | Duración |
 |---|---|---|---|
 | raco_consent | Propio | Guardar preferencias de cookies | 1 año |
 | _vercel_* | Vercel | Analítica sin cookies | Sesión |
-| trustindex-* | Trustindex | Mostrar reseñas | 1 año |
 | Google Maps | Google | Mostrar mapa interactivo | Sesión |`
 
 const cookieTableEn = `| Cookie | Owner | Purpose | Duration |
 |---|---|---|---|
 | raco_consent | Own | Save cookie preferences | 1 year |
 | _vercel_* | Vercel | Cookieless analytics | Session |
-| trustindex-* | Trustindex | Display reviews | 1 year |
 | Google Maps | Google | Display interactive map | Session |`
 
 const ca: LegalContent = {
@@ -45,7 +42,7 @@ const ca: LegalContent = {
     },
     {
       heading: '4. Galetes de tercers',
-      body: "Google Maps i Trustindex poden establir galetes quan accepts les galetes de tercers. Per a més informació, consulta les polítiques de privacitat de Google (policies.google.com/privacy) i Trustindex (trustindex.io/privacy-policy).",
+      body: "Google Maps pot establir galetes quan accepts les galetes de tercers. Per a més informació, consulta la política de privacitat de Google (policies.google.com/privacy).",
     },
     {
       heading: '5. Com gestionar les galetes',
@@ -76,7 +73,7 @@ const es: LegalContent = {
     },
     {
       heading: '4. Cookies de terceros',
-      body: "Google Maps y Trustindex pueden establecer cookies cuando aceptas las cookies de terceros. Para más información, consulta las políticas de privacidad de Google (policies.google.com/privacy) y Trustindex (trustindex.io/privacy-policy).",
+      body: "Google Maps puede establecer cookies cuando aceptas las cookies de terceros. Para más información, consulta la política de privacidad de Google (policies.google.com/privacy).",
     },
     {
       heading: '5. Cómo gestionar las cookies',
@@ -107,7 +104,7 @@ const en: LegalContent = {
     },
     {
       heading: '4. Third-party cookies',
-      body: "Google Maps and Trustindex may set cookies when you accept third-party cookies. For more information, see Google's privacy policy (policies.google.com/privacy) and Trustindex's privacy policy (trustindex.io/privacy-policy).",
+      body: "Google Maps may set cookies when you accept third-party cookies. For more information, see Google's privacy policy (policies.google.com/privacy).",
     },
     {
       heading: '5. How to manage cookies',
