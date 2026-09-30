@@ -16,6 +16,8 @@ export type Allergen =
 
 export type LangContent = { nom: string; descripcio: string }
 
+export type Variant = { id: string; preu: number; ca: string; es: string; en: string }
+
 export type MenuItem = {
   id: string
   preu: number
@@ -23,6 +25,10 @@ export type MenuItem = {
   subcategoria?: string
   imatge: string
   alergenos: Allergen[]
+  /** Formats amb preu propi (mig/sencer, canya/copa/gerra, ampolla/copa). `preu` = el primer. */
+  variants?: Variant[]
+  /** Preu per unitat de pes (p. ex. xuletó a 50 €/kg) */
+  unitat?: 'kg'
   ca: LangContent
   es: LangContent
   en: LangContent
@@ -46,7 +52,7 @@ export const carta: MenuItem[] = [
     preu: 4.90,
     categoria: 'entrantes',
     imatge: '/menu/entrantes/patates-fregides.jpg',
-    alergenos: [],
+    alergenos: ['huevo'],
     ca: { nom: 'Patates fregides', descripcio: 'Patates fregides crispetes, servides amb alioli casolà' },
     es: { nom: 'Patatas fritas', descripcio: 'Patatas fritas crujientes, servidas con alioli casero' },
     en: { nom: 'French Fries', descripcio: 'Crispy fries, served with homemade aioli' },
@@ -82,6 +88,16 @@ export const carta: MenuItem[] = [
     en: { nom: 'Octopus Croquettes (6)', descripcio: 'Homemade Galician octopus croquettes with lemon aioli' },
   },
   {
+    id: 'croquetes_bacalla',
+    preu: 8.50,
+    categoria: 'entrantes',
+    imatge: '/menu/entrantes/croquetes-bacalla.jpg',
+    alergenos: ['gluten', 'lacteos', 'huevo', 'pescado'],
+    ca: { nom: 'Croquetes de Bacallà (6u)', descripcio: 'Croquetes casolanes de bacallà' },
+    es: { nom: 'Croquetas de Bacalao (6u)', descripcio: 'Croquetas caseras de bacalao' },
+    en: { nom: 'Salt Cod Croquettes (6)', descripcio: 'Homemade salt cod croquettes' },
+  },
+  {
     id: 'fingers_pollastre',
     preu: 8.50,
     categoria: 'entrantes',
@@ -92,14 +108,24 @@ export const carta: MenuItem[] = [
     en: { nom: 'Chicken Fingers', descripcio: 'Breaded chicken strips, crispy outside and tender inside' },
   },
   {
+    id: 'ales_pollastre',
+    preu: 8.50,
+    categoria: 'entrantes',
+    imatge: '/menu/entrantes/ales-pollastre.jpg',
+    alergenos: ['gluten', 'huevo'],
+    ca: { nom: 'Ales de Pollastre Crispy', descripcio: 'Ales de pollastre arrebossades i cruixents' },
+    es: { nom: 'Alitas de Pollo Crispy', descripcio: 'Alitas de pollo rebozadas y crujientes' },
+    en: { nom: 'Crispy Chicken Wings', descripcio: 'Breaded, crispy chicken wings' },
+  },
+  {
     id: 'nachos_raco',
     preu: 16.90,
     categoria: 'entrantes',
     imatge: '/menu/entrantes/nachos-raco.jpg',
     alergenos: ['gluten', 'huevo', 'lacteos', 'soja', 'sulfitos'],
-    ca: { nom: 'Nachos El Racó', descripcio: 'Cheddar, frijoles, pico de gallo, guacamole, jalapeños, butifarra i salsa agra' },
-    es: { nom: 'Nachos El Racó', descripcio: 'Cheddar, frijoles, pico de gallo, guacamole, jalapeños, butifarra y salsa agria' },
-    en: { nom: 'Nachos El Racó', descripcio: 'Cheddar, beans, pico de gallo, guacamole, jalapeños, butifarra sausage and sour cream' },
+    ca: { nom: 'Nachos El Racó', descripcio: 'Cheddar, frijoles, pico de gallo, guacamole, jalapeños, butifarra, salsa agra i ceba encurtida' },
+    es: { nom: 'Nachos El Racó', descripcio: 'Cheddar, frijoles, pico de gallo, guacamole, jalapeños, butifarra, salsa agria y cebolla encurtida' },
+    en: { nom: 'Nachos El Racó', descripcio: 'Cheddar, beans, pico de gallo, guacamole, jalapeños, butifarra sausage, sour cream and pickled onion' },
   },
   {
     id: 'torreznos',
@@ -110,16 +136,6 @@ export const carta: MenuItem[] = [
     ca: { nom: 'Torreznos de Soria', descripcio: 'Torreznos de Soria cruixents, elaborats artesanalment al moment' },
     es: { nom: 'Torreznos de Soria', descripcio: 'Torreznos de Soria crujientes, elaborados artesanalmente al momento' },
     en: { nom: 'Soria Pork Crackling', descripcio: 'Crispy Soria-style pork rinds, freshly and artisanally prepared' },
-  },
-  {
-    id: 'sevillanas',
-    preu: 8.50,
-    categoria: 'entrantes',
-    imatge: '/menu/entrantes/sevillanas.jpg',
-    alergenos: ['gluten', 'moluscos'],
-    ca: { nom: 'Sevillanes', descripcio: 'Anelles de calamar a la romana, daurades i cruixents, amb llimona fresca' },
-    es: { nom: 'Sevillanas', descripcio: 'Anillos de calamar a la romana, dorados y crujientes, con limón fresco' },
-    en: { nom: 'Battered Squid Rings', descripcio: 'Golden crispy battered calamari rings, served with fresh lemon' },
   },
   {
     id: 'puntillitas',
@@ -133,7 +149,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'calamars_andalusa',
-    preu: 8.50,
+    preu: 9.50,
     categoria: 'entrantes',
     imatge: '/menu/entrantes/calamars-andalusa.jpg',
     alergenos: ['gluten', 'moluscos'],
@@ -195,7 +211,7 @@ export const carta: MenuItem[] = [
   // ── AMANIDES / ENSALADAS / SALADS ───────────────────────────────────────
   {
     id: 'amanida_cesar',
-    preu: 9.50,
+    preu: 10.50,
     categoria: 'ensalades',
     imatge: '/menu/ensalades/amanida-cesar.jpg',
     alergenos: ['gluten', 'lacteos', 'huevo', 'mostaza'],
@@ -205,7 +221,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'amanida_burrata',
-    preu: 10.50,
+    preu: 12.50,
     categoria: 'ensalades',
     imatge: '/menu/ensalades/amanida-burrata.jpg',
     alergenos: ['lacteos', 'frutos_casca'],
@@ -215,7 +231,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'amanida_ventresca',
-    preu: 12.50,
+    preu: 14.50,
     categoria: 'ensalades',
     imatge: '/menu/ensalades/amanida-ventresca.jpg',
     alergenos: ['pescado'],
@@ -225,7 +241,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'amanida_cabra',
-    preu: 10.50,
+    preu: 12.50,
     categoria: 'ensalades',
     imatge: '/menu/ensalades/amanida-cabra.jpg',
     alergenos: ['lacteos', 'frutos_casca'],
@@ -269,7 +285,11 @@ export const carta: MenuItem[] = [
   // ── ENTREPANS FREDS / BOCADILLOS FRÍOS / COLD SANDWICHES ────────────────
   {
     id: 'boc_pernil',
-    preu: 6.50,
+    preu: 7.50,
+    variants: [
+      { id: 'mig', preu: 7.50, ca: 'Mig', es: 'Medio', en: 'Half' },
+      { id: 'sencer', preu: 9.50, ca: 'Sencer', es: 'Entero', en: 'Whole' },
+    ],
     categoria: 'especiales',
     subcategoria: 'freds',
     imatge: '/menu/especiales/entrepans.jpg',
@@ -280,7 +300,11 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'boc_formatge',
-    preu: 6.25,
+    preu: 4.25,
+    variants: [
+      { id: 'mig', preu: 4.25, ca: 'Mig', es: 'Medio', en: 'Half' },
+      { id: 'sencer', preu: 6.25, ca: 'Sencer', es: 'Entero', en: 'Whole' },
+    ],
     categoria: 'especiales',
     subcategoria: 'freds',
     imatge: '/menu/especiales/entrepans.jpg',
@@ -291,7 +315,11 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'boc_secallona',
-    preu: 4.60,
+    preu: 5.50,
+    variants: [
+      { id: 'mig', preu: 5.50, ca: 'Mig', es: 'Medio', en: 'Half' },
+      { id: 'sencer', preu: 7.50, ca: 'Sencer', es: 'Entero', en: 'Whole' },
+    ],
     categoria: 'especiales',
     subcategoria: 'freds',
     imatge: '/menu/especiales/entrepans.jpg',
@@ -301,19 +329,8 @@ export const carta: MenuItem[] = [
     en: { nom: 'Cured Sausage', descripcio: '½ rustic baguette with traditional local cured pork sausage' },
   },
   {
-    id: 'boc_tonyina',
-    preu: 4.65,
-    categoria: 'especiales',
-    subcategoria: 'freds',
-    imatge: '/menu/especiales/entrepans.jpg',
-    alergenos: ['gluten', 'pescado'],
-    ca: { nom: 'Tonyina', descripcio: 'Pa rústic de ½ barra amb tonyina del Cantàbric i tomàquet de temporada' },
-    es: { nom: 'Atún', descripcio: 'Pan rústico de ½ barra con atún del Cantábrico y tomate de temporada' },
-    en: { nom: 'Tuna', descripcio: '½ rustic baguette with Cantabrian tuna and seasonal tomato' },
-  },
-  {
     id: 'boc_vegetal_tonyina',
-    preu: 5.50,
+    preu: 6.50,
     categoria: 'especiales',
     subcategoria: 'freds',
     imatge: '/menu/especiales/entrepans.jpg',
@@ -324,7 +341,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'boc_vegetal_pollastre',
-    preu: 6.25,
+    preu: 6.50,
     categoria: 'especiales',
     subcategoria: 'freds',
     imatge: '/menu/especiales/entrepans.jpg',
@@ -337,7 +354,7 @@ export const carta: MenuItem[] = [
   // ── ENTREPANS CALENTS / BOCADILLOS CALIENTES / HOT SANDWICHES ───────────
   {
     id: 'boc_truita',
-    preu: 5.50,
+    preu: 6.50,
     categoria: 'especiales',
     subcategoria: 'calents',
     imatge: '/menu/especiales/entrepans-calents.jpg',
@@ -348,7 +365,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'boc_llom',
-    preu: 5.80,
+    preu: 6.80,
     categoria: 'especiales',
     subcategoria: 'calents',
     imatge: '/menu/especiales/entrepans-calents.jpg',
@@ -359,7 +376,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'boc_baco',
-    preu: 5.80,
+    preu: 6.80,
     categoria: 'especiales',
     subcategoria: 'calents',
     imatge: '/menu/especiales/entrepans-calents.jpg',
@@ -370,7 +387,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'boc_llonganissa',
-    preu: 6.50,
+    preu: 11.50,
     categoria: 'especiales',
     subcategoria: 'calents',
     imatge: '/menu/especiales/entrepans-calents.jpg',
@@ -381,7 +398,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'frankfurt_raco',
-    preu: 6.20,
+    preu: 6.50,
     categoria: 'especiales',
     subcategoria: 'calents',
     imatge: '/menu/especiales/frankfurt-raco.jpg',
@@ -392,7 +409,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'frankfurt_classic',
-    preu: 4.60,
+    preu: 5.60,
     categoria: 'especiales',
     subcategoria: 'calents',
     imatge: '/menu/especiales/entrepans-calents.jpg',
@@ -411,6 +428,17 @@ export const carta: MenuItem[] = [
     ca: { nom: 'Bikini', descripcio: 'Pa de motllo torrat amb pernil de cuina i formatge, presat i fos' },
     es: { nom: 'Bikini', descripcio: 'Pan de molde tostado con jamón de cocina y queso, prensado y fundido' },
     en: { nom: 'Ham & Cheese Toast', descripcio: 'Toasted sliced bread with ham and melted cheese, pressed' },
+  },
+  {
+    id: 'suplement',
+    preu: 0.50,
+    categoria: 'especiales',
+    subcategoria: 'calents',
+    imatge: '/menu/especiales/entrepans-calents.jpg',
+    alergenos: ['lacteos'],
+    ca: { nom: 'Suplement (formatge o ceba caramel·litzada)', descripcio: 'Afegeix formatge o ceba caramel·litzada al teu entrepà' },
+    es: { nom: 'Suplemento (queso o cebolla caramelizada)', descripcio: 'Añade queso o cebolla caramelizada a tu bocadillo' },
+    en: { nom: 'Extra (cheese or caramelised onion)', descripcio: 'Add cheese or caramelised onion to your sandwich' },
   },
 
   // ── TORRADES / TOSTADAS / TOASTS ─────────────────────────────────────────
@@ -438,7 +466,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'tostada_escalivada',
-    preu: 12.20,
+    preu: 12.50,
     categoria: 'especiales',
     subcategoria: 'torrades',
     imatge: '/menu/especiales/torrades.jpg',
@@ -449,7 +477,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'tostada_tonyina',
-    preu: 10.50,
+    preu: 11.50,
     categoria: 'especiales',
     subcategoria: 'torrades',
     imatge: '/menu/especiales/torrades.jpg',
@@ -482,7 +510,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'tostada_sobrassada',
-    preu: 12.20,
+    preu: 12.50,
     categoria: 'especiales',
     subcategoria: 'torrades',
     imatge: '/menu/especiales/torrades.jpg',
@@ -495,7 +523,7 @@ export const carta: MenuItem[] = [
   // ── HAMBURGUESES / HAMBURGUESAS / BURGERS ────────────────────────────────
   {
     id: 'hamburguesa_classica',
-    preu: 10.50,
+    preu: 12.50,
     categoria: 'especiales',
     subcategoria: 'hamburgueses',
     imatge: '/menu/especiales/hamburguesa-classica.jpg',
@@ -506,7 +534,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'hamburguesa_raco',
-    preu: 12.50,
+    preu: 14.50,
     categoria: 'especiales',
     subcategoria: 'hamburgueses',
     imatge: '/menu/especiales/hamburguesa-raco.jpg',
@@ -522,10 +550,10 @@ export const carta: MenuItem[] = [
     preu: 16.50,
     categoria: 'platos',
     imatge: '/menu/platos/pop-brasa.jpg',
-    alergenos: ['moluscos'],
-    ca: { nom: 'Pop a la brasa amb base de patata', descripcio: 'Pop gallec a la brasa, servit sobre base de patata i pimentó de la Vera' },
-    es: { nom: 'Pulpo a la brasa con base de patata', descripcio: 'Pulpo gallego a la brasa, servido sobre base de patata y pimentón de la Vera' },
-    en: { nom: 'Grilled Octopus', descripcio: 'Galician octopus on the grill, served on a potato base with smoked paprika' },
+    alergenos: ['moluscos', 'lacteos'],
+    ca: { nom: 'Pop a la brasa amb parmentier', descripcio: 'Pop a la brasa servit sobre parmentier de patata' },
+    es: { nom: 'Pulpo a la brasa con parmentier', descripcio: 'Pulpo a la brasa servido sobre parmentier de patata' },
+    en: { nom: 'Grilled Octopus with Parmentier', descripcio: 'Grilled octopus served on a potato parmentier' },
   },
   {
     id: 'pinxo_pollastre',
@@ -549,7 +577,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'secret',
-    preu: 11.50,
+    preu: 12.50,
     categoria: 'platos',
     imatge: '/menu/platos/secret.jpg',
     alergenos: [],
@@ -579,7 +607,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'entrecot',
-    preu: 40.00,
+    preu: 30.00,
     categoria: 'platos',
     imatge: '/menu/platos/entrecot.jpg',
     alergenos: [],
@@ -589,7 +617,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'filet',
-    preu: 40.00,
+    preu: 25.00,
     categoria: 'platos',
     imatge: '/menu/platos/filet.jpg',
     alergenos: [],
@@ -600,6 +628,7 @@ export const carta: MenuItem[] = [
   {
     id: 'xuleto',
     preu: 50.00,
+    unitat: 'kg',
     categoria: 'platos',
     imatge: '/menu/platos/xuleto.jpg',
     alergenos: [],
@@ -609,7 +638,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'graella_verdures',
-    preu: 12.50,
+    preu: 15.50,
     categoria: 'platos',
     imatge: '/menu/platos/graella-verdures.jpg',
     alergenos: [],
@@ -621,7 +650,7 @@ export const carta: MenuItem[] = [
   // ── POSTRES / DESSERTS ───────────────────────────────────────────────────
   {
     id: 'crema_catalana',
-    preu: 3.50,
+    preu: 4.20,
     categoria: 'postres',
     imatge: '/menu/postres/crema-catalana.jpg',
     alergenos: ['lacteos', 'huevo'],
@@ -641,7 +670,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'coulant',
-    preu: 4.20,
+    preu: 4.50,
     categoria: 'postres',
     imatge: '/menu/postres/coulant.jpg',
     alergenos: ['gluten', 'lacteos', 'huevo'],
@@ -651,7 +680,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'carpaccio_pinya',
-    preu: 4.20,
+    preu: 5.20,
     categoria: 'postres',
     imatge: '/menu/postres/carpaccio-pinya.jpg',
     alergenos: ['lacteos', 'huevo'],
@@ -681,7 +710,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'crep_nutella',
-    preu: 3.50,
+    preu: 4.50,
     categoria: 'postres',
     imatge: '/menu/postres/crep-nutella.jpg',
     alergenos: ['gluten', 'lacteos', 'huevo'],
@@ -692,6 +721,10 @@ export const carta: MenuItem[] = [
   {
     id: 'terrina_gelats',
     preu: 4.30,
+    variants: [
+      { id: 'petita', preu: 4.30, ca: 'Petita', es: 'Pequeña', en: 'Small' },
+      { id: 'gran', preu: 4.90, ca: 'Gran', es: 'Grande', en: 'Large' },
+    ],
     categoria: 'postres',
     imatge: '/menu/postres/terrina-gelats.jpg',
     alergenos: ['lacteos', 'frutos_casca', 'cacahuetes'],
@@ -703,7 +736,7 @@ export const carta: MenuItem[] = [
   // ── BEGUDES SENSE ALCOHOL / BEBIDAS SIN ALCOHOL / NON-ALCOHOLIC ──────────
   {
     id: 'aigua_33',
-    preu: 1.10,
+    preu: 1.20,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/aigua.jpg',
@@ -714,7 +747,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'aigua_15',
-    preu: 1.80,
+    preu: 1.90,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/aigua.jpg',
@@ -725,7 +758,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'vichy',
-    preu: 2.20,
+    preu: 2.40,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/vichy.jpg',
@@ -736,7 +769,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'coca_cola',
-    preu: 2.30,
+    preu: 2.50,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/coca-cola.jpg',
@@ -747,7 +780,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'fanta',
-    preu: 2.30,
+    preu: 2.50,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/fanta.jpg',
@@ -758,7 +791,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'aquarius',
-    preu: 2.50,
+    preu: 2.70,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/aquarius.jpg',
@@ -769,7 +802,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'nestea',
-    preu: 2.50,
+    preu: 2.70,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/nestea.jpg',
@@ -780,7 +813,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'better_kas',
-    preu: 2.50,
+    preu: 2.70,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/kas.jpg',
@@ -791,7 +824,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'tonica',
-    preu: 2.50,
+    preu: 2.70,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/tonica.jpg',
@@ -802,7 +835,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'tinto_verano',
-    preu: 2.50,
+    preu: 2.70,
     categoria: 'bebidas_soda',
     subcategoria: 'refrescos',
     imatge: '/menu/bebidas/tinto-verano.jpg',
@@ -947,47 +980,68 @@ export const carta: MenuItem[] = [
   // ── BEGUDES AMB ALCOHOL / BEBIDAS CON ALCOHOL / ALCOHOLIC ────────────────
   {
     id: 'estrella_damm',
-    preu: 2.40,
+    preu: 1.90,
+    variants: [
+      { id: 'canya', preu: 1.90, ca: 'Canya', es: 'Caña', en: 'Small' },
+      { id: 'copa', preu: 2.50, ca: 'Copa', es: 'Copa', en: 'Glass' },
+      { id: 'gerra', preu: 4.00, ca: 'Gerra', es: 'Jarra', en: 'Pitcher' },
+    ],
     categoria: 'bebidas_alcohol',
     subcategoria: 'cervezas',
     imatge: '/menu/bebidas/estrella-damm.jpg',
     alergenos: ['gluten'],
-    ca: { nom: 'Estrella Damm (Canya/Copa/Gerra)', descripcio: '' },
-    es: { nom: 'Estrella Damm (Caña/Copa/Jarra)', descripcio: '' },
-    en: { nom: 'Estrella Damm (Draft/Glass/Pitcher)', descripcio: '' },
+    ca: { nom: 'Estrella Damm', descripcio: '' },
+    es: { nom: 'Estrella Damm', descripcio: '' },
+    en: { nom: 'Estrella Damm', descripcio: '' },
   },
   {
     id: 'damm_lemon',
-    preu: 2.10,
+    preu: 1.60,
+    variants: [
+      { id: 'canya', preu: 1.60, ca: 'Canya', es: 'Caña', en: 'Small' },
+      { id: 'copa', preu: 2.20, ca: 'Copa', es: 'Copa', en: 'Glass' },
+      { id: 'gerra', preu: 3.60, ca: 'Gerra', es: 'Jarra', en: 'Pitcher' },
+    ],
     categoria: 'bebidas_alcohol',
     subcategoria: 'cervezas',
     imatge: '/menu/bebidas/damm-lemon.jpg',
     alergenos: ['gluten'],
-    ca: { nom: 'Damm Lemon (Canya/Copa/Gerra)', descripcio: '' },
-    es: { nom: 'Damm Lemon (Caña/Copa/Jarra)', descripcio: '' },
-    en: { nom: 'Damm Lemon (Draft/Glass/Pitcher)', descripcio: '' },
+    ca: { nom: 'Damm Lemon', descripcio: '' },
+    es: { nom: 'Damm Lemon', descripcio: '' },
+    en: { nom: 'Damm Lemon', descripcio: '' },
+  },
+  {
+    id: 'estrella_damm_ampolla',
+    preu: 2.50,
+    categoria: 'bebidas_alcohol',
+    subcategoria: 'cervezas',
+    imatge: '/menu/bebidas/estrella-damm.jpg',
+    alergenos: ['gluten'],
+    ca: { nom: 'Estrella Damm (ampolla)', descripcio: '' },
+    es: { nom: 'Estrella Damm (botella)', descripcio: '' },
+    en: { nom: 'Estrella Damm (bottle)', descripcio: '' },
+  },
+  {
+    id: 'estrella_galicia',
+    preu: 2.70,
+    categoria: 'bebidas_alcohol',
+    subcategoria: 'cervezas',
+    imatge: '/menu/bebidas/estrella-galicia.jpg',
+    alergenos: ['gluten'],
+    ca: { nom: 'Estrella Galicia', descripcio: '' },
+    es: { nom: 'Estrella Galicia', descripcio: '' },
+    en: { nom: 'Estrella Galicia', descripcio: '' },
   },
   {
     id: 'turia',
-    preu: 2.60,
+    preu: 2.70,
     categoria: 'bebidas_alcohol',
     subcategoria: 'cervezas',
     imatge: '/menu/bebidas/turia.jpg',
     alergenos: ['gluten'],
-    ca: { nom: 'Turia (Canya/Copa/Gerra)', descripcio: '' },
-    es: { nom: 'Turia (Caña/Copa/Jarra)', descripcio: '' },
-    en: { nom: 'Turia (Draft/Glass/Pitcher)', descripcio: '' },
-  },
-  {
-    id: 'bohemia',
-    preu: 3.50,
-    categoria: 'bebidas_alcohol',
-    subcategoria: 'cervezas',
-    imatge: '/menu/bebidas/bohemia.jpg',
-    alergenos: ['gluten'],
-    ca: { nom: 'Bohemia Damm Reserva', descripcio: '' },
-    es: { nom: 'Bohemia Damm Reserva', descripcio: '' },
-    en: { nom: 'Bohemia Damm Reserva', descripcio: '' },
+    ca: { nom: 'Turia', descripcio: '' },
+    es: { nom: 'Turia', descripcio: '' },
+    en: { nom: 'Turia', descripcio: '' },
   },
   {
     id: 'alhambra',
@@ -996,9 +1050,9 @@ export const carta: MenuItem[] = [
     subcategoria: 'cervezas',
     imatge: '/menu/bebidas/alhambra.jpg',
     alergenos: ['gluten'],
-    ca: { nom: 'Alambra Verde', descripcio: '' },
-    es: { nom: 'Alambra Verde', descripcio: '' },
-    en: { nom: 'Alambra Verde', descripcio: '' },
+    ca: { nom: 'Alhambra Verde', descripcio: '' },
+    es: { nom: 'Alhambra Verde', descripcio: '' },
+    en: { nom: 'Alhambra Verde', descripcio: '' },
   },
   {
     id: 'volldamm',
@@ -1036,6 +1090,10 @@ export const carta: MenuItem[] = [
   {
     id: 'bardos_verdejo',
     preu: 14.50,
+    variants: [
+      { id: 'ampolla', preu: 14.50, ca: 'Ampolla', es: 'Botella', en: 'Bottle' },
+      { id: 'copa', preu: 3.00, ca: 'Copa', es: 'Copa', en: 'Glass' },
+    ],
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_blancos',
     imatge: '/menu/bebidas/vi-blanc.jpg',
@@ -1047,6 +1105,10 @@ export const carta: MenuItem[] = [
   {
     id: 'honey_moon',
     preu: 19.50,
+    variants: [
+      { id: 'ampolla', preu: 19.50, ca: 'Ampolla', es: 'Botella', en: 'Bottle' },
+      { id: 'copa', preu: 4.00, ca: 'Copa', es: 'Copa', en: 'Glass' },
+    ],
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_blancos',
     imatge: '/menu/bebidas/vi-blanc.jpg',
@@ -1057,7 +1119,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'la_presumida',
-    preu: 18.00,
+    preu: 20.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_blancos',
     imatge: '/menu/bebidas/vi-blanc.jpg',
@@ -1067,19 +1129,23 @@ export const carta: MenuItem[] = [
     en: { nom: 'La Presumida El Pallars', descripcio: '' },
   },
   {
-    id: 'agaliu_copa',
-    preu: 2.50,
+    id: 'agaliu',
+    preu: 23.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_blancos',
     imatge: '/menu/bebidas/vi-blanc.jpg',
     alergenos: ['sulfitos'],
-    ca: { nom: "Agaliú L'Olivera (copa)", descripcio: '' },
-    es: { nom: "Agaliú L'Olivera (copa)", descripcio: '' },
-    en: { nom: "Agaliú L'Olivera (glass)", descripcio: '' },
+    ca: { nom: "Agaliú L'Olivera", descripcio: '' },
+    es: { nom: "Agaliú L'Olivera", descripcio: '' },
+    en: { nom: "Agaliú L'Olivera", descripcio: '' },
   },
   {
     id: 'ro7',
     preu: 10.50,
+    variants: [
+      { id: 'ampolla', preu: 10.50, ca: 'Ampolla', es: 'Botella', en: 'Bottle' },
+      { id: 'copa', preu: 3.00, ca: 'Copa', es: 'Copa', en: 'Glass' },
+    ],
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_tintos',
     imatge: '/menu/bebidas/vi-negre.jpg',
@@ -1090,7 +1156,11 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'bardos_ribera',
-    preu: 14.50,
+    preu: 19.50,
+    variants: [
+      { id: 'ampolla', preu: 19.50, ca: 'Ampolla', es: 'Botella', en: 'Bottle' },
+      { id: 'copa', preu: 4.00, ca: 'Copa', es: 'Copa', en: 'Glass' },
+    ],
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_tintos',
     imatge: '/menu/bebidas/vi-negre.jpg',
@@ -1112,7 +1182,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'el_presumit',
-    preu: 18.00,
+    preu: 20.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'vinos_tintos',
     imatge: '/menu/bebidas/vi-negre.jpg',
@@ -1145,7 +1215,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'ron_barcelo',
-    preu: 7.00,
+    preu: 7.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'combinados',
     imatge: '/menu/bebidas/combinat.jpg',
@@ -1153,17 +1223,6 @@ export const carta: MenuItem[] = [
     ca: { nom: 'Ron Barceló', descripcio: '' },
     es: { nom: 'Ron Barceló', descripcio: '' },
     en: { nom: 'Barceló Rum', descripcio: '' },
-  },
-  {
-    id: 'eristoff',
-    preu: 8.50,
-    categoria: 'bebidas_alcohol',
-    subcategoria: 'combinados',
-    imatge: '/menu/bebidas/combinat.jpg',
-    alergenos: [],
-    ca: { nom: 'Eristoff Vodka', descripcio: '' },
-    es: { nom: 'Eristoff Vodka', descripcio: '' },
-    en: { nom: 'Eristoff Vodka', descripcio: '' },
   },
   {
     id: 'absolut',
@@ -1178,7 +1237,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'beefeater',
-    preu: 7.00,
+    preu: 7.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'combinados',
     imatge: '/menu/bebidas/gin.jpg',
@@ -1221,17 +1280,6 @@ export const carta: MenuItem[] = [
     en: { nom: "Hendrick's Gin", descripcio: '' },
   },
   {
-    id: 'brockmans',
-    preu: 10.50,
-    categoria: 'bebidas_alcohol',
-    subcategoria: 'combinados',
-    imatge: '/menu/bebidas/gin.jpg',
-    alergenos: [],
-    ca: { nom: 'Brockmans Gin', descripcio: '' },
-    es: { nom: 'Brockmans Gin', descripcio: '' },
-    en: { nom: 'Brockmans Gin', descripcio: '' },
-  },
-  {
     id: 'gvine',
     preu: 10.50,
     categoria: 'bebidas_alcohol',
@@ -1255,7 +1303,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'jb',
-    preu: 7.00,
+    preu: 7.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'combinados',
     imatge: '/menu/bebidas/whisky.jpg',
@@ -1266,7 +1314,7 @@ export const carta: MenuItem[] = [
   },
   {
     id: 'red_label',
-    preu: 7.00,
+    preu: 7.50,
     categoria: 'bebidas_alcohol',
     subcategoria: 'combinados',
     imatge: '/menu/bebidas/whisky.jpg',

@@ -3,12 +3,17 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Salad, Sandwich, Flame, IceCreamCone, Wine, AlertTriangle, FileDown, ChevronDown } from 'lucide-react'
-import { carta, MenuItem, Allergen } from '@/data/carta'
+import { carta, MenuItem, Allergen, Variant } from '@/data/carta'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { t, type Lang } from '@/lib/i18n'
 import LocalImage from '@/components/LocalImage'
 
-type CartItem = { id: string; preu: number; quantitat: number; categoria: string }
+type CartItem = { key: string; id: string; variant?: string; preu: number; quantitat: number; categoria: string; unitat?: 'kg' }
+
+function priceLabel(item: MenuItem) {
+  if (item.variants?.length) return `${item.variants.map(v => v.preu.toFixed(2)).join(' / ')} €`
+  return `${item.preu.toFixed(2)} €${item.unitat === 'kg' ? '/kg' : ''}`
+}
 type CategoryId = 'starters' | 'sandwiches' | 'grill' | 'desserts' | 'drinks'
 
 const ALLERGEN: Record<Allergen, { emoji: string; label: Record<Lang, string> }> = {
@@ -187,7 +192,7 @@ function FlipCard({
   item: MenuItem
   isFlipped: boolean
   onFlip: () => void
-  onAdd: (e: React.MouseEvent) => void
+  onAdd: (e: React.MouseEvent, variant?: Variant) => void
   onLongPress?: (src: string) => void
   darkFront?: boolean
 }) {
@@ -248,7 +253,7 @@ function FlipCard({
               darkFront ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white' : 'bg-cream text-green-dark'
             }`}
           >
-            {item.preu.toFixed(2)} €
+            {priceLabel(item)}
           </div>
 
           {/* Name + flip affordance */}
@@ -291,17 +296,34 @@ function FlipCard({
           ) : (
             <p className="relative text-[10px] text-emerald-300/80 my-2 font-body">{t('card_no_allergens', lang)}</p>
           )}
-          <div className="relative flex items-center justify-between mt-1">
-            <span className="font-heading font-black text-base text-amber-300">{item.preu.toFixed(2)} €</span>
-            <motion.button
-              whileHover={{ scale: 1.06 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={(e) => { e.stopPropagation(); onAdd(e) }}
-              className="bg-cream text-green-dark text-xs font-heading font-bold px-4 py-2.5 min-h-[40px] rounded-full hover:bg-white transition-colors"
-            >
-              {t('order_add', lang)}
-            </motion.button>
-          </div>
+          {item.variants?.length ? (
+            <div className="relative flex flex-wrap gap-1.5 mt-1">
+              {item.variants.map(v => (
+                <motion.button
+                  key={v.id}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={(e) => { e.stopPropagation(); onAdd(e, v) }}
+                  aria-label={`${t('order_add', lang)}: ${item[lang].nom} – ${v[lang]}`}
+                  className="flex-1 bg-cream text-green-dark text-xs font-heading font-bold px-3 py-2 min-h-[40px] rounded-full hover:bg-white transition-colors whitespace-nowrap"
+                >
+                  + {v[lang]} · {v.preu.toFixed(2)} €
+                </motion.button>
+              ))}
+            </div>
+          ) : (
+            <div className="relative flex items-center justify-between mt-1">
+              <span className="font-heading font-black text-base text-amber-300">{priceLabel(item)}</span>
+              <motion.button
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={(e) => { e.stopPropagation(); onAdd(e) }}
+                className="bg-cream text-green-dark text-xs font-heading font-bold px-4 py-2.5 min-h-[40px] rounded-full hover:bg-white transition-colors"
+              >
+                {t('order_add', lang)}
+              </motion.button>
+            </div>
+          )}
         </div>
       </motion.div>
     </div>
@@ -310,8 +332,34 @@ function FlipCard({
 
 // ── Drink Row ─────────────────────────────────────────────────────────────────
 
-function DrinkRow({ item, onAdd }: { item: MenuItem; onAdd: () => void }) {
+function DrinkRow({ item, onAdd }: { item: MenuItem; onAdd: (variant?: Variant) => void }) {
   const { lang } = useLanguage()
+  if (item.variants?.length) {
+    return (
+      <div className="py-2.5 border-b border-white/10 last:border-0">
+        <span className="font-body text-sm text-blue-100 block">{item[lang].nom}</span>
+        {item.alergenos.length > 0 && (
+          <span className="text-[10px] text-blue-300/60 font-body">{item.alergenos.map(a => ALLERGEN[a].label[lang]).join(', ')}</span>
+        )}
+        <div className="flex flex-wrap gap-2 mt-2">
+          {item.variants.map(v => (
+            <motion.button
+              key={v.id}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onAdd(v)}
+              aria-label={`${t('order_add', lang)}: ${item[lang].nom} – ${v[lang]}`}
+              className="flex items-center gap-2 min-h-[40px] px-3 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-100 text-xs font-body hover:bg-blue-500/35 transition-colors"
+            >
+              <span>{v[lang]}</span>
+              <span className="font-heading font-bold text-blue-300">{v.preu.toFixed(2)} €</span>
+              <span aria-hidden className="w-5 h-5 rounded-full bg-blue-500/80 text-white text-sm font-bold grid place-items-center">+</span>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="flex items-center justify-between py-2.5 border-b border-white/10 last:border-0">
       <div className="flex-1 min-w-0">
@@ -321,11 +369,11 @@ function DrinkRow({ item, onAdd }: { item: MenuItem; onAdd: () => void }) {
         )}
       </div>
       <div className="flex items-center gap-3 ml-3 flex-shrink-0">
-        <span className="font-heading font-bold text-blue-300 text-sm">{item.preu.toFixed(2)} €</span>
+        <span className="font-heading font-bold text-blue-300 text-sm">{priceLabel(item)}</span>
         <motion.button
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.93 }}
-          onClick={onAdd}
+          onClick={() => onAdd()}
           className="w-10 h-10 sm:w-8 sm:h-8 bg-blue-500/80 text-white rounded-full text-lg font-bold flex items-center justify-center hover:bg-blue-400 transition-colors flex-shrink-0"
         >
           +
@@ -358,7 +406,8 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
   onClose: () => void
 }) {
   const { lang } = useLanguage()
-  const total = cart.reduce((s, c) => s + c.preu * c.quantitat, 0)
+  const total = cart.reduce((s, c) => c.unitat === 'kg' ? s : s + c.preu * c.quantitat, 0)
+  const hasWeighed = cart.some(c => c.unitat === 'kg')
 
   const CAT_ORDER = ['entrantes', 'ensalades', 'ous', 'especiales', 'platos', 'postres', 'bebidas_soda', 'bebidas_alcohol']
   const CAT_DISPLAY: Record<string, { ca: string; es: string; en: string }> = {
@@ -409,17 +458,23 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
               <p className="text-[10px] uppercase tracking-widest font-body text-brown/40 mb-1">{CAT_DISPLAY[cat]?.[lang] ?? cat}</p>
               {items.map(cartItem => {
                 const source = carta.find(c => c.id === cartItem.id)
+                const variant = source?.variants?.find(v => v.id === cartItem.variant)
                 const nom = source ? source[lang].nom : cartItem.id
                 return (
-                  <div key={cartItem.id} className="flex items-center gap-2 py-1.5">
-                    <span className="flex-1 font-body text-sm text-brown truncate">{nom}</span>
-                    <div className="flex items-center gap-1.5">
-                      <button onClick={() => onDecrement(cartItem.id)} className="w-9 h-9 rounded-full bg-wood/20 text-brown text-sm font-bold hover:bg-wood/40 transition-colors flex items-center justify-center" aria-label="Decrease quantity">−</button>
-                      <span className="w-5 text-center font-heading font-bold text-green-dark text-sm">{cartItem.quantitat}</span>
-                      <button onClick={() => onIncrement(cartItem.id)} className="w-9 h-9 rounded-full bg-green-dark text-cream text-sm font-bold hover:bg-green-mid transition-colors flex items-center justify-center" aria-label="Increase quantity">+</button>
+                  <div key={cartItem.key} className="flex items-center gap-2 py-1.5">
+                    <div className="flex-1 min-w-0">
+                      <span className="block font-body text-sm text-brown truncate">{nom}</span>
+                      {variant && <span className="block font-body text-xs text-brown/55">{variant[lang]}</span>}
                     </div>
-                    <span className="w-16 text-right font-heading font-bold text-green-dark text-sm">{(cartItem.preu * cartItem.quantitat).toFixed(2)} €</span>
-                    <button onClick={() => onRemove(cartItem.id)} className="w-8 h-8 flex items-center justify-center text-red-300 hover:text-red-500 text-xs transition-colors" aria-label="Remove item">✕</button>
+                    <div className="flex items-center gap-1.5">
+                      <button onClick={() => onDecrement(cartItem.key)} className="w-9 h-9 rounded-full bg-wood/20 text-brown text-sm font-bold hover:bg-wood/40 transition-colors flex items-center justify-center" aria-label="Decrease quantity">−</button>
+                      <span className="w-5 text-center font-heading font-bold text-green-dark text-sm">{cartItem.quantitat}</span>
+                      <button onClick={() => onIncrement(cartItem.key)} className="w-9 h-9 rounded-full bg-green-dark text-cream text-sm font-bold hover:bg-green-mid transition-colors flex items-center justify-center" aria-label="Increase quantity">+</button>
+                    </div>
+                    <span className="w-16 text-right font-heading font-bold text-green-dark text-sm">
+                      {cartItem.unitat === 'kg' ? `${cartItem.preu.toFixed(2)} €/kg` : `${(cartItem.preu * cartItem.quantitat).toFixed(2)} €`}
+                    </span>
+                    <button onClick={() => onRemove(cartItem.key)} className="w-8 h-8 flex items-center justify-center text-red-300 hover:text-red-500 text-xs transition-colors" aria-label="Remove item">✕</button>
                   </div>
                 )
               })}
@@ -434,6 +489,11 @@ function CartPanel({ cart, onRemove, onIncrement, onDecrement, onClear, onClose 
             <span className="font-heading font-black text-green-dark">{t('order_total', lang)}</span>
             <span className="font-heading font-black text-green-dark text-xl">{total.toFixed(2)} €</span>
           </div>
+          {hasWeighed && (
+            <p className="text-right text-xs text-brown/60 font-body mb-2">
+              {{ ca: '+ plats al pes, segons el pes final', es: '+ platos al peso, según el peso final', en: '+ items priced by weight, charged on final weight' }[lang]}
+            </p>
+          )}
           <p className="text-center text-xs text-brown/50 font-body">{t('order_note', lang)}</p>
         </div>
       )}
@@ -457,7 +517,10 @@ export default function MenuContent() {
   const [lightboxSrc, setLightboxSrc]                   = useState<string | null>(null)
 
   useEffect(() => {
-    try { const raw = sessionStorage.getItem('raco-cart'); if (raw) setCart(JSON.parse(raw)) } catch {}
+    try {
+      const raw = sessionStorage.getItem('raco-cart')
+      if (raw) setCart((JSON.parse(raw) as CartItem[]).map(c => ({ ...c, key: c.key ?? c.id })))
+    } catch {}
     setCartLoaded(true)
   }, [])
 
@@ -467,21 +530,25 @@ export default function MenuContent() {
 
   useEffect(() => { setActiveCardId(null) }, [activeCategory, activeStarterSubcat, activeSandwichSubcat])
 
-  const addToCart = useCallback((item: MenuItem) => {
+  const addToCart = useCallback((item: MenuItem, variant?: Variant) => {
+    const key = variant ? `${item.id}:${variant.id}` : item.id
     setCart(prev => {
-      const ex = prev.find(c => c.id === item.id)
-      if (ex) return prev.map(c => c.id === item.id ? { ...c, quantitat: c.quantitat + 1 } : c)
-      return [...prev, { id: item.id, preu: item.preu, quantitat: 1, categoria: item.categoria }]
+      const ex = prev.find(c => c.key === key)
+      if (ex) return prev.map(c => c.key === key ? { ...c, quantitat: c.quantitat + 1 } : c)
+      return [...prev, {
+        key, id: item.id, variant: variant?.id, preu: variant ? variant.preu : item.preu,
+        quantitat: 1, categoria: item.categoria, unitat: item.unitat,
+      }]
     })
   }, [])
 
-  const removeFromCart  = useCallback((id: string) => setCart(prev => prev.filter(c => c.id !== id)), [])
-  const incrementCart   = useCallback((id: string) => setCart(prev => prev.map(c => c.id === id ? { ...c, quantitat: c.quantitat + 1 } : c)), [])
-  const decrementCart   = useCallback((id: string) => setCart(prev => {
-    const item = prev.find(c => c.id === id)
+  const removeFromCart  = useCallback((key: string) => setCart(prev => prev.filter(c => c.key !== key)), [])
+  const incrementCart   = useCallback((key: string) => setCart(prev => prev.map(c => c.key === key ? { ...c, quantitat: c.quantitat + 1 } : c)), [])
+  const decrementCart   = useCallback((key: string) => setCart(prev => {
+    const item = prev.find(c => c.key === key)
     if (!item) return prev
-    if (item.quantitat <= 1) return prev.filter(c => c.id !== id)
-    return prev.map(c => c.id === id ? { ...c, quantitat: c.quantitat - 1 } : c)
+    if (item.quantitat <= 1) return prev.filter(c => c.key !== key)
+    return prev.map(c => c.key === key ? { ...c, quantitat: c.quantitat - 1 } : c)
   }), [])
 
   const totalItems = cart.reduce((s, c) => s + c.quantitat, 0)
@@ -539,13 +606,18 @@ export default function MenuContent() {
     function itemRow(item: MenuItem) {
       checkPage(7)
       const name = item[lang].nom
-      const price = `${item.preu.toFixed(2).replace('.', ',')} €`
+      const eur = (n: number) => n.toFixed(2).replace('.', ',')
+      const price = item.variants?.length
+        ? item.variants.map(v => `${v[lang]} ${eur(v.preu)}`).join('  /  ') + ' €'
+        : `${eur(item.preu)} €${item.unitat === 'kg' ? '/kg' : ''}`
       const allergens = item.alergenos.map(a => ALLERGEN[a].label[lang]).join(', ')
 
-      doc.setFont('helvetica', 'normal')
       doc.setFontSize(10)
+      doc.setFont('helvetica', 'bold')
+      const priceW = doc.getTextWidth(price)
+      doc.setFont('helvetica', 'normal')
       doc.setTextColor(...BROWN)
-      const lines = doc.splitTextToSize(name, cw - 22) as string[]
+      const lines = doc.splitTextToSize(name, cw - Math.max(22, priceW + 4)) as string[]
       doc.text(lines, ml, y)
       doc.setFont('helvetica', 'bold')
       doc.text(price, pageW - mr, y, { align: 'right' })
@@ -651,7 +723,7 @@ export default function MenuContent() {
               item={item}
               isFlipped={activeCardId === item.id}
               onFlip={() => setActiveCardId(prev => prev === item.id ? null : item.id)}
-              onAdd={(e) => { e.stopPropagation(); addToCart(item); setActiveCardId(null) }}
+              onAdd={(e, v) => { e.stopPropagation(); addToCart(item, v); setActiveCardId(null) }}
               onLongPress={(src) => setLightboxSrc(src)}
               darkFront={darkFront}
             />
@@ -785,7 +857,7 @@ export default function MenuContent() {
                 exit={{ opacity: 0, x: -16 }}
                 transition={{ duration: 0.25 }}
               >
-                {drinkItems.map(item => <DrinkRow key={item.id} item={item} onAdd={() => addToCart(item)} />)}
+                {drinkItems.map(item => <DrinkRow key={item.id} item={item} onAdd={(v) => addToCart(item, v)} />)}
               </motion.div>
             </AnimatePresence>
           </>
