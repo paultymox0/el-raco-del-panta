@@ -283,7 +283,7 @@ function FlipCard({
 
           <p className="relative font-heading font-bold text-sm mb-1 text-cream">{item[lang].nom}</p>
           <p className="relative font-body text-xs leading-relaxed flex-1 overflow-hidden text-cream/70">
-            {item[lang].descripcio || '—'}
+            {item[lang].descripcio}
           </p>
           {item.alergenos.length > 0 ? (
             <div className="relative flex flex-wrap gap-1 my-2">

@@ -65,13 +65,13 @@ export const i18n = {
   // ── Section notes ─────────────────────────────────────────────────────────
   ous_note:         { ca: 'Base: patates fregides i ous ferrats',
                       es: 'Base: patatas fritas y huevos fritos',
-                      en: 'Base: homemade fries and fried eggs' },
-  brasa_note:       { ca: "Producte local a la brasa · Acompanyats de patates casolanes o al forn",
-                      es: 'Producto local a la brasa · Acompañados de patatas caseras o al horno',
-                      en: 'Local produce on the grill · Served with homemade or oven potatoes' },
-  hamburguesa_note: { ca: 'Pa de viena o brioix · Vedella o pollastre crunchy · Amb patates',
-                      es: 'Pan de viena o brioche · Ternera o pollo crunchy · Con patatas',
-                      en: 'Viennese or brioche bun · Beef or crunchy chicken · With fries' },
+                      en: 'Base: fries and fried eggs' },
+  brasa_note:       { ca: "D'aquí al foc: producte local a la brasa. Els nostres plats van acompanyats de patates fregides casolanes o patates al caliu",
+                      es: 'De aquí al fuego: producto local a la brasa. Nuestros platos van acompañados de patatas fritas caseras o patatas asadas',
+                      en: 'From here to the fire: local produce on the grill. Our dishes come with homemade fries or ember-roasted potatoes' },
+  hamburguesa_note: { ca: 'Vedella o pollastre crunchy amb patates fregides',
+                      es: 'Ternera o pollo crunchy con patatas fritas',
+                      en: 'Beef or crunchy chicken, with fries' },
 
   // ── Subcategory labels ────────────────────────────────────────────────────
   subcat_freds:        { ca: 'Entrepans Freds (½)',    es: 'Bocadillos Fríos (½)',    en: 'Cold Sandwiches (½)'   },
