@@ -10,12 +10,35 @@ import { t } from '@/lib/i18n'
 
 const MAPS_URL = 'https://maps.app.goo.gl/tpbXkdwr8J6UPk6p9'
 
+// Texto alternativo de cada foto (accesibilidad y Google Imágenes).
+// Al añadir fotos nuevas a /public/entorno, añade aquí su descripción;
+// si falta, se usa un texto genérico.
+type Alt = { ca: string; es: string; en: string }
+const PHOTO_ALTS: Record<string, Alt> = {
+  '1.JPG': { ca: 'Riba del pantà de Sant Antoni amb barques i muntanyes al fons', es: 'Orilla del pantano de Sant Antoni con barcas y montañas al fondo', en: 'Shore of Sant Antoni reservoir with boats and mountains behind' },
+  '2.JPG': { ca: "Terrassa d'El Racó del Pantà a l'ombra dels arbres", es: 'Terraza de El Racó del Pantà a la sombra de los árboles', en: 'El Racó del Pantà terrace in the shade of the trees' },
+  '3.JPG': { ca: 'Terrassa amb para-sol davant del restaurant', es: 'Terraza con sombrilla frente al restaurante', en: 'Terrace with parasol in front of the restaurant' },
+  '4.JPG': { ca: "Entrada d'El Racó del Pantà", es: 'Entrada de El Racó del Pantà', en: 'Entrance to El Racó del Pantà' },
+  '5.JPG': { ca: 'Menjador interior del restaurant', es: 'Comedor interior del restaurante', en: 'Indoor dining room of the restaurant' },
+  '6.JPG': { ca: 'Barra i interior del restaurant', es: 'Barra e interior del restaurante', en: 'Bar and interior of the restaurant' },
+  '7.JPG': { ca: 'Interior amb finestrals que donen a la terrassa', es: 'Interior con ventanales que dan a la terraza', en: 'Interior with large windows onto the terrace' },
+  '8.JPG': { ca: 'Lavabo adaptat amb canviador per a nadons', es: 'Baño adaptado con cambiador para bebés', en: 'Accessible toilet with baby changing table' },
+  '9.JPG': { ca: 'Lavabos del restaurant', es: 'Baños del restaurante', en: 'Restaurant toilets' },
+  'donde-estamos.jpg': { ca: "Vista aèria del pantà de Sant Antoni amb la ubicació d'El Racó del Pantà", es: 'Vista aérea del pantano de Sant Antoni con la ubicación de El Racó del Pantà', en: 'Aerial view of Sant Antoni reservoir showing where El Racó del Pantà is' },
+}
+const FALLBACK_ALT: Alt = { ca: "L'entorn d'El Racó del Pantà, a Talarn", es: 'El entorno de El Racó del Pantà, en Talarn', en: 'The setting of El Racó del Pantà, in Talarn' }
+function photoAlt(src: string, lang: keyof Alt): string {
+  const file = src.split('/').pop() ?? ''
+  return (PHOTO_ALTS[file] ?? FALLBACK_ALT)[lang]
+}
+
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
-function Lightbox({ photos, index, onClose }: {
+function Lightbox({ photos, index, onClose, lang }: {
   photos: string[]
   index: number
   onClose: () => void
+  lang: keyof Alt
 }) {
   const [current, setCurrent] = useState(index)
   const swipeStart = useRef<number | null>(null)
@@ -71,7 +94,7 @@ function Lightbox({ photos, index, onClose }: {
       <motion.img
         key={current}
         src={photos[current]}
-        alt=""
+        alt={photoAlt(photos[current], lang)}
         className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl pointer-events-none"
         initial={{ opacity: 0, scale: 0.94 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -186,14 +209,14 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
               <motion.button
                 type="button"
                 onClick={() => setLightboxIndex(0)}
-                aria-label={t('entorn_photos_title', lang)}
+                aria-label={photoAlt(lead, lang)}
                 initial={reduce ? false : { opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative block w-full overflow-hidden rounded-3xl cursor-zoom-in shadow-[0_24px_60px_-28px_rgba(22,38,26,0.55)] mb-4 md:mb-5"
               >
-                <Image src={lead} alt="" width={0} height={0} sizes="(min-width: 1280px) 1200px, 100vw" className="w-full h-[44vh] md:h-[62vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <Image src={lead} alt={photoAlt(lead, lang)} width={0} height={0} sizes="(min-width: 1280px) 1200px, 100vw" className="w-full h-[44vh] md:h-[62vh] object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
               </motion.button>
             )}
@@ -207,14 +230,14 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
                       type="button"
                       key={src}
                       onClick={() => setLightboxIndex(idx)}
-                      aria-label={t('entorn_photos_title', lang)}
+                      aria-label={photoAlt(src, lang)}
                       initial={reduce ? false : { opacity: 0, y: 18 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: '-40px' }}
                       transition={{ duration: 0.5, delay: (i % 3) * 0.06, ease: [0.16, 1, 0.3, 1] }}
                       className="group relative block w-full break-inside-avoid overflow-hidden rounded-2xl cursor-zoom-in shadow-[0_12px_30px_-18px_rgba(22,38,26,0.4)]"
                     >
-                      <Image src={src} alt="" width={0} height={0} sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <Image src={src} alt={photoAlt(src, lang)} width={0} height={0} sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-black/5 bg-black/0 group-hover:bg-black/15 transition-colors duration-300" />
                     </motion.button>
                   )
@@ -301,6 +324,7 @@ export default function EntornoContent({ photos = [], heroSrc = null }: { photos
           photos={photos}
           index={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
+          lang={lang}
         />
       )}
 

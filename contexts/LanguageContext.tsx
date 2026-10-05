@@ -24,6 +24,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
+  // Mantener <html lang> igual al idioma visible (lectores de pantalla y traductor del navegador)
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
+
   const setLang = (l: Lang) => {
     setLangState(l)
     localStorage.setItem('raco-language', l)

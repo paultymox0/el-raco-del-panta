@@ -54,7 +54,15 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@type': 'Restaurant',
     name: 'El Racó del Pantà',
-    image: 'https://www.elracodelpanta.cat/logo.png',
+    image: [
+      'https://www.elracodelpanta.cat/entorno/hero-entorno.JPG',
+      'https://www.elracodelpanta.cat/entorno/2.JPG',
+    ],
+    logo: 'https://www.elracodelpanta.cat/logo.png',
+    sameAs: [
+      'https://www.instagram.com/elracodelpanta',
+      'https://www.tiktok.com/@elracodelpanta',
+    ],
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'C-13, 91',
@@ -75,7 +83,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="ca">
+    <html lang="es">
       <head>
         <script
           type="application/ld+json"
